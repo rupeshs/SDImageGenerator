@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>controls/RichTextEdit.qml</file>
+        <file>controls/ImageViewer.qml</file>
+        <file>controls/AppSlider.qml</file>
+        <file>controls/AppLabel.qml</file>
+    </qresource>
+</RCC>

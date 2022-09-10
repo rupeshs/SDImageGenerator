@@ -1,0 +1,12 @@
+debug/diffusionenvironment.o
+debug/diffusionenvvalidator.o
+debug/diffusionprocess.o
+debug/main.o
+debug/texttoimagebackend.o
+debug/utils.o
+debug/qrc_qml.o
+debug/qrc_sdimagegenerator.o
+debug/moc_diffusionenvironment.o
+debug/moc_diffusionenvvalidator.o
+debug/moc_diffusionprocess.o
+debug/moc_texttoimagebackend.o
