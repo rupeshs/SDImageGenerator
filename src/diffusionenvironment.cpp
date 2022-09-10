@@ -10,6 +10,7 @@ DiffusionEnvironment::DiffusionEnvironment(QObject *parent)
 {
 
     envPathsFileName = Utils::pathAppend(qApp->applicationDirPath(),QString(ENV_PATHS_FILE));
+    qDebug()<<envPathsFileName;
 
 }
 
