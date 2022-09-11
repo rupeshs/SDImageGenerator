@@ -1,5 +1,6 @@
 release/diffusionenvironment.o
 release/diffusionenvvalidator.o
+release/diffusionoptions.o
 release/diffusionprocess.o
 release/main.o
 release/texttoimagebackend.o
@@ -8,5 +9,6 @@ release/qrc_qml.o
 release/qrc_sdimagegenerator.o
 release/moc_diffusionenvironment.o
 release/moc_diffusionenvvalidator.o
+release/moc_diffusionoptions.o
 release/moc_diffusionprocess.o
 release/moc_texttoimagebackend.o

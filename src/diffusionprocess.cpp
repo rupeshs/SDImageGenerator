@@ -27,20 +27,7 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
     addArgument("python");
     addArgument(diffusionEnv->getStableDiffusionScript());
 
-    addArgument("--prompt");
-    addArgument("A fantasy landscape,trending on artstation");
-    addArgument("--H");
-    addArgument("512");
-    addArgument("--W");
-    addArgument("512");
-    addArgument("--seed");
-    addArgument("42");
-    addArgument("--n_iter");
-    addArgument(QString::number(1));
-    addArgument("--n_samples");
-    addArgument(QString::number(1));
-    addArgument("--ddim_steps");
-    addArgument(QString::number(10));
+
 
 }
 
@@ -76,9 +63,40 @@ void DiffusionProcess::stopProcess()
 {
     if (stableDiffusionProcess) {
         stableDiffusionProcess->terminate();
-        if (!stableDiffusionProcess->waitForFinished(5000)) {
+        if (!stableDiffusionProcess->waitForFinished(2000)) {
             stableDiffusionProcess->kill();
             stableDiffusionProcess->waitForFinished();
         }
     }
+}
+
+void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
+{
+    addArgument("--prompt");
+    addArgument(diffusionOptions->prompt());
+    addArgument("--scale");
+    addArgument(QString::number(diffusionOptions->scale()));
+    addArgument("--W");
+    addArgument(QString::number(diffusionOptions->imageWidth()));
+    addArgument("--H");
+    addArgument(QString::number(diffusionOptions->imageHeight()));
+    addArgument("--n_iter");
+    addArgument(QString::number(1));
+    addArgument("--n_samples");
+    addArgument(QString::number(diffusionOptions->numberOfImages()));
+    addArgument("--ddim_steps");
+    addArgument(QString::number(diffusionOptions->ddimSteps()));
+    //addArgument("--seed");
+    //addArgument("42");
+
+    QString commandLine;
+    for (auto argument : arguments) {
+      commandLine.append(argument);
+      commandLine.append(" ");
+    }
+    qDebug()<<arguments;
+    qDebug()<<commandLine;
+    startProcess();
+
+
 }

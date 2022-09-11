@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QProcess>
 #include "diffusionenvironment.h"
+#include "diffusionoptions.h"
 
 class DiffusionProcess: public QObject
 {
@@ -17,6 +18,7 @@ public:
     void clearArguments(){arguments.clear();}
     void startProcess();
     void stopProcess();
+    void generateImages(DiffusionOptions *diffusionOptions);
 
     int getStyleStrength() const;
     void setStyleStrength(int newStyleStrength);

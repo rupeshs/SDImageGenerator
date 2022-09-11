@@ -1,5 +1,6 @@
 #include "texttoimagebackend.h"
 #include <QDebug>
+#include <QGuiApplication>
 
 TextToImageBackend::TextToImageBackend(QObject *parent)
     : QObject{parent}
@@ -11,23 +12,43 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
 
    stableDiffusion = new DiffusionProcess(parent,diffusionEnv);
    connect(stableDiffusion, SIGNAL(diffusionConsoleLine(QString)), this, SLOT(diffusionConsoleLine(QString)));
-   samplesPath=  "";
-
+   m_options = new DiffusionOptions();
+   m_options->setPrompt("ddsfsdf");
+   isProcessing = false;
 
 }
 
 void TextToImageBackend::generateImage()
 {
-    qDebug()<<"Start";
-    stableDiffusion->startProcess();
-    updateStatusMessage("Starting image generation...");
-    //samplesPath="file:/d:\\textimg\\apps\\sdinstaller\\stable-diffusion\\outputs\\txt2img-samples\\Cyberpunk_style_image_of_a_Telsa_car_reflection_in_rain";
-    //emit loadImage();
+
+    qDebug()<<"Start"<<isProcessing;
+
+    if (isProcessing) {
+        stopProcessing();
+    } else {
+        updateStatusMessage("Starting image generation...");
+
+        if (m_options->prompt().isEmpty()) {
+            showErrorDlg(tr("Please provide a prompt text."));
+            return;
+        }
+        stableDiffusion->generateImages(m_options);
+        qDebug()<<"Prompt : "<<m_options->prompt();
+        qDebug()<<"Scale : "<<m_options->scale();
+        qDebug()<<"Image width :"<<m_options->imageWidth();
+        qDebug()<<"Image height :"<<m_options->imageHeight();
+        qDebug()<<"Number of Images to generate :"<<m_options->numberOfImages();
+        qDebug()<<"DDIM steps :"<<m_options->ddimSteps();
+        qDebug()<<"Sampler :"<<m_options->sampler();
+    }
+    isProcessing = !isProcessing;
+
 }
 
 void TextToImageBackend::stopProcessing()
 {
    stableDiffusion->stopProcess();
+   //qApp->exit( TextToImageBackend::EXIT_CODE_REBOOT );
 
 }
 
@@ -46,6 +67,14 @@ void TextToImageBackend::diffusionConsoleLine(QString message)
        qDebug()<<samplesPath;
     }
 }
+
+void TextToImageBackend::showErrorDlg(const QString &error)
+{
+    errorMsg = error;
+    emit gotErrorMessage();
+    emit showMessageBox();
+}
+
 void TextToImageBackend::verifyEnvironment()
 {
     DiffusionEnvValidator envValidator(this,diffusionEnv);
@@ -54,15 +83,21 @@ void TextToImageBackend::verifyEnvironment()
     if (envStatus == EnvStatus::Ready)
         return;
 
-    if (envStatus == EnvStatus::CondaNotFound)
+    if (envStatus == EnvStatus::CondaNotFound){
+         qDebug()<<"Miniconda not found!";
          errorMsg=tr("Miniconda not found!");
 
-    if (envStatus == EnvStatus::PythonEnvNotFound)
+    }
+    if (envStatus == EnvStatus::PythonEnvNotFound) {
+         qDebug()<<"Python environment not found!";
          errorMsg=tr("Python environment not found!");
+    }
 
-    if (envStatus == EnvStatus::StableDiffusionNotFound)
+    if (envStatus == EnvStatus::StableDiffusionNotFound) {
+         qDebug()<<"Stable-diffusion directory not found!";
          errorMsg=tr("Stable-diffusion directory not found!");
-
+    }
+    emit gotErrorMessage();
     emit showMessageBox();
 }
 
@@ -70,4 +105,14 @@ void TextToImageBackend::updateStatusMessage(const QString &message)
 {
     diffusionStatusMsg = message;
     emit statusChanged();
+}
+
+DiffusionOptions *TextToImageBackend::options() const
+{
+    return m_options;
+}
+
+void TextToImageBackend::setOptions(DiffusionOptions *newOptions)
+{
+    m_options = newOptions;
 }

@@ -7,16 +7,16 @@ Image {
     property string folderpath
     property string currentImagePath
     property string placeHolderImageSource
-
+    
     id: imageViewer
     height:mainImage.height +lstView.height
     width:mainImage.width
-
-
-
+    
+    
+    
     ColumnLayout{
         anchors.fill: parent
-
+        
         Image{
             id:mainImage
             sourceSize.width: 512
@@ -24,16 +24,10 @@ Image {
             Layout.margins:  10
             opacity: 1
             source :currentImagePath
+            
 
-            NumberAnimation on opacity {
-                id: createAnimation
-                from: 0.75
-                to: 1
-                duration: 500
-            }
-            Component.onCompleted: createAnimation.start()
         }
-
+        
         ListView {
             id: lstView
             width: 512
@@ -45,21 +39,20 @@ Image {
             ScrollBar.horizontal:  ScrollBar {
                 active: true
             }
-
+            
             function loadImage(imagePath)
             {
-                if (imagePath) {
+                if (imagePath)
                     imageViewer.currentImagePath = "file:/"+imagePath;
-                    createAnimation.start();
-                }
-            }
 
+            }
+            
             FolderListModel {
                 id: folderModel
                 nameFilters: ["*.png","*.jpg"]
                 folder:imageViewer.folderpath
             }
-
+            
             Component {
                 id: fileDelegate
                 Column {
@@ -73,7 +66,7 @@ Image {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {lstView.currentIndex = index;
-
+                                
                             }
                         }
                     }
@@ -81,23 +74,23 @@ Image {
                         if (index == 0){
                             console.log("Load first image")
                             if (imageViewer.folderpath)
-                                loadImage(folderModel.get(lstView.currentIndex,"filePath"))
+                                imageViewer.currentImagePath = "file:/"+folderModel.get(lstView.currentIndex,"filePath");
                         }
-
+                        
                     }
                 }
-
+                
             }
             onCurrentIndexChanged: {
                 console.log("currentIndex", currentIndex)
                 console.log(folderModel.get(lstView.currentIndex,"filePath"))
                 if (imageViewer.folderpath)
                     loadImage(folderModel.get(lstView.currentIndex,"filePath"))
-
+                
             }
             model: folderModel
             delegate: fileDelegate
         }
-
+        
     }
 }

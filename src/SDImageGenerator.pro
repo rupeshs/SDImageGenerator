@@ -7,6 +7,7 @@ QT += quick
 SOURCES += \
         diffusionenvironment.cpp \
         diffusionenvvalidator.cpp \
+        diffusionoptions.cpp \
         diffusionprocess.cpp \
         main.cpp \
         texttoimagebackend.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     defines.h \
     diffusionenvironment.h \
     diffusionenvvalidator.h \
+    diffusionoptions.h \
     diffusionprocess.h \
     errors.h \
     texttoimagebackend.h \
