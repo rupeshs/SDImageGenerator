@@ -30,6 +30,7 @@ public slots:
 
 signals:
     void diffusionConsoleLine(QString consoleLine);
+    void diffusionFinished();
 
 private:
     QProcess *stableDiffusionProcess;

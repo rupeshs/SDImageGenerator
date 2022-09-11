@@ -9,12 +9,12 @@ import QtQuick.Dialogs 1.3
 
 ApplicationWindow {
     id: window
-    width: 900
+    width: 1400
     height: 800
     maximumHeight: 800
     minimumHeight: 800
-    maximumWidth:  900
-    minimumWidth:  900
+    maximumWidth:  1400
+    minimumWidth:  1400
     visible: true
     title: qsTr("SDImageGenerator")
     font.pointSize: 12
@@ -39,13 +39,45 @@ ApplicationWindow {
             console.log("Show dialogue");
             msgDialog.visible = true;
         }
+
+        function onInitControls(options) {
+            promptInput.text = options.prompt;
+            scaleSlider.value = options.scale;
+            widthSlider.value = options.imageWidth;
+            heightSlider.value = options.imageHeight;
+            imageCountSlider.value = options.numberOfImages;
+            ddimStepsSlider.value = options.ddimSteps;
+            samplerComboBox.currentIndex = samplerComboBox.indexOfValue(options.sampler);
+            if (options.seed === 0)
+                seedInput.text = "";
+            else
+                seedInput.text = options.seed;
+        }
+    }
+    function updateOptions(){
+
+        stableDiffusionBackend.options.prompt = promptInput.text
+        stableDiffusionBackend.options.scale = scaleSlider.value.toFixed(1)
+        stableDiffusionBackend.options.imageWidth = parseInt(widthSlider.value)
+        stableDiffusionBackend.options.imageHeight = parseInt(heightSlider.value)
+        stableDiffusionBackend.options.numberOfImages = parseInt(imageCountSlider.value)
+        stableDiffusionBackend.options.ddimSteps = parseInt(ddimStepsSlider.value)
+        stableDiffusionBackend.options.sampler = samplerComboBox.currentValue
+        if (seedInput.text)
+            stableDiffusionBackend.options.seed = seedInput.text
+        else
+            stableDiffusionBackend.options.seed = 0
     }
 
-
     Drawer {
+        readonly property bool inPortrait: window.width < window.height
         id: drawer
         width: 515
         height: window.height
+        modal: inPortrait
+               interactive: inPortrait
+               position: inPortrait ? 0 : 1
+               visible: !inPortrait
 
         Pane{
             id: frame
@@ -83,7 +115,7 @@ ApplicationWindow {
                         labelInfo: qsTr("Higher values keep your image closer to your prompt.")
                     }
                     Controls.AppSlider{
-                        id : cfgScale
+                        id : scaleSlider
                         from:1
                         to:10
                         value: 7.5
@@ -123,8 +155,8 @@ ApplicationWindow {
 
                     Controls.AppSlider{
                         id: imageCountSlider
-                        from:1
-                        to:10
+                        from: 1
+                        to: 20
                         value: 1
                         Layout.fillWidth:true
 
@@ -143,16 +175,34 @@ ApplicationWindow {
                         Layout.fillWidth:true
 
                     }
+                    Controls.AppLabel{
+                        labelText:qsTr("Seed")
+                        labelInfo: qsTr("Set a seed to reproducible sampling.")
+
+                    }
+                    Controls.RichTextEdit{
+                        id : seedInput
+                        placeholderText: "Random seed"
+                        validator: IntValidator {bottom: 1; top: 9999999}
+
+                    }
+                    Button{
+                        text : "Reset All"
+                        onClicked: stableDiffusionBackend.resetSettings()
+                    }
+
                 }
             }}
     }
 
     ColumnLayout{
         anchors.fill: parent
+        anchors.leftMargin:  drawer.width
         Controls.ImageViewer{
             id: imageViewer
+
             Layout.alignment:Qt.AlignCenter
-            currentImagePath: "../../images/placeholder-image.png"
+            currentImagePath: "../../images/placeholder.png"
             folderpath: stableDiffusionBackend.outputPath
         }
         Label{
@@ -172,35 +222,31 @@ ApplicationWindow {
 
             }
             Button{
-                text: "Generate"
+                text: "Dream"
+                icon.color: "transparent"
+                icon.source: "images/moon-stars-fill.png"
+
+                 Layout.rightMargin: 10
                 onClicked: {
-                    stableDiffusionBackend.options.prompt = promptInput.text
-                    stableDiffusionBackend.options.scale = cfgScale.value.toFixed(1)
-                    stableDiffusionBackend.options.imageWidth = parseInt(widthSlider.value)
-                    stableDiffusionBackend.options.imageHeight = parseInt(heightSlider.value)
-                    stableDiffusionBackend.options.numberOfImages = parseInt(imageCountSlider.value)
-                    stableDiffusionBackend.options.ddimSteps = parseInt(ddimStepsSlider.value)
-                    stableDiffusionBackend.options.sampler = samplerComboBox.currentValue
+                    updateOptions();
                     stableDiffusionBackend.generateImage();
 
                 }
             }
-            ToolButton{
-                icon.color: "transparent"
-                icon.source:  "images/icons8-settings-48.png"
-                Layout.rightMargin: 10
-                onClicked: drawer.visible=true
-                icon.width:32
-                icon.height:32
 
-            }
         }
-    }
-    footer:
         Label {
+
         text: stableDiffusionBackend.diffusionStatusMessage
         font.pointSize: 10
         padding: 15
 
+      }
     }
+    onClosing: {
+            updateOptions();
+            stableDiffusionBackend.saveSettings();
+        }
+
+
 }

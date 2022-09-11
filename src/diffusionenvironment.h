@@ -11,8 +11,8 @@ class DiffusionEnvironment : public QObject
     Q_OBJECT
 public:
     explicit DiffusionEnvironment(QObject *parent = nullptr);
-    void getEnvironment();
 
+    void getEnvironment();
     const QString &getCondaActivatePath() const;
     const QString &getPythonEnvPath() const;
     const QString &getStableDiffusionPath() const;

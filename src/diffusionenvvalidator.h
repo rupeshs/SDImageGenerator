@@ -6,7 +6,6 @@
 #include "errors.h"
 #include "utils.h"
 
-
 class DiffusionEnvValidator : public QObject
 {
     Q_OBJECT

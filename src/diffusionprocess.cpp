@@ -12,10 +12,9 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
     connect(stableDiffusionProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished(int, QProcess::ExitStatus)));
     connect(stableDiffusionProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processError(QProcess::ProcessError)));
 
-    //stableDiffusionProcess->setWorkingDirectory();
-    qDebug()<<diffusionEnv->getCondaActivatePath();
-    qDebug()<<diffusionEnv->getPythonEnvPath();
-    qDebug()<<diffusionEnv->getStableDiffusionPath();
+    qDebug()<<"DiffusionProcess:: CondaActivatePath"<<diffusionEnv->getCondaActivatePath();
+    qDebug()<<"DiffusionProcess:: PythonEnvPath"<<diffusionEnv->getPythonEnvPath();
+    qDebug()<<"DiffusionProcess:: StableDiffusionPath"<<diffusionEnv->getStableDiffusionPath();
     stableDiffusionProcess->setWorkingDirectory(diffusionEnv->getStableDiffusionPath());
 
     exePath = diffusionEnv->getCondaActivatePath();
@@ -45,6 +44,7 @@ void DiffusionProcess::readProcessOutput()
 void DiffusionProcess::processFinished(int exit_code, QProcess::ExitStatus exit_status)
 {
     qDebug() << "DiffusionProcess::processFinished: exit_code:" << exit_code << "exit_status:" << exit_status;
+    emit diffusionFinished();
 }
 void DiffusionProcess::processError(QProcess::ProcessError error) {
 
@@ -86,13 +86,16 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
     addArgument(QString::number(diffusionOptions->numberOfImages()));
     addArgument("--ddim_steps");
     addArgument(QString::number(diffusionOptions->ddimSteps()));
-    //addArgument("--seed");
-    //addArgument("42");
+
+    if (diffusionOptions->seed()>0){
+        addArgument("--seed");
+        addArgument(QString::number(diffusionOptions->seed()));
+    }
 
     QString commandLine;
     for (auto argument : arguments) {
-      commandLine.append(argument);
-      commandLine.append(" ");
+        commandLine.append(argument);
+        commandLine.append(" ");
     }
     qDebug()<<arguments;
     qDebug()<<commandLine;

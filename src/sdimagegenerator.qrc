@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/placeholder-image.png</file>
-        <file>images/icons8-settings-48.png</file>
+        <file>images/moon-stars-fill.png</file>
+        <file>images/placeholder.png</file>
     </qresource>
 </RCC>

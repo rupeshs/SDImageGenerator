@@ -6,7 +6,6 @@
 
 class DiffusionOptions : public QObject
 {
-
     Q_OBJECT
     Q_PROPERTY(QString prompt READ prompt WRITE setPrompt CONSTANT)
     Q_PROPERTY(qreal scale READ scale WRITE setScale CONSTANT)
@@ -15,6 +14,7 @@ class DiffusionOptions : public QObject
     Q_PROPERTY(qreal numberOfImages READ numberOfImages WRITE setNumberOfImages CONSTANT)
     Q_PROPERTY(qreal ddimSteps READ ddimSteps WRITE setDdimSteps CONSTANT)
     Q_PROPERTY(QString sampler READ sampler WRITE setSampler CONSTANT)
+    Q_PROPERTY(qreal seed READ seed WRITE setSeed CONSTANT)
     QML_ELEMENT
 
 public:
@@ -41,6 +41,9 @@ public:
     const QString &sampler() const;
     void setSampler(const QString &newSampler);
 
+    qreal seed() const;
+    void setSeed(qreal newSeed);
+
 private:
     QString m_prompt;
     qreal m_scale;
@@ -49,6 +52,7 @@ private:
     qreal m_numberOfImages;
     qreal m_ddimSteps;
     QString m_sampler;
+    qreal m_seed;
 
 };
 

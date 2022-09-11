@@ -145,8 +145,8 @@ release/qrc_qml.cpp: qml.qrc \
 
 release/qrc_sdimagegenerator.cpp: sdimagegenerator.qrc \
 		../../../../Qt5/5.15.2/mingw81_64/bin/rcc.exe \
-		images/placeholder-image.png \
-		images/icons8-settings-48.png
+		images/moon-stars-fill.png \
+		images/placeholder.png
 	D:\Qt5\5.15.2\mingw81_64\bin\rcc.exe -name sdimagegenerator sdimagegenerator.qrc -o release\qrc_sdimagegenerator.cpp
 
 compiler_moc_predefs_make_all: release/moc_predefs.h
@@ -545,26 +545,28 @@ release/moc_texttoimagebackend.cpp: texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QSettings \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsettings.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmap.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qhash.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qlocale.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qset.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
 		diffusionprocess.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qhash.h \
 		diffusionenvironment.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFile \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTextStream \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qlocale.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvariant.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmap.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdebug.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qset.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
 		defines.h \
 		diffusionoptions.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqml.h \
@@ -1051,6 +1053,8 @@ release/main.o: main.cpp ../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QGuiApp
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlerror.h \
 		texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QObject \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QSettings \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsettings.h \
 		diffusionprocess.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
@@ -1126,26 +1130,28 @@ release/texttoimagebackend.o: texttoimagebackend.cpp texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QSettings \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsettings.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmap.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qhash.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qlocale.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qset.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
 		diffusionprocess.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qhash.h \
 		diffusionenvironment.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFile \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTextStream \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qlocale.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvariant.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmap.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdebug.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qset.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
 		defines.h \
 		diffusionoptions.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqml.h \

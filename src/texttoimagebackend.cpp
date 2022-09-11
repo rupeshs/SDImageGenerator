@@ -5,24 +5,20 @@
 TextToImageBackend::TextToImageBackend(QObject *parent)
     : QObject{parent}
 {
+    isProcessing = false;
+    settings = new QSettings(qApp->applicationDirPath()+"/sdimagegenerator.ini",QSettings::IniFormat,this);
 
-   diffusionEnv = new DiffusionEnvironment(parent);
-   diffusionEnv->getEnvironment();
-   verifyEnvironment();
-
-   stableDiffusion = new DiffusionProcess(parent,diffusionEnv);
-   connect(stableDiffusion, SIGNAL(diffusionConsoleLine(QString)), this, SLOT(diffusionConsoleLine(QString)));
-   m_options = new DiffusionOptions();
-   m_options->setPrompt("ddsfsdf");
-   isProcessing = false;
-
+    m_options = new DiffusionOptions();
+    diffusionEnv = new DiffusionEnvironment(parent);
+    diffusionEnv->getEnvironment();
+    stableDiffusion = new DiffusionProcess(parent,diffusionEnv);
+    connect(stableDiffusion, SIGNAL(diffusionConsoleLine(QString)), this, SLOT(diffusionConsoleLine(QString)));
+    connect(stableDiffusion, SIGNAL(diffusionFinished()), this, SLOT(stableDiffusionFinished()));
 }
 
 void TextToImageBackend::generateImage()
 {
-
     qDebug()<<"Start"<<isProcessing;
-
     if (isProcessing) {
         stopProcessing();
     } else {
@@ -47,24 +43,20 @@ void TextToImageBackend::generateImage()
 
 void TextToImageBackend::stopProcessing()
 {
-   stableDiffusion->stopProcess();
-   //qApp->exit( TextToImageBackend::EXIT_CODE_REBOOT );
+    stableDiffusion->stopProcess();
 
 }
 
-void TextToImageBackend::diffusionConsoleLine(QString message)
+void TextToImageBackend::diffusionConsoleLine(QString consoleLine)
 {
+    updateStatusMessage(consoleLine);
 
-    updateStatusMessage(message);
-
-    if (message.contains("SAMPLEPATH:")) {
-       QStringList output_path = message.split("SAMPLEPATH:");
-       //QString a = Utils::pathAppend(diffusionEnv->getStableDiffusionPath(),STABLE_DIFFUSION_DEFAULT_OUTPUT_PATH);
-       QString b =  Utils::pathAppend(diffusionEnv->getStableDiffusionPath(),output_path[1]);
-       samplesPath=  "file:/"+b;
-       emit loadImage();
-       qDebug()<<output_path[1];
-       qDebug()<<samplesPath;
+    if (consoleLine.contains("SAMPLEPATH:")) {
+        QStringList outputFolderInfo = consoleLine.split("SAMPLEPATH:");
+        if (outputFolderInfo.count()==2)
+            samplesPath =  "file:/"+ Utils::pathAppend(diffusionEnv->getStableDiffusionPath(),outputFolderInfo[1]);
+        else
+            samplesPath = "";
     }
 }
 
@@ -73,6 +65,59 @@ void TextToImageBackend::showErrorDlg(const QString &error)
     errorMsg = error;
     emit gotErrorMessage();
     emit showMessageBox();
+}
+
+void TextToImageBackend::saveSettings()
+{
+    settings->beginGroup("StableDiffusion");
+    qDebug()<<"Save StableDiffusion settings : "<<QString::number(m_options->metaObject()->propertyCount());
+    for (int i =m_options->metaObject()->propertyOffset(); i <m_options->metaObject()->propertyCount() ; ++i) {
+        QString settingName = m_options->metaObject()->property(i).name();
+        QVariant settingValue =  m_options->metaObject()->property(i).read(m_options);
+        settings->setValue(settingName,settingValue);
+    }
+}
+
+void TextToImageBackend::loadSettings()
+{
+    m_options->setPrompt(settings->value("StableDiffusion/prompt","").toString());
+    m_options->setScale(settings->value("StableDiffusion/scale",DEFAULT_SCALE).toDouble());
+    m_options->setImageWidth(settings->value("StableDiffusion/imageWidth",DEFAULT_IMAGE_WIDTH).toDouble());
+    m_options->setImageHeight(settings->value("StableDiffusion/imageHeight",DEFAULT_IMAGE_HEIGHT).toDouble());
+    m_options->setNumberOfImages(settings->value("StableDiffusion/numberOfImages",DEFAULT_NUMBER_OF_IMAGES).toDouble());
+    m_options->setDdimSteps(settings->value("StableDiffusion/ddimSteps",DEFAULT_DDIM_STEPS).toDouble());
+    m_options->setSampler(settings->value("StableDiffusion/sampler",DEFAULT_SAMPLER).toString());
+
+
+    double seed = settings->value("StableDiffusion/seed",DEFAULT_NUMBER_OF_IMAGES).toDouble();
+    if(seed)
+       m_options->setSeed(seed);
+
+    emit initControls(m_options);
+}
+
+void TextToImageBackend::resetSettings()
+{
+    m_options->setScale(DEFAULT_SCALE);
+    m_options->setImageWidth(DEFAULT_IMAGE_WIDTH);
+    m_options->setImageHeight(DEFAULT_IMAGE_HEIGHT);
+    m_options->setNumberOfImages(DEFAULT_NUMBER_OF_IMAGES);
+    m_options->setDdimSteps(DEFAULT_DDIM_STEPS);
+    m_options->setSampler(DEFAULT_SAMPLER);
+    m_options->setSeed(DEFAULT_SEED);
+
+    emit initControls(m_options);
+}
+
+void TextToImageBackend::stableDiffusionFinished()
+{
+    if(!samplesPath.isEmpty())
+        emit loadImage();
+}
+
+void TextToImageBackend::initBackend()
+{
+    verifyEnvironment();
 }
 
 void TextToImageBackend::verifyEnvironment()
@@ -84,18 +129,18 @@ void TextToImageBackend::verifyEnvironment()
         return;
 
     if (envStatus == EnvStatus::CondaNotFound){
-         qDebug()<<"Miniconda not found!";
-         errorMsg=tr("Miniconda not found!");
+        qDebug()<<"Miniconda not found!";
+        errorMsg=tr("Miniconda not found!");
 
     }
     if (envStatus == EnvStatus::PythonEnvNotFound) {
-         qDebug()<<"Python environment not found!";
-         errorMsg=tr("Python environment not found!");
+        qDebug()<<"Python environment not found!";
+        errorMsg=tr("Python environment not found!");
     }
 
     if (envStatus == EnvStatus::StableDiffusionNotFound) {
-         qDebug()<<"Stable-diffusion directory not found!";
-         errorMsg=tr("Stable-diffusion directory not found!");
+        qDebug()<<"Stable-diffusion directory not found!";
+        errorMsg=tr("Stable-diffusion directory not found!");
     }
     emit gotErrorMessage();
     emit showMessageBox();
@@ -115,4 +160,15 @@ DiffusionOptions *TextToImageBackend::options() const
 void TextToImageBackend::setOptions(DiffusionOptions *newOptions)
 {
     m_options = newOptions;
+}
+
+void TextToImageBackend::classBegin()
+{
+}
+
+void TextToImageBackend::componentComplete()
+{
+    qDebug()<<"TextToImageBackend: Component ready";
+    loadSettings();
+    initBackend();
 }
