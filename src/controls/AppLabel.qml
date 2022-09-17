@@ -3,11 +3,19 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 
 ColumnLayout{
-    property string labelText:"Label"
-    property string labelInfo:"Info"
+    property string labelText: ""
+    property string labelInfo: ""
+    property string valueText: ""
 
-    Label{
-        text: labelText
+    RowLayout{
+        spacing: 10
+        Layout.fillWidth: true
+        Label{
+            text: labelText
+        }
+        Label{
+            text: valueText
+        }
     }
     Label{
         text:labelInfo

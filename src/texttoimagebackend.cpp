@@ -1,6 +1,7 @@
 #include "texttoimagebackend.h"
 #include <QDebug>
 #include <QGuiApplication>
+#include <QDesktopServices>
 
 TextToImageBackend::TextToImageBackend(QObject *parent)
     : QObject{parent}
@@ -14,30 +15,28 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
     stableDiffusion = new DiffusionProcess(parent,diffusionEnv);
     connect(stableDiffusion, SIGNAL(diffusionConsoleLine(QString)), this, SLOT(diffusionConsoleLine(QString)));
     connect(stableDiffusion, SIGNAL(diffusionFinished()), this, SLOT(stableDiffusionFinished()));
+
 }
 
 void TextToImageBackend::generateImage()
 {
     qDebug()<<"Start"<<isProcessing;
-    if (isProcessing) {
-        stopProcessing();
-    } else {
-        updateStatusMessage("Starting image generation...");
 
-        if (m_options->prompt().isEmpty()) {
-            showErrorDlg(tr("Please provide a prompt text."));
-            return;
-        }
-        stableDiffusion->generateImages(m_options);
-        qDebug()<<"Prompt : "<<m_options->prompt();
-        qDebug()<<"Scale : "<<m_options->scale();
-        qDebug()<<"Image width :"<<m_options->imageWidth();
-        qDebug()<<"Image height :"<<m_options->imageHeight();
-        qDebug()<<"Number of Images to generate :"<<m_options->numberOfImages();
-        qDebug()<<"DDIM steps :"<<m_options->ddimSteps();
-        qDebug()<<"Sampler :"<<m_options->sampler();
+    updateStatusMessage("Starting image generation...");
+    if (m_options->prompt().isEmpty()) {
+        showErrorDlg(tr("Please provide a prompt text."));
+        return;
     }
-    isProcessing = !isProcessing;
+    stableDiffusion->generateImages(m_options);
+    qDebug()<<"Prompt : "<<m_options->prompt().trimmed();
+    qDebug()<<"Scale : "<<m_options->scale();
+    qDebug()<<"Image width :"<<m_options->imageWidth();
+    qDebug()<<"Image height :"<<m_options->imageHeight();
+    qDebug()<<"Number of Images to generate :"<<m_options->numberOfImages();
+    qDebug()<<"DDIM steps :"<<m_options->ddimSteps();
+    qDebug()<<"Sampler :"<<m_options->sampler();
+    isProcessing = true;
+    emit isProcessingChanged();
 
 }
 
@@ -49,14 +48,12 @@ void TextToImageBackend::stopProcessing()
 
 void TextToImageBackend::diffusionConsoleLine(QString consoleLine)
 {
-    updateStatusMessage(consoleLine);
+   updateStatusMessage(consoleLine);
 
     if (consoleLine.contains("SAMPLEPATH:")) {
         QStringList outputFolderInfo = consoleLine.split("SAMPLEPATH:");
         if (outputFolderInfo.count()==2)
-            samplesPath =  "file:/"+ Utils::pathAppend(diffusionEnv->getStableDiffusionPath(),outputFolderInfo[1]);
-        else
-            samplesPath = "";
+            samplesPath =  QUrl::fromLocalFile(outputFolderInfo[1]);
     }
 }
 
@@ -74,7 +71,10 @@ void TextToImageBackend::saveSettings()
     for (int i =m_options->metaObject()->propertyOffset(); i <m_options->metaObject()->propertyCount() ; ++i) {
         QString settingName = m_options->metaObject()->property(i).name();
         QVariant settingValue =  m_options->metaObject()->property(i).read(m_options);
-        settings->setValue(settingName,settingValue);
+        if ( settingName=="prompt")
+            settings->setValue(settingName,settingValue.toString().trimmed());
+        else
+            settings->setValue(settingName,settingValue);
     }
 }
 
@@ -87,7 +87,8 @@ void TextToImageBackend::loadSettings()
     m_options->setNumberOfImages(settings->value("StableDiffusion/numberOfImages",DEFAULT_NUMBER_OF_IMAGES).toDouble());
     m_options->setDdimSteps(settings->value("StableDiffusion/ddimSteps",DEFAULT_DDIM_STEPS).toDouble());
     m_options->setSampler(settings->value("StableDiffusion/sampler",DEFAULT_SAMPLER).toString());
-
+    QString outDir = Utils::pathAppend(diffusionEnv->getStableDiffusionPath(),STABLE_DIFFUSION_DEFAULT_OUTPUT_PATH);
+    m_options->setSaveDir(settings->value("StableDiffusion/saveDir",outDir).toString());
 
     double seed = settings->value("StableDiffusion/seed",DEFAULT_NUMBER_OF_IMAGES).toDouble();
     if(seed)
@@ -111,8 +112,31 @@ void TextToImageBackend::resetSettings()
 
 void TextToImageBackend::stableDiffusionFinished()
 {
-    if(!samplesPath.isEmpty())
-        emit loadImage();
+    isProcessing = false;
+    updateStatusMessage("Completed.");
+    emit isProcessingChanged();
+    emit samplesPathChanged();
+}
+
+void TextToImageBackend::openOutputFolder()
+{
+   // if(!Utils::checkPathExists(samplesPath.toLocalFile()))
+    QDesktopServices::openUrl(samplesPath);
+}
+
+void TextToImageBackend::setOutputFolder(QUrl url)
+{
+    emit setOutputDirectory(url.toLocalFile());
+}
+
+bool TextToImageBackend::getIsProcessing() const
+{
+    return isProcessing;
+}
+
+void TextToImageBackend::setIsProcessing(bool newIsProcessing)
+{
+    isProcessing = newIsProcessing;
 }
 
 void TextToImageBackend::initBackend()

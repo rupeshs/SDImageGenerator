@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>images/moon-stars-fill.png</file>
         <file>images/placeholder.png</file>
+        <file>images/folder2-open.png</file>
     </qresource>
 </RCC>

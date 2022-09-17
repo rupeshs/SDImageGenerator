@@ -2,39 +2,43 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
+import QtQuick.Dialogs 1.3
 import "controls" as Controls
 import StableDiffusion 1.0
-import QtQuick.Dialogs 1.3
-
+import Qt.labs.platform 1.1
 
 ApplicationWindow {
     id: window
-    width: 1400
-    height: 800
-    maximumHeight: 800
-    minimumHeight: 800
-    maximumWidth:  1400
-    minimumWidth:  1400
+
+    width: 1200
+    height: 900
+    maximumHeight: 900
+    minimumHeight: 900
+    maximumWidth: 1200
+    minimumWidth: 1200
     visible: true
     title: qsTr("SDImageGenerator")
     font.pointSize: 12
+    property double startTime: 0
 
     TextToImageBackend{
         id : stableDiffusionBackend
-
     }
 
     MessageDialog
     {
         id: msgDialog
+
         title: qsTr("SDImageGenerator Error ")
         text: stableDiffusionBackend.errorMessage
         visible: false
-        icon: StandardIcon.Critical
+        buttons: MessageDialog.Ok
+       // icon: StandardIcon.Critical
     }
 
     Connections{
         target: stableDiffusionBackend
+
         function onShowMessageBox() {
             console.log("Show dialogue");
             msgDialog.visible = true;
@@ -42,27 +46,45 @@ ApplicationWindow {
 
         function onInitControls(options) {
             promptInput.text = options.prompt;
-            scaleSlider.value = options.scale;
-            widthSlider.value = options.imageWidth;
-            heightSlider.value = options.imageHeight;
-            imageCountSlider.value = options.numberOfImages;
-            ddimStepsSlider.value = options.ddimSteps;
+            scaleSlider.slider.value = options.scale;
+            widthSlider.slider.value = options.imageWidth;
+            heightSlider.slider.value = options.imageHeight;
+            imageCountSlider.slider.value = options.numberOfImages;
+            ddimStepsSlider.slider.value = options.ddimSteps;
             samplerComboBox.currentIndex = samplerComboBox.indexOfValue(options.sampler);
+            saveFolder.text = options.saveDir
             if (options.seed === 0)
                 seedInput.text = "";
             else
                 seedInput.text = options.seed;
         }
+
+        function onSetOutputDirectory(directory){
+            saveFolder.text = directory
+        }
     }
+    function getElapsedTime()
+    {
+        let elapsedSeconds = (new Date().getTime()-startTime)/1000.0
+        let elapsedTimeFomatted =""
+        if (elapsedSeconds>3600)
+            elapsedTimeFomatted = new Date(elapsedSeconds * 1000).toISOString().slice(11, 19);
+        else
+            elapsedTimeFomatted = new Date(elapsedSeconds * 1000).toISOString().slice(14, 19);
+
+        return elapsedTimeFomatted.toString();
+    }
+
     function updateOptions(){
 
         stableDiffusionBackend.options.prompt = promptInput.text
-        stableDiffusionBackend.options.scale = scaleSlider.value.toFixed(1)
-        stableDiffusionBackend.options.imageWidth = parseInt(widthSlider.value)
-        stableDiffusionBackend.options.imageHeight = parseInt(heightSlider.value)
-        stableDiffusionBackend.options.numberOfImages = parseInt(imageCountSlider.value)
-        stableDiffusionBackend.options.ddimSteps = parseInt(ddimStepsSlider.value)
-        stableDiffusionBackend.options.sampler = samplerComboBox.currentValue
+        stableDiffusionBackend.options.scale = scaleSlider.slider.value.toFixed(1)
+        stableDiffusionBackend.options.imageWidth = parseInt(widthSlider.slider.value)
+        stableDiffusionBackend.options.imageHeight = parseInt(heightSlider.slider.value)
+        stableDiffusionBackend.options.numberOfImages = parseInt(imageCountSlider.slider.value)
+        stableDiffusionBackend.options.ddimSteps = parseInt(ddimStepsSlider.slider.value)
+        stableDiffusionBackend.options.sampler = samplerComboBox.currentText
+        stableDiffusionBackend.options.saveDir = saveFolder.text
         if (seedInput.text)
             stableDiffusionBackend.options.seed = seedInput.text
         else
@@ -72,181 +94,259 @@ ApplicationWindow {
     Drawer {
         readonly property bool inPortrait: window.width < window.height
         id: drawer
-        width: 515
-        height: window.height
-        modal: inPortrait
-               interactive: inPortrait
-               position: inPortrait ? 0 : 1
-               visible: !inPortrait
 
-        Pane{
-            id: frame
+        modal: inPortrait
+        interactive: inPortrait
+        position: inPortrait ? 0 : 1
+        visible: !inPortrait
+        width:480
+
+        ScrollView
+        {
+            width: drawer.width
+            height: window.height
+            clip: true
             Layout.fillWidth: true
-            ScrollView
+            Layout.fillHeight: true
+
+            RowLayout
             {
-                width: 500
-                height: window.height
-                clip:true
-                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+                Item {
+                    id: spacer
+                    width: 25
+                }
 
                 ColumnLayout{
                     id : column
+                    anchors.fill: drawer
                     spacing: 10
 
-                    Label{
-                        text:qsTr("Settings")
-                        font.bold: true
-                        Layout.bottomMargin: 20
-                        Layout.topMargin: 20
-                        Layout.alignment:Qt.AlignHCenter
-
-                    }
                     Controls.AppLabel{
+                        Layout.topMargin: 30
                         labelText:qsTr("Sampler")
                         labelInfo: qsTr("The diffusion sampling method. Default is PLMS.")
+
                     }
-                    ComboBox{
-                        id: samplerComboBox
-                        model: ["plms", "ddim"]
+                    Item{
+                        height:45
+                        ComboBox{
+                            id: samplerComboBox
+                            height:45
+                            Layout.fillHeight: true
+
+                            model: ["plms", "ddim"]
+                        }
                     }
 
-                    Controls.AppLabel{
-                        labelText:qsTr("Guidance scale")
-                        labelInfo: qsTr("Higher values keep your image closer to your prompt.")
-                    }
                     Controls.AppSlider{
                         id : scaleSlider
-                        from:1
-                        to:10
-                        value: 7.5
+
+                        header.text: qsTr("Guidance scale")
+                        description.text: qsTr("Higher values keep your image closer to your prompt.")
+                        slider {
+                            from:1
+                            to:10
+                            value: 7.5
+                        }
                         Layout.fillWidth:true
                         displayFloat: true
                     }
 
-                    Controls.AppLabel{
-                        labelText:qsTr("Width")
-                        labelInfo: qsTr("The width of the generated image.")
-                    }
                     Controls.AppSlider{
                         id: widthSlider
-                        from:256
-                        to:2000
-                        value: 512
-                        Layout.fillWidth:true
-                        onValueChanged:TextToImageBackend.imageWidth = value
 
+                        header.text: qsTr("Width")
+                        description.text: qsTr("The width of the generated image.")
+                        slider.from: 256
+                        slider.to: 2000
+                        slider.value: 512
+                        Layout.fillWidth:true
                     }
-                    Controls.AppLabel{
-                        labelText:qsTr("Height")
-                        labelInfo: qsTr("The height of the generated image.")
-                    }
+
                     Controls.AppSlider{
                         id: heightSlider
-                        from:256
-                        to:2000
-                        value: 512
-                        Layout.fillWidth:true
 
-                    }
-                    Controls.AppLabel{
-                        labelText:qsTr("Number of Images")
-                        labelInfo: qsTr("Number of images to generate.")
+                        header.text: qsTr("Height")
+                        description.text: qsTr("The height of the generated image.")
+                        slider.from:256
+                        slider.to:2000
+                        slider.value: 512
+                        Layout.fillWidth:true
                     }
 
                     Controls.AppSlider{
                         id: imageCountSlider
-                        from: 1
-                        to: 20
-                        value: 1
+
+                        header.text: qsTr("Number of Images")
+                        description.text: qsTr("Number of images to generate.")
+                        slider.from: 1
+                        slider.to: 20
+                        slider.value: 1
                         Layout.fillWidth:true
-
-                    }
-
-                    Controls.AppLabel{
-                        labelText:qsTr("DDIM Steps")
-                        labelInfo: qsTr("Number of images to generate.")
                     }
 
                     Controls.AppSlider{
                         id: ddimStepsSlider
-                        from:1
-                        to:150
-                        value: 50
-                        Layout.fillWidth:true
 
+                        header.text: qsTr("DDIM Steps")
+                        description.text: qsTr("Number of DDIM sampling steps")
+                        slider.from:1
+                        slider.to:150
+                        slider.value: 50
+                        Layout.fillWidth:true
                     }
+
                     Controls.AppLabel{
                         labelText:qsTr("Seed")
-                        labelInfo: qsTr("Set a seed to reproducible sampling.")
-
+                        labelInfo: qsTr("Set a number to reproducible sampling.")
                     }
+
                     Controls.RichTextEdit{
                         id : seedInput
+
+                        Layout.fillWidth:true
                         placeholderText: "Random seed"
                         validator: IntValidator {bottom: 1; top: 9999999}
+                    }
+
+                    Controls.AppLabel{
+                        labelText:qsTr("Save path")
+                        labelInfo: qsTr("Root folder to save generated images")
 
                     }
+                    RowLayout{
+                         Layout.fillWidth: true
+                        Controls.RichTextEdit{
+                          id: saveFolder
+                          Layout.fillWidth: true
+
+                        }
+                        FolderDialog {
+                            id: folderDialog
+                            folder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+                             onAccepted: {
+                                 stableDiffusionBackend.setOutputFolder(folder)
+                             }
+                        }
+                        ToolButton{
+                           // icon.color: "#26a8ff"
+                            icon.source: "images/folder2-open.png"
+                            onClicked: folderDialog.open()
+
+                        }
+                    }
+
                     Button{
                         text : "Reset All"
                         onClicked: stableDiffusionBackend.resetSettings()
                     }
-
                 }
-            }}
+            }
+        }
     }
+
+
 
     ColumnLayout{
         anchors.fill: parent
         anchors.leftMargin:  drawer.width
+
         Controls.ImageViewer{
             id: imageViewer
 
             Layout.alignment:Qt.AlignCenter
             currentImagePath: "../../images/placeholder.png"
-            folderpath: stableDiffusionBackend.outputPath
+            folderpath: stableDiffusionBackend.samplesUrl
         }
+
         Label{
-
             text:qsTr("Prompt")
-            Layout.leftMargin: 10
-
+            Layout.leftMargin: 20
         }
         RowLayout{
-            Controls.RichTextEdit{
-                id: promptInput
-                Layout.leftMargin: 10
-                placeholderText: "A virus playing guitar"
-                font.pointSize: 10
+            Item{
+                width:700
+                height:100
+                Layout.leftMargin: 20
                 Layout.fillWidth: true
+                ScrollView {
+                    id: view
+                    anchors.fill: parent
+                    clip:true
+                    ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
-
-            }
-            Button{
-                text: "Dream"
-                icon.color: "transparent"
-                icon.source: "images/moon-stars-fill.png"
-
-                 Layout.rightMargin: 10
-                onClicked: {
-                    updateOptions();
-                    stableDiffusionBackend.generateImage();
-
+                    Controls.AppTextArea{
+                        id: promptInput
+                        placeholderText: "A virus playing guitar"
+                        font.pointSize: 12
+                    }
                 }
             }
 
+            Button{
+                //Layout.fillHeight: true
+                Layout.alignment: Qt.AlignVCenter
+                Layout.rightMargin: 20
+                text: "Dream"
+                icon.color: "transparent"
+                icon.source: "images/moon-stars-fill.png"
+                enabled: !stableDiffusionBackend.isProcessing
+
+                onClicked: {
+                    updateOptions();
+                    startTime = new Date().getTime();
+                    stableDiffusionBackend.generateImage();
+                }
+            }
         }
-        Label {
+        Button{
+            id : buttonOpen
+            text : "Open Output Folder"
+            Layout.leftMargin: 20
+            icon.source: "images/folder2-open.png"
+            enabled: !stableDiffusionBackend.isProcessing
+            onClicked: stableDiffusionBackend.openOutputFolder();
+        }
+        RowLayout{
+            spacing: 10
+            Item{
+                Layout.leftMargin: 20
+            }
+            BusyIndicator {
+                id: busyIndicator
 
-        text: stableDiffusionBackend.diffusionStatusMessage
-        font.pointSize: 10
-        padding: 15
+                visible: running
+                running: stableDiffusionBackend.isProcessing
+            }
 
-      }
+            Timer {
+                   id: elasedTimer
+                   interval: 1000;
+                   running: stableDiffusionBackend.isProcessing;
+                   repeat: true
+                   onTriggered: {
+                   //elapsedTimeLabel.
+                    elapsedTimeLabel.text = getElapsedTime();
+               }
+            }
+            Label {
+
+                id:  elapsedTimeLabel
+                text: ""
+                font.pointSize: 10
+                Layout.bottomMargin: 5
+            }
+
+            Label {
+                text: stableDiffusionBackend.diffusionStatusMessage
+                font.pointSize: 10
+                Layout.bottomMargin: 5
+            }
+        }
     }
     onClosing: {
-            updateOptions();
-            stableDiffusionBackend.saveSettings();
-        }
-
+        updateOptions();
+        stableDiffusionBackend.saveSettings();
+    }
 
 }

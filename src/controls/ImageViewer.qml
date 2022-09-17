@@ -5,46 +5,43 @@ import Qt.labs.folderlistmodel 2.3
 
 Image {
     property string folderpath
-    property string currentImagePath
+    property alias currentImagePath : mainImage.source
     property string placeHolderImageSource
     
     id: imageViewer
-    height:mainImage.height +lstView.height
-    width:mainImage.width
-    
-    
-    
+    height: mainImage.height +lstView.height //+buttonOpen.height
+    width: 512
+
     ColumnLayout{
         anchors.fill: parent
-        
+
         Image{
-            id:mainImage
+            id: mainImage
+
             sourceSize.width: 512
             sourceSize.height: 512
             Layout.margins:  10
             opacity: 1
-            source :currentImagePath
-            
-
+           // source :currentImagePath
         }
-        
+
         ListView {
             id: lstView
+
             width: 512
             height: 105
             orientation: ListView.Horizontal
-            spacing:10
+            spacing: 10
             Layout.leftMargin:  10
-            clip:true
+            clip: true
+
             ScrollBar.horizontal:  ScrollBar {
                 active: true
             }
-            
-            function loadImage(imagePath)
-            {
-                if (imagePath)
-                    imageViewer.currentImagePath = "file:/"+imagePath;
 
+            function changeImageSource(imagePath)
+            {
+                mainImage.source = "file:/"+imagePath;
             }
             
             FolderListModel {
@@ -74,7 +71,7 @@ Image {
                         if (index == 0){
                             console.log("Load first image")
                             if (imageViewer.folderpath)
-                                imageViewer.currentImagePath = "file:/"+folderModel.get(lstView.currentIndex,"filePath");
+                                mainImage.source = "file:/"+folderModel.get(lstView.currentIndex,"filePath");
                         }
                         
                     }
@@ -82,15 +79,13 @@ Image {
                 
             }
             onCurrentIndexChanged: {
-                console.log("currentIndex", currentIndex)
-                console.log(folderModel.get(lstView.currentIndex,"filePath"))
                 if (imageViewer.folderpath)
-                    loadImage(folderModel.get(lstView.currentIndex,"filePath"))
+                    changeImageSource(folderModel.get(lstView.currentIndex,"filePath"))
                 
             }
             model: folderModel
             delegate: fileDelegate
         }
-        
+
     }
 }

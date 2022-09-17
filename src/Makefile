@@ -241,6 +241,7 @@ Makefile: SDImageGenerator.pro ../../../../Qt5/5.15.2/mingw81_64/mkspecs/win32-g
 		../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/resources.prf \
 		../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/moc.prf \
 		../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/win32/opengl.prf \
+		../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/uic.prf \
 		../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/qmake_use.prf \
 		../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/file_copies.prf \
 		../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/win32/windows.prf \
@@ -249,7 +250,9 @@ Makefile: SDImageGenerator.pro ../../../../Qt5/5.15.2/mingw81_64/mkspecs/win32-g
 		../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/yacc.prf \
 		../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/lex.prf \
 		SDImageGenerator.pro \
+		../../../../Qt5/5.15.2/mingw81_64/lib/Qt5QuickControls2.prl \
 		../../../../Qt5/5.15.2/mingw81_64/lib/Qt5Quick.prl \
+		../../../../Qt5/5.15.2/mingw81_64/lib/Qt5Widgets.prl \
 		../../../../Qt5/5.15.2/mingw81_64/lib/Qt5Gui.prl \
 		../../../../Qt5/5.15.2/mingw81_64/lib/Qt5QmlModels.prl \
 		../../../../Qt5/5.15.2/mingw81_64/lib/Qt5Qml.prl \
@@ -431,6 +434,7 @@ Makefile: SDImageGenerator.pro ../../../../Qt5/5.15.2/mingw81_64/mkspecs/win32-g
 ../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/resources.prf:
 ../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/moc.prf:
 ../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/win32/opengl.prf:
+../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/uic.prf:
 ../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/qmake_use.prf:
 ../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/file_copies.prf:
 ../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/win32/windows.prf:
@@ -439,7 +443,9 @@ Makefile: SDImageGenerator.pro ../../../../Qt5/5.15.2/mingw81_64/mkspecs/win32-g
 ../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/yacc.prf:
 ../../../../Qt5/5.15.2/mingw81_64/mkspecs/features/lex.prf:
 SDImageGenerator.pro:
+../../../../Qt5/5.15.2/mingw81_64/lib/Qt5QuickControls2.prl:
 ../../../../Qt5/5.15.2/mingw81_64/lib/Qt5Quick.prl:
+../../../../Qt5/5.15.2/mingw81_64/lib/Qt5Widgets.prl:
 ../../../../Qt5/5.15.2/mingw81_64/lib/Qt5Gui.prl:
 ../../../../Qt5/5.15.2/mingw81_64/lib/Qt5QmlModels.prl:
 ../../../../Qt5/5.15.2/mingw81_64/lib/Qt5Qml.prl:

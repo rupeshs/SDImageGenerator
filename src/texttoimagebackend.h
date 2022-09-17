@@ -9,6 +9,8 @@
 #include "diffusionoptions.h"
 #include <QDebug>
 #include <qqml.h>
+#include <QUrl>
+#include <QTimer>
 
 class TextToImageBackend : public QObject,public QQmlParserStatus
 {
@@ -16,8 +18,10 @@ class TextToImageBackend : public QObject,public QQmlParserStatus
     Q_INTERFACES(QQmlParserStatus)
     Q_PROPERTY(QString errorMessage MEMBER errorMsg NOTIFY gotErrorMessage)
     Q_PROPERTY(QString diffusionStatusMessage MEMBER diffusionStatusMsg NOTIFY statusChanged)
-    Q_PROPERTY(QString outputPath MEMBER samplesPath NOTIFY loadImage)
+    Q_PROPERTY(QUrl samplesUrl MEMBER samplesPath NOTIFY samplesPathChanged)
     Q_PROPERTY(DiffusionOptions* options READ options CONSTANT)
+    Q_PROPERTY(bool isProcessing MEMBER isProcessing NOTIFY isProcessingChanged)
+
 
 public:
     explicit TextToImageBackend(QObject *parent = nullptr);
@@ -27,6 +31,8 @@ public:
     void classBegin();
     void componentComplete();
 
+    bool getIsProcessing() const;
+    void setIsProcessing(bool newIsProcessing);
 
 public slots:
     void generateImage();
@@ -37,23 +43,27 @@ public slots:
     void loadSettings();
     void resetSettings();
     void stableDiffusionFinished();
+    void openOutputFolder();
+    void setOutputFolder(QUrl url);
 
 signals:
     void showMessageBox();
     void gotErrorMessage();
     void statusChanged();
-    void loadImage();
+    void samplesPathChanged();
     void initControls(DiffusionOptions* options);
     void promptTextChanged();
     void guidanceScaleChanged();
     void imageWidthChanged();
+    void setOutputDirectory(QString);
+    void isProcessingChanged();
 
 private:
     DiffusionProcess *stableDiffusion;
     DiffusionEnvironment *diffusionEnv;
     QString errorMsg;
     QString diffusionStatusMsg;
-    QString samplesPath;
+    QUrl samplesPath;
     DiffusionOptions *m_options;
     bool isProcessing;
     QSettings *settings;
@@ -62,8 +72,6 @@ private:
     void initBackend();
     void verifyEnvironment();
     void updateStatusMessage(const QString&);
-
-
 };
 
 #endif // TEXTTOIMAGEBACKEND_H

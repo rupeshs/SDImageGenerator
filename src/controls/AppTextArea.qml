@@ -1,16 +1,17 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-TextField{
+TextArea{
     id:textInput
 
     property int selectStart
     property int selectEnd
     property int curPos
+
     selectByMouse: true
-    selectedTextColor: "#ffffff"
-    color: "#ffffff"
+    color:"white"
     placeholderTextColor : "#8c8d8f"
+    wrapMode: TextEdit.Wrap
 
     MouseArea {
         anchors.fill: parent
@@ -48,6 +49,7 @@ TextField{
         id: contextMenu
 
         title: "Edit Context Menu"
+
         MenuItem {
             text: "Cut"
             onTriggered: {
@@ -67,7 +69,5 @@ TextField{
             onTriggered: {
                 textInput.paste();}
         }
-
     }
-
 }

@@ -79,3 +79,13 @@ void DiffusionOptions::setSeed(qreal newSeed)
 {
     m_seed = newSeed;
 }
+
+const QString &DiffusionOptions::saveDir() const
+{
+    return m_saveDir;
+}
+
+void DiffusionOptions::setSaveDir(const QString &newSaveDir)
+{
+    m_saveDir = newSaveDir;
+}

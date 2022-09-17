@@ -5,5 +5,7 @@
         <file>controls/ImageViewer.qml</file>
         <file>controls/AppSlider.qml</file>
         <file>controls/AppLabel.qml</file>
+        <file>controls/AppTextArea.qml</file>
+        <file>qtquickcontrols2.conf</file>
     </qresource>
 </RCC>

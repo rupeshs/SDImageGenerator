@@ -26,8 +26,6 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
     addArgument("python");
     addArgument(diffusionEnv->getStableDiffusionScript());
 
-
-
 }
 
 void DiffusionProcess::readProcessOutput()
@@ -73,7 +71,7 @@ void DiffusionProcess::stopProcess()
 void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
 {
     addArgument("--prompt");
-    addArgument(diffusionOptions->prompt());
+    addArgument(diffusionOptions->prompt().trimmed());
     addArgument("--scale");
     addArgument(QString::number(diffusionOptions->scale()));
     addArgument("--W");
@@ -86,6 +84,8 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
     addArgument(QString::number(diffusionOptions->numberOfImages()));
     addArgument("--ddim_steps");
     addArgument(QString::number(diffusionOptions->ddimSteps()));
+    addArgument("--outdir");
+    addArgument(diffusionOptions->saveDir());
 
     if (diffusionOptions->seed()>0){
         addArgument("--seed");
