@@ -72,6 +72,8 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
 {
     addArgument("--prompt");
     addArgument(diffusionOptions->prompt().trimmed());
+    addArgument("--sampler");
+    addArgument(diffusionOptions->sampler().trimmed());
     addArgument("--scale");
     addArgument(QString::number(diffusionOptions->scale()));
     addArgument("--W");

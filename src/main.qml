@@ -293,9 +293,22 @@ ApplicationWindow {
                     id : column
                     spacing: 10
 
+                    Item{
+                        height:30
+                    }
 
                     Controls.AppLabel{
-                        Layout.topMargin: 30
+                        labelText:qsTr("Install Environment")
+                        labelInfo: qsTr("Install/update environment")
+
+
+                    }
+                    Button{
+                        text: "Install env"
+                        onClicked: stableDiffusionBackend.installEnvironment()
+                    }
+
+                    Controls.AppLabel{
                         labelText:qsTr("Sampler")
                         labelInfo: qsTr("The diffusion sampling method. Default is PLMS.")
 
@@ -307,7 +320,7 @@ ApplicationWindow {
                             height:45
                             Layout.fillHeight: true
 
-                            model: ["plms", "ddim"]
+                            model: ["ddim", "plms","heun", "euler", "euler_a", "dpm2", "dpm2_a", "lms"]
                         }
                     }
 
@@ -416,14 +429,29 @@ ApplicationWindow {
                 }
             }
         }
-       Page {
-           Text{
+        Page {
+            ColumnLayout{
+                anchors.centerIn: parent
+                Text{
+                    text : qsTr("SDImageGenerator")
+                    color : "white"
+                    font.pointSize: 14
+                    Layout.alignment: Qt.AlignHCenter
 
-               text : "Stable diffusion UI \nCopyright 2022 Rupesh Sreeraman"
-               color : "white"
-               font.pointSize: 12
-               anchors.centerIn: parent
-           }
+                }
+                Text{
+                    text : qsTr("SDImageGenerator is a stable diffusion UI")
+                    color : "grey"
+                    font.pointSize: 12
+
+                }
+                Text{
+                    text : qsTr("Copyright © 2022 Rupesh Sreeraman")
+                    color : "grey"
+                    font.pointSize: 12
+                }
+            }
+
 
         }
     }

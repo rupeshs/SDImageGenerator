@@ -11,6 +11,9 @@
 #include <qqml.h>
 #include <QUrl>
 #include <QTimer>
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
 
 class TextToImageBackend : public QObject,public QQmlParserStatus
 {
@@ -44,6 +47,7 @@ public slots:
     void stableDiffusionFinished();
     void openOutputFolder();
     void setOutputFolder(QUrl url);
+    void installEnvironment();
 
 signals:
     void showMessageBox();
@@ -69,8 +73,9 @@ private:
     QString curOutputFolder;
 
     void initBackend();
-    void verifyEnvironment();
+    bool verifyEnvironment();
     void updateStatusMessage(const QString&);
+
 };
 
 #endif // TEXTTOIMAGEBACKEND_H

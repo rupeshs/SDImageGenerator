@@ -20,9 +20,10 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
 
 void TextToImageBackend::generateImage()
 {
-    qDebug()<<"Start"<<isProcessing;
 
-    updateStatusMessage("Starting image generation...");
+    if (!verifyEnvironment())
+        return;
+
     if (m_options->prompt().isEmpty()) {
         showErrorDlg(tr("Please provide a prompt text."));
         return;
@@ -37,6 +38,7 @@ void TextToImageBackend::generateImage()
     qDebug()<<"Sampler :"<<m_options->sampler();
     isProcessing = true;
     emit isProcessingChanged();
+    updateStatusMessage("Starting image generation...");
 
 }
 
@@ -90,9 +92,9 @@ void TextToImageBackend::loadSettings()
     QString defaultOutDir = Utils::pathAppend(qApp->applicationDirPath(),STABLE_DIFFUSION_RESULTS_FOLDER_NAME);
     m_options->setSaveDir(settings->value("StableDiffusion/saveDir",defaultOutDir).toString());
 
-    double seed = settings->value("StableDiffusion/seed",DEFAULT_NUMBER_OF_IMAGES).toDouble();
+    double seed = settings->value("StableDiffusion/seed",DEFAULT_SEED).toDouble();
     if(seed)
-       m_options->setSeed(seed);
+        m_options->setSeed(seed);
 
     emit initControls(m_options);
     Utils::ensurePath(m_options->saveDir());
@@ -130,6 +132,20 @@ void TextToImageBackend::setOutputFolder(QUrl url)
     emit setOutputDirectory(url.toLocalFile());
 }
 
+void TextToImageBackend::installEnvironment()
+{
+#ifdef Q_OS_WIN
+   QString exeFileName(qApp->applicationDirPath()+"/install-env.exe");
+
+  ::ShellExecuteA(0, "open", exeFileName.toUtf8().constData(), 0, 0, SW_HIDE);
+  /* if (SE_ERR_ACCESSDENIED == result)
+   {
+       // Requesting elevation(Windows Vista/Window7/window8)
+       result = (HINSTANCE)::ShellExecuteA(0, "runas", exeFileName.toUtf8().constData(), 0, 0, SW_HIDE);
+   }*/
+#endif
+}
+
 bool TextToImageBackend::getIsProcessing() const
 {
     return isProcessing;
@@ -145,13 +161,15 @@ void TextToImageBackend::initBackend()
     verifyEnvironment();
 }
 
-void TextToImageBackend::verifyEnvironment()
+bool TextToImageBackend::verifyEnvironment()
 {
     DiffusionEnvValidator envValidator(this,diffusionEnv);
     EnvStatus envStatus = envValidator.Validate();
 
-    if (envStatus == EnvStatus::Ready)
-        return;
+    if (envStatus == EnvStatus::Ready){
+        qDebug()<<"Environment ready!";
+        return true;
+    }
 
     if (envStatus == EnvStatus::CondaNotFound){
         qDebug()<<"Miniconda not found!";
@@ -169,6 +187,8 @@ void TextToImageBackend::verifyEnvironment()
     }
     emit gotErrorMessage();
     emit showMessageBox();
+
+    return false;
 }
 
 void TextToImageBackend::updateStatusMessage(const QString &message)
@@ -195,5 +215,5 @@ void TextToImageBackend::componentComplete()
 {
     qDebug()<<"TextToImageBackend: Component ready";
     loadSettings();
-    initBackend();
+
 }

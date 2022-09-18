@@ -24,7 +24,7 @@ void DiffusionEnvironment::getEnvironment()
        {
           QString line = in.readLine();
           line.remove(QChar('"'), Qt::CaseInsensitive);
-          paths.append(line);
+          paths.append(line.trimmed());
        }
        inputFile.close();
     }
