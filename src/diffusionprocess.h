@@ -5,6 +5,7 @@
 #include <QProcess>
 #include "diffusionenvironment.h"
 #include "diffusionoptions.h"
+#include "myprocess.h"
 
 class DiffusionProcess: public QObject
 {
@@ -13,8 +14,10 @@ class DiffusionProcess: public QObject
 public:
     explicit DiffusionProcess(QObject *parent = nullptr,DiffusionEnvironment *diffEnv=nullptr);
 
-    void setProgram(QString programPath){exePath=programPath;}
-    void addArgument(QString arg){arguments.append(arg);}
+    void setProgram(QString programPath){ exePath = programPath;}
+    void addArgument(QString arg){ dreamProcess->addArgument(arg); }
+    void addPromptArguments(QString arg){promptArguments.append(arg);}
+    void clearPromptArguments(){promptArguments.clear();}
     void clearArguments(){arguments.clear();}
     void startProcess();
     void stopProcess();
@@ -23,10 +26,14 @@ public:
     int getStyleStrength() const;
     void setStyleStrength(int newStyleStrength);
 
+    const QString &getPromptCommand() const;
+
 public slots:
-    void readProcessOutput();
+    void readProcessOutput(QByteArray);
     void processFinished(int, QProcess::ExitStatus);
     void processError(QProcess::ProcessError error);
+    void writeCommand(const QString & command);
+
 
 signals:
     void diffusionConsoleLine(QString consoleLine);
@@ -34,10 +41,14 @@ signals:
 
 private:
     QProcess *stableDiffusionProcess;
+    MyProcess *dreamProcess;
     QStringList arguments;
+    QStringList promptArguments;
     QString exePath;
-
+    QString promptCommand;
     int styleStrength;
+
+    void startDreaming();
 
 };
 

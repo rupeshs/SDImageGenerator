@@ -3,6 +3,8 @@
 #include <QGuiApplication>
 #include <QDesktopServices>
 
+static QRegExp rxOutputFolder("Writing files to directory: \"(.*)\"");
+
 TextToImageBackend::TextToImageBackend(QObject *parent)
     : QObject{parent}
 {
@@ -20,7 +22,6 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
 
 void TextToImageBackend::generateImage()
 {
-
     if (!verifyEnvironment())
         return;
 
@@ -51,6 +52,23 @@ void TextToImageBackend::stopProcessing()
 void TextToImageBackend::diffusionConsoleLine(QString consoleLine)
 {
    updateStatusMessage(consoleLine);
+
+   if(rxOutputFolder.indexIn(consoleLine)>-1){
+      QString folderPath = rxOutputFolder.cap(1);
+      samplesPath = QUrl::fromLocalFile(QDir::cleanPath(folderPath));
+      qDebug()<<"++++++++++++++++++++"<<samplesPath;
+   }
+
+   if (consoleLine.contains("Awaiting your command")) {
+
+        qDebug()<<"ready............";
+        qDebug()<<stableDiffusion->getPromptCommand();
+        stableDiffusion->writeCommand(stableDiffusion->getPromptCommand());
+   }
+
+   if (consoleLine.contains("Outputs:")) {
+       stableDiffusionFinished();
+   }
 
     if (consoleLine.contains("SAMPLEPATH:")) {
         QStringList outputFolderInfo = consoleLine.split("SAMPLEPATH:");
@@ -98,6 +116,7 @@ void TextToImageBackend::loadSettings()
 
     emit initControls(m_options);
     Utils::ensurePath(m_options->saveDir());
+    diffusionEnv->setOutputDirectory(m_options->saveDir());
 }
 
 void TextToImageBackend::resetSettings()

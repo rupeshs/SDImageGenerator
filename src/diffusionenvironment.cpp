@@ -52,6 +52,16 @@ const QString &DiffusionEnvironment::getStableDiffusionScript() const
 {
     return stableDiffusionScript;
 }
+
+const QString &DiffusionEnvironment::getOutputDirectory() const
+{
+    return outputDirectory;
+}
+
+void DiffusionEnvironment::setOutputDirectory(const QString &newOutputDirectory)
+{
+    outputDirectory = newOutputDirectory;
+}
 void DiffusionEnvironment::setCondaActivatePath(const QString &newCondaActivatePath)
 {
     condaActivatePath = newCondaActivatePath;
@@ -73,6 +83,6 @@ void DiffusionEnvironment::setEnvironment()
       setCondaActivatePath( paths[0]);
       setPythonEnvPath( paths[1]);
       setStableDiffusionPath(paths[2]);
-      stableDiffusionScript = Utils::pathAppend(stableDiffusionPath,QString(STABLE_DIFFUSION_OPTIM_FILE));
+      stableDiffusionScript = Utils::pathAppend(stableDiffusionPath,QString(STABLE_DIFFUSION_DREAM));
   }
 }

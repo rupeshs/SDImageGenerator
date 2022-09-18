@@ -12,6 +12,7 @@ SOURCES += \
         diffusionoptions.cpp \
         diffusionprocess.cpp \
         main.cpp \
+        myprocess.cpp \
         texttoimagebackend.cpp \
         utils.cpp
 
@@ -36,5 +37,6 @@ HEADERS += \
     diffusionoptions.h \
     diffusionprocess.h \
     errors.h \
+    myprocess.h \
     texttoimagebackend.h \
     utils.h

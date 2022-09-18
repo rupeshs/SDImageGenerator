@@ -18,6 +18,9 @@ public:
     const QString &getStableDiffusionPath() const;
     const QString &getStableDiffusionScript() const;
 
+    const QString &getOutputDirectory() const;
+    void setOutputDirectory(const QString &newOutputDirectory);
+
 signals:
 
 private:
@@ -27,6 +30,7 @@ private:
     QString pythonEnvPath;
     QString stableDiffusionPath;
     QString stableDiffusionScript;
+    QString outputDirectory;
 
     void setCondaActivatePath(const QString &newCondaActivatePath);
     void setPythonEnvPath(const QString &newPythonEnvPath);

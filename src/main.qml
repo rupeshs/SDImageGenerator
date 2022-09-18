@@ -318,9 +318,16 @@ ApplicationWindow {
                         ComboBox{
                             id: samplerComboBox
                             height:45
+                            width: 150
                             Layout.fillHeight: true
-
-                            model: ["ddim", "plms","heun", "euler", "euler_a", "dpm2", "dpm2_a", "lms"]
+                            model: ['ddim',
+                                    'k_dpm_2_a',
+                                    'k_dpm_2',
+                                    'k_euler_a',
+                                    'k_euler',
+                                    'k_heun',
+                                    'k_lms',
+                                    'plms']
                         }
                     }
 
@@ -331,10 +338,11 @@ ApplicationWindow {
                         description.text: qsTr("Higher values keep your image closer to your prompt.")
                         slider {
 
-                            from:1
-                            to:10
+                            from: 1
+                            to: 20
                             value: 7.5
                         }
+
                         Layout.fillWidth:true
                         displayFloat: true
                     }
@@ -457,8 +465,10 @@ ApplicationWindow {
     }
 
     onClosing: {
+
         updateOptions();
         stableDiffusionBackend.saveSettings();
+        stableDiffusionBackend.stopProcessing();
     }
 
 }

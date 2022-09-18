@@ -7,17 +7,23 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
 
     stableDiffusionProcess=new QProcess(parent);
     stableDiffusionProcess->setProcessChannelMode( QProcess::MergedChannels );
+    dreamProcess = new MyProcess(parent);
 
-    connect(stableDiffusionProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readProcessOutput()));
-    connect(stableDiffusionProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished(int, QProcess::ExitStatus)));
-    connect(stableDiffusionProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processError(QProcess::ProcessError)));
+    connect(dreamProcess,SIGNAL(lineAvailable(QByteArray)),this,SLOT(readProcessOutput(QByteArray)));
+    connect(dreamProcess,SIGNAL(finished(int)),this,SLOT(processFinished(int)));
+
+    //connect(stableDiffusionProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readProcessOutput()));
+    //connect(stableDiffusionProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished(int, QProcess::ExitStatus)));
+    //connect(stableDiffusionProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processError(QProcess::ProcessError)));
 
     qDebug()<<"DiffusionProcess:: CondaActivatePath"<<diffusionEnv->getCondaActivatePath();
     qDebug()<<"DiffusionProcess:: PythonEnvPath"<<diffusionEnv->getPythonEnvPath();
     qDebug()<<"DiffusionProcess:: StableDiffusionPath"<<diffusionEnv->getStableDiffusionPath();
-    stableDiffusionProcess->setWorkingDirectory(diffusionEnv->getStableDiffusionPath());
+    dreamProcess->setWorkingDirectory(diffusionEnv->getStableDiffusionPath());
 
-    exePath = diffusionEnv->getCondaActivatePath();
+    //exePath = diffusionEnv->getCondaActivatePath();
+    //dreamProcess->setProgram(diffusionEnv->getCondaActivatePath());
+    addArgument(diffusionEnv->getCondaActivatePath());
     addArgument("&&");
     addArgument("conda");
     addArgument("activate");
@@ -25,18 +31,17 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
     addArgument("&&");
     addArgument("python");
     addArgument(diffusionEnv->getStableDiffusionScript());
+    addArgument("--prompt_as_dir");
+
 
 }
 
-void DiffusionProcess::readProcessOutput()
+void DiffusionProcess::readProcessOutput(QByteArray line)
 {
-    QByteArray line;
-    while (stableDiffusionProcess->canReadLine()) {
-        line = stableDiffusionProcess->readLine().trimmed();
-        qDebug() << "DiffusionProcess::readProcessOutput: line:" << line;
-        if (line!="")
-            emit diffusionConsoleLine(line);
-    }
+    QString consoleLine(line);
+    qDebug()<<consoleLine;
+    if (!consoleLine.isEmpty())
+        emit diffusionConsoleLine(consoleLine);
 }
 
 void DiffusionProcess::processFinished(int exit_code, QProcess::ExitStatus exit_status)
@@ -52,56 +57,84 @@ void DiffusionProcess::processError(QProcess::ProcessError error) {
     }
 }
 
+void DiffusionProcess::writeCommand(const QString &command)
+{
+    QString commandToDream = command + QString("\n");
+    if (dreamProcess->isRunning())
+        dreamProcess->write(commandToDream.toLatin1());
+}
+
+void DiffusionProcess::startDreaming()
+{
+    if (dreamProcess->isRunning()){
+        writeCommand(promptCommand);
+    }
+    else {
+
+        startProcess();
+    }
+}
+
+const QString &DiffusionProcess::getPromptCommand() const
+{
+    return promptCommand;
+}
+
 void DiffusionProcess::startProcess()
 {
-    stableDiffusionProcess->start(exePath,arguments);
+    //stableDiffusionProcess->start(exePath,arguments);
+    qDebug()<<dreamProcess->arguments();
+    dreamProcess->start();
 }
 
 void DiffusionProcess::stopProcess()
 {
-    if (stableDiffusionProcess) {
+
+    writeCommand("q");
+    /*if (stableDiffusionProcess) {
         stableDiffusionProcess->terminate();
         if (!stableDiffusionProcess->waitForFinished(2000)) {
             stableDiffusionProcess->kill();
             stableDiffusionProcess->waitForFinished();
         }
-    }
+    }*/
 }
 
 void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
 {
-    addArgument("--prompt");
-    addArgument(diffusionOptions->prompt().trimmed());
-    addArgument("--sampler");
-    addArgument(diffusionOptions->sampler().trimmed());
-    addArgument("--scale");
-    addArgument(QString::number(diffusionOptions->scale()));
-    addArgument("--W");
-    addArgument(QString::number(diffusionOptions->imageWidth()));
-    addArgument("--H");
-    addArgument(QString::number(diffusionOptions->imageHeight()));
-    addArgument("--n_iter");
-    addArgument(QString::number(1));
-    addArgument("--n_samples");
-    addArgument(QString::number(diffusionOptions->numberOfImages()));
-    addArgument("--ddim_steps");
-    addArgument(QString::number(diffusionOptions->ddimSteps()));
-    addArgument("--outdir");
-    addArgument(diffusionOptions->saveDir());
+    //addArgument("--prompt");
+    clearPromptArguments();
+    addPromptArguments(diffusionOptions->prompt().trimmed());
+    addPromptArguments("--sampler");
+    addPromptArguments(diffusionOptions->sampler().trimmed());
+    addPromptArguments("--cfg_scale");
+    addPromptArguments(QString::number(diffusionOptions->scale()));
+    addPromptArguments("--width");
+    addPromptArguments(QString::number(diffusionOptions->imageWidth()));
+    addPromptArguments("--height");
+    addPromptArguments(QString::number(diffusionOptions->imageHeight()));
+    //addPromptArguments("--n_iter");
+    //addPromptArguments(QString::number(1));
+    addPromptArguments("--iterations");
+    addPromptArguments(QString::number(diffusionOptions->numberOfImages()));
+    addPromptArguments("--steps");
+    addPromptArguments(QString::number(diffusionOptions->ddimSteps()));
 
     if (diffusionOptions->seed()>0){
-        addArgument("--seed");
-        addArgument(QString::number(diffusionOptions->seed()));
+        addPromptArguments("--seed");
+        addPromptArguments(QString::number(diffusionOptions->seed()));
+    }
+    if (!dreamProcess->isRunning()){
+        addArgument("--outdir");
+        addArgument(diffusionOptions->saveDir());
     }
 
-    QString commandLine;
-    for (auto argument : arguments) {
-        commandLine.append(argument);
-        commandLine.append(" ");
+    promptCommand="";
+    for (auto argument : promptArguments) {
+        promptCommand.append(argument);
+        promptCommand.append(" ");
     }
-    qDebug()<<arguments;
-    qDebug()<<commandLine;
-    startProcess();
-
+    qDebug()<<promptCommand;
+    startDreaming();
 
 }

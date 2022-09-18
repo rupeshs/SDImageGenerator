@@ -3,6 +3,7 @@ release/diffusionenvvalidator.o
 release/diffusionoptions.o
 release/diffusionprocess.o
 release/main.o
+release/myprocess.o
 release/texttoimagebackend.o
 release/utils.o
 release/main_qml.o
@@ -18,4 +19,5 @@ release/moc_diffusionenvironment.o
 release/moc_diffusionenvvalidator.o
 release/moc_diffusionoptions.o
 release/moc_diffusionprocess.o
+release/moc_myprocess.o
 release/moc_texttoimagebackend.o
