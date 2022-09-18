@@ -10,12 +10,12 @@ import Qt.labs.platform 1.1
 ApplicationWindow {
     id: window
 
-    width: 1200
-    height: 900
-    maximumHeight: 900
-    minimumHeight: 900
-    maximumWidth: 1200
-    minimumWidth: 1200
+    width: 600
+    height: 600
+    maximumHeight: 600
+    minimumHeight: 600
+    maximumWidth: 600
+    minimumWidth: 600
     visible: true
     title: qsTr("SDImageGenerator")
     font.pointSize: 12
@@ -33,7 +33,7 @@ ApplicationWindow {
         text: stableDiffusionBackend.errorMessage
         visible: false
         buttons: MessageDialog.Ok
-       // icon: StandardIcon.Critical
+        // icon: StandardIcon.Critical
     }
 
     Connections{
@@ -61,6 +61,13 @@ ApplicationWindow {
 
         function onSetOutputDirectory(directory){
             saveFolder.text = directory
+        }
+        function onIsProcessingChanged() {
+            if (!stableDiffusionBackend.isProcessing)
+            {
+                tabBar.currentIndex = 1;
+            }
+
         }
     }
     function getElapsedTime()
@@ -90,27 +97,193 @@ ApplicationWindow {
         else
             stableDiffusionBackend.options.seed = 0
     }
+    TabBar {
+        id: tabBar
+        width: parent.width
 
-    Drawer {
-        readonly property bool inPortrait: window.width < window.height
-        id: drawer
+        TabButton {
+            text: qsTr("Text to Image")
+            icon.source: "images/moon-stars-fill.png"
+            background: Rectangle {
+                color: tabBar.currentIndex ==0 ? "#262625": "#2e2e2e"
+            }
 
-        modal: inPortrait
-        interactive: inPortrait
-        position: inPortrait ? 0 : 1
-        visible: !inPortrait
-        width:480
+        }
+        TabButton {
+            text: qsTr("Images")
+            icon.source: "images/images.png"
+            background: Rectangle {
+                color: tabBar.currentIndex ==1 ? "#262625": "#2e2e2e"
+            }
+
+        }
+        TabButton {
+            text: qsTr("Settings")
+              icon.source: "images/gear.png"
+            background: Rectangle {
+                color: tabBar.currentIndex ==2 ? "#262625": "#2e2e2e"
+            }
+
+        }
+        TabButton {
+            text: qsTr("About")
+              icon.source: "images/gear.png"
+            background: Rectangle {
+                color: tabBar.currentIndex ==3 ? "#262625": "#2e2e2e"
+            }
+
+        }
+        onCurrentIndexChanged: {
+            layout.currentIndex = tabBar.currentIndex
+        }
+
+    }
+    StackLayout {
+        id: layout
+        anchors.fill: parent
+        currentIndex: 0
+        anchors.topMargin: tabBar.height
+        Page{
+
+
+            RowLayout{
+                Item{
+                    width:20
+                }
+                ColumnLayout{
+                    Item{
+                        height:180
+                    }
+                    Label{
+                        text:qsTr("Prompt")
+
+                    }
+
+                    Item{
+                        width: 550
+                        height:100
+                        Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignHCenter
+
+
+                        ScrollView {
+                            id: view
+                            anchors.fill: parent
+                            clip:true
+                            ScrollBar.vertical.policy: ScrollBar.AsNeeded
+
+                            Controls.AppTextArea{
+                                id: promptInput
+                                placeholderText: "A virus playing guitar"
+                                font.pointSize: 12
+                            }
+                        }
+                    }
+
+                    RowLayout{
+
+                        Button{
+                            //Layout.fillHeight: true
+                            Layout.alignment: Qt.AlignRight
+                            text: "Dream"
+                            icon.color: "transparent"
+                            icon.source: "images/moon-stars-fill.png"
+                            enabled: !stableDiffusionBackend.isProcessing
+
+                            onClicked: {
+                                updateOptions();
+                                startTime = new Date().getTime();
+                                stableDiffusionBackend.generateImage();
+                            }
+                        }
+                        Item{
+
+
+                            Layout.fillWidth: true
+
+                        }
+                        BusyIndicator {
+                            id: busyIndicator
+                            visible: running
+                            Layout.rightMargin: 10
+                            running: stableDiffusionBackend.isProcessing
+                        }
+
+                        Label {
+
+                            id:  elapsedTimeLabel
+                            Layout.alignment: Qt.AlignRight
+                            text: "00:00"
+                            color: "gray"
+                            font.pointSize: 10
+                            Layout.bottomMargin: 5
+                        }
+                        /* Button{
+                        id : buttonOpen
+                        Layout.alignment: Qt.AlignLeft
+                        text : "Open Output Folder"
+                        icon.source: "images/folder2-open.png"
+                        enabled: !stableDiffusionBackend.isProcessing
+                        onClicked: stableDiffusionBackend.openOutputFolder();
+                    }*/
+                    }
+
+
+                }
+            }//
+            Timer {
+                id: elasedTimer
+                interval: 1000;
+                running: stableDiffusionBackend.isProcessing;
+                repeat: true
+                onTriggered: {
+                    //elapsedTimeLabel.
+                    elapsedTimeLabel.text = getElapsedTime();
+                }
+            }
+            footer:RowLayout{
+                Item{
+                    width : 5
+                }
+                Label {
+                    text: stableDiffusionBackend.diffusionStatusMessage
+                    font.pointSize: 10
+                    Layout.bottomMargin: 10
+                }
+            }
+        }
+
+        Page{
+            id: paneImages
+            RowLayout{
+                Controls.ImageViewer{
+                    id: imageViewer
+                    Layout.leftMargin: 70
+                    currentImagePath: "../../images/placeholder.png"
+                    folderpath: stableDiffusionBackend.samplesUrl
+                }
+                Button {
+                    width:32
+                    Layout.alignment:  Qt.AlignBottom
+                    icon.source: "images/folder2-open.png"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Open output folder")
+                    onClicked: stableDiffusionBackend.openOutputFolder();
+                }
+            }
+        }
 
         ScrollView
         {
-            width: drawer.width
-            height: window.height
+            //width: window.width
+            //height: window.height
             clip: true
             Layout.fillWidth: true
             Layout.fillHeight: true
 
             RowLayout
             {
+                width: 550
                 Item {
                     id: spacer
                     width: 25
@@ -118,8 +291,8 @@ ApplicationWindow {
 
                 ColumnLayout{
                     id : column
-                    anchors.fill: drawer
                     spacing: 10
+
 
                     Controls.AppLabel{
                         Layout.topMargin: 30
@@ -144,6 +317,7 @@ ApplicationWindow {
                         header.text: qsTr("Guidance scale")
                         description.text: qsTr("Higher values keep your image closer to your prompt.")
                         slider {
+
                             from:1
                             to:10
                             value: 7.5
@@ -215,21 +389,20 @@ ApplicationWindow {
 
                     }
                     RowLayout{
-                         Layout.fillWidth: true
+                        Layout.fillWidth: true
                         Controls.RichTextEdit{
-                          id: saveFolder
-                          Layout.fillWidth: true
+                            id: saveFolder
+                            Layout.fillWidth: true
 
                         }
                         FolderDialog {
                             id: folderDialog
                             folder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
-                             onAccepted: {
-                                 stableDiffusionBackend.setOutputFolder(folder)
-                             }
+                            onAccepted: {
+                                stableDiffusionBackend.setOutputFolder(folder)
+                            }
                         }
                         ToolButton{
-                           // icon.color: "#26a8ff"
                             icon.source: "images/folder2-open.png"
                             onClicked: folderDialog.open()
 
@@ -243,107 +416,18 @@ ApplicationWindow {
                 }
             }
         }
-    }
+       Page {
+           Text{
 
+               text : "Stable diffusion UI \nCopyright 2022 Rupesh Sreeraman"
+               color : "white"
+               font.pointSize: 12
+               anchors.centerIn: parent
+           }
 
-
-    ColumnLayout{
-        anchors.fill: parent
-        anchors.leftMargin:  drawer.width
-
-        Controls.ImageViewer{
-            id: imageViewer
-
-            Layout.alignment:Qt.AlignCenter
-            currentImagePath: "../../images/placeholder.png"
-            folderpath: stableDiffusionBackend.samplesUrl
-        }
-
-        Label{
-            text:qsTr("Prompt")
-            Layout.leftMargin: 20
-        }
-        RowLayout{
-            Item{
-                width:700
-                height:100
-                Layout.leftMargin: 20
-                Layout.fillWidth: true
-                ScrollView {
-                    id: view
-                    anchors.fill: parent
-                    clip:true
-                    ScrollBar.vertical.policy: ScrollBar.AsNeeded
-
-                    Controls.AppTextArea{
-                        id: promptInput
-                        placeholderText: "A virus playing guitar"
-                        font.pointSize: 12
-                    }
-                }
-            }
-
-            Button{
-                //Layout.fillHeight: true
-                Layout.alignment: Qt.AlignVCenter
-                Layout.rightMargin: 20
-                text: "Dream"
-                icon.color: "transparent"
-                icon.source: "images/moon-stars-fill.png"
-                enabled: !stableDiffusionBackend.isProcessing
-
-                onClicked: {
-                    updateOptions();
-                    startTime = new Date().getTime();
-                    stableDiffusionBackend.generateImage();
-                }
-            }
-        }
-        Button{
-            id : buttonOpen
-            text : "Open Output Folder"
-            Layout.leftMargin: 20
-            icon.source: "images/folder2-open.png"
-            enabled: !stableDiffusionBackend.isProcessing
-            onClicked: stableDiffusionBackend.openOutputFolder();
-        }
-        RowLayout{
-            spacing: 10
-            Item{
-                Layout.leftMargin: 20
-            }
-            BusyIndicator {
-                id: busyIndicator
-
-                visible: running
-                running: stableDiffusionBackend.isProcessing
-            }
-
-            Timer {
-                   id: elasedTimer
-                   interval: 1000;
-                   running: stableDiffusionBackend.isProcessing;
-                   repeat: true
-                   onTriggered: {
-                   //elapsedTimeLabel.
-                    elapsedTimeLabel.text = getElapsedTime();
-               }
-            }
-            Label {
-
-                id:  elapsedTimeLabel
-                text: ""
-                font.pointSize: 10
-                Layout.bottomMargin: 5
-            }
-
-            Label {
-                text: stableDiffusionBackend.diffusionStatusMessage
-                font.pointSize: 10
-                Layout.bottomMargin: 5
-            }
         }
     }
+
     onClosing: {
         updateOptions();
         stableDiffusionBackend.saveSettings();

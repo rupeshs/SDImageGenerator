@@ -5,7 +5,14 @@ release/diffusionprocess.o
 release/main.o
 release/texttoimagebackend.o
 release/utils.o
-release/qrc_qml.o
+release/main_qml.o
+release/controls_AppSlider_qml.o
+release/controls_AppLabel_qml.o
+release/controls_RichTextEdit_qml.o
+release/controls_ImageViewer_qml.o
+release/controls_AppTextArea_qml.o
+release/qmlcache_loader.o
+release/qrc_qml_qmlcache.o
 release/qrc_sdimagegenerator.o
 release/moc_diffusionenvironment.o
 release/moc_diffusionenvvalidator.o

@@ -5,7 +5,14 @@ debug/diffusionprocess.o
 debug/main.o
 debug/texttoimagebackend.o
 debug/utils.o
-debug/qrc_qml.o
+debug/main_qml.o
+debug/controls_AppSlider_qml.o
+debug/controls_AppLabel_qml.o
+debug/controls_RichTextEdit_qml.o
+debug/controls_ImageViewer_qml.o
+debug/controls_AppTextArea_qml.o
+debug/qmlcache_loader.o
+debug/qrc_qml_qmlcache.o
 debug/qrc_sdimagegenerator.o
 debug/moc_diffusionenvironment.o
 debug/moc_diffusionenvvalidator.o

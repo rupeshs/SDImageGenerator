@@ -22,7 +22,6 @@ class TextToImageBackend : public QObject,public QQmlParserStatus
     Q_PROPERTY(DiffusionOptions* options READ options CONSTANT)
     Q_PROPERTY(bool isProcessing MEMBER isProcessing NOTIFY isProcessingChanged)
 
-
 public:
     explicit TextToImageBackend(QObject *parent = nullptr);
 

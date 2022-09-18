@@ -10,7 +10,9 @@ Image {
     
     id: imageViewer
     height: mainImage.height +lstView.height //+buttonOpen.height
-    width: 512
+    width: mainImage.width
+
+
 
     ColumnLayout{
         anchors.fill: parent
@@ -18,19 +20,21 @@ Image {
         Image{
             id: mainImage
 
-            sourceSize.width: 512
-            sourceSize.height: 512
-            Layout.margins:  10
+            sourceSize.width: 450
+            sourceSize.height: 450
+            Layout.margins:  5
             opacity: 1
            // source :currentImagePath
+
         }
 
         ListView {
             id: lstView
 
-            width: 512
-            height: 105
+            width: 450
+            height: 70
             orientation: ListView.Horizontal
+
             spacing: 10
             Layout.leftMargin:  10
             clip: true
@@ -43,27 +47,27 @@ Image {
             {
                 mainImage.source = "file:/"+imagePath;
             }
-            
+
             FolderListModel {
                 id: folderModel
                 nameFilters: ["*.png","*.jpg"]
                 folder:imageViewer.folderpath
             }
-            
+
             Component {
                 id: fileDelegate
                 Column {
                     opacity: ListView.isCurrentItem ? 1 : 0.5
                     Image {
-                        width: 90
-                        height: 90
+                        width: 70
+                        height: 70
                         fillMode: Image.PreserveAspectFit
                         smooth: true
                         source: fileURL
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {lstView.currentIndex = index;
-                                
+
                             }
                         }
                     }
@@ -73,19 +77,21 @@ Image {
                             if (imageViewer.folderpath)
                                 mainImage.source = "file:/"+folderModel.get(lstView.currentIndex,"filePath");
                         }
-                        
+
                     }
                 }
-                
+
             }
             onCurrentIndexChanged: {
                 if (imageViewer.folderpath)
                     changeImageSource(folderModel.get(lstView.currentIndex,"filePath"))
-                
+
             }
             model: folderModel
             delegate: fileDelegate
         }
+
+
 
     }
 }

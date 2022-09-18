@@ -5,12 +5,12 @@
 #include <QDir>
 #include <QFileInfo>
 
-
 class Utils
 {
 public:
     static bool checkPathExists(const QString& path) ;
     static QString pathAppend(const QString& path1, const QString& path2);
+    static void ensurePath(const QString& path);
 
 private:
     Utils();

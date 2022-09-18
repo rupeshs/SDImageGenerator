@@ -3,5 +3,7 @@
         <file>images/moon-stars-fill.png</file>
         <file>images/placeholder.png</file>
         <file>images/folder2-open.png</file>
+        <file>images/gear.png</file>
+        <file>images/images.png</file>
     </qresource>
 </RCC>

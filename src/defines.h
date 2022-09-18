@@ -4,6 +4,7 @@
 static const char* ENV_PATHS_FILE = "envpaths.txt";
 static const char* STABLE_DIFFUSION_OPTIM_FILE = "optimizedSD/optimized_txt2img.py";
 static const char* STABLE_DIFFUSION_DEFAULT_OUTPUT_PATH = "outputs/txt2img-samples";
+static const char* STABLE_DIFFUSION_RESULTS_FOLDER_NAME = "results";
 
 static const double DEFAULT_SCALE = 7.5;
 static const double DEFAULT_IMAGE_WIDTH = 512;

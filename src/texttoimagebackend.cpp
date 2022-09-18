@@ -87,14 +87,15 @@ void TextToImageBackend::loadSettings()
     m_options->setNumberOfImages(settings->value("StableDiffusion/numberOfImages",DEFAULT_NUMBER_OF_IMAGES).toDouble());
     m_options->setDdimSteps(settings->value("StableDiffusion/ddimSteps",DEFAULT_DDIM_STEPS).toDouble());
     m_options->setSampler(settings->value("StableDiffusion/sampler",DEFAULT_SAMPLER).toString());
-    QString outDir = Utils::pathAppend(diffusionEnv->getStableDiffusionPath(),STABLE_DIFFUSION_DEFAULT_OUTPUT_PATH);
-    m_options->setSaveDir(settings->value("StableDiffusion/saveDir",outDir).toString());
+    QString defaultOutDir = Utils::pathAppend(qApp->applicationDirPath(),STABLE_DIFFUSION_RESULTS_FOLDER_NAME);
+    m_options->setSaveDir(settings->value("StableDiffusion/saveDir",defaultOutDir).toString());
 
     double seed = settings->value("StableDiffusion/seed",DEFAULT_NUMBER_OF_IMAGES).toDouble();
     if(seed)
        m_options->setSeed(seed);
 
     emit initControls(m_options);
+    Utils::ensurePath(m_options->saveDir());
 }
 
 void TextToImageBackend::resetSettings()
