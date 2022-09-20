@@ -5,24 +5,15 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
     : QObject{parent}
 {
 
-    stableDiffusionProcess=new QProcess(parent);
-    stableDiffusionProcess->setProcessChannelMode( QProcess::MergedChannels );
     dreamProcess = new MyProcess(parent);
-
     connect(dreamProcess,SIGNAL(lineAvailable(QByteArray)),this,SLOT(readProcessOutput(QByteArray)));
-    connect(dreamProcess,SIGNAL(finished(int)),this,SLOT(processFinished(int)));
-
-    //connect(stableDiffusionProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readProcessOutput()));
-    //connect(stableDiffusionProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished(int, QProcess::ExitStatus)));
-    //connect(stableDiffusionProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processError(QProcess::ProcessError)));
+    connect(dreamProcess,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(processFinished(int,QProcess::ExitStatus)));
 
     qDebug()<<"DiffusionProcess:: CondaActivatePath"<<diffusionEnv->getCondaActivatePath();
     qDebug()<<"DiffusionProcess:: PythonEnvPath"<<diffusionEnv->getPythonEnvPath();
     qDebug()<<"DiffusionProcess:: StableDiffusionPath"<<diffusionEnv->getStableDiffusionPath();
     dreamProcess->setWorkingDirectory(diffusionEnv->getStableDiffusionPath());
 
-    //exePath = diffusionEnv->getCondaActivatePath();
-    //dreamProcess->setProgram(diffusionEnv->getCondaActivatePath());
     addArgument(diffusionEnv->getCondaActivatePath());
     addArgument("&&");
     addArgument("conda");
@@ -33,15 +24,32 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
     addArgument(diffusionEnv->getStableDiffusionScript());
     addArgument("--prompt_as_dir");
 
-
+    setStatus(StableDiffusionStatus::NotStarted);
 }
 
 void DiffusionProcess::readProcessOutput(QByteArray line)
 {
     QString consoleLine(line);
-    qDebug()<<consoleLine;
-    if (!consoleLine.isEmpty())
-        emit diffusionConsoleLine(consoleLine);
+
+    if (!line.isEmpty())
+        emit gotConsoleLog(line);
+
+    if(rxOutputFolder.indexIn(consoleLine)>-1){
+       QString outFolderPath = rxOutputFolder.cap(1);
+       samplesPath = Utils::localPathToUrl(outFolderPath);
+       emit generatingImages();
+    }
+
+    if (consoleLine.contains("Awaiting your command")) {
+         qDebug()<<"ready............";
+         qDebug()<<getPromptCommand();
+         writeCommand(getPromptCommand());
+         emit generatingImages();
+    }
+
+    if (consoleLine.contains("Outputs:")) {
+        emit imagesGenerated();
+    }
 }
 
 void DiffusionProcess::processFinished(int exit_code, QProcess::ExitStatus exit_status)
@@ -64,15 +72,27 @@ void DiffusionProcess::writeCommand(const QString &command)
         dreamProcess->write(commandToDream.toLatin1());
 }
 
+const QUrl &DiffusionProcess::getSamplesPath() const
+{
+    return samplesPath;
+}
+
+StableDiffusionStatus DiffusionProcess::getStatus() const
+{
+    return status;
+}
+
+void DiffusionProcess::setStatus(StableDiffusionStatus newStatus)
+{
+    status = newStatus;
+}
+
 void DiffusionProcess::startDreaming()
 {
-    if (dreamProcess->isRunning()){
+    if (dreamProcess->isRunning())
         writeCommand(promptCommand);
-    }
-    else {
-
+    else
         startProcess();
-    }
 }
 
 const QString &DiffusionProcess::getPromptCommand() const
@@ -82,15 +102,17 @@ const QString &DiffusionProcess::getPromptCommand() const
 
 void DiffusionProcess::startProcess()
 {
-    //stableDiffusionProcess->start(exePath,arguments);
     qDebug()<<dreamProcess->arguments();
     dreamProcess->start();
+    setStatus(StableDiffusionStatus::Starting);
 }
 
 void DiffusionProcess::stopProcess()
 {
 
     writeCommand("q");
+    //dreamProcess->sto
+
     /*if (stableDiffusionProcess) {
         stableDiffusionProcess->terminate();
         if (!stableDiffusionProcess->waitForFinished(2000)) {

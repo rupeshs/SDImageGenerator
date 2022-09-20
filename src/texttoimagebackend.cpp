@@ -2,8 +2,8 @@
 #include <QDebug>
 #include <QGuiApplication>
 #include <QDesktopServices>
-
-static QRegExp rxOutputFolder("Writing files to directory: \"(.*)\"");
+#include <QMessageBox>
+#include <QTimer>
 
 TextToImageBackend::TextToImageBackend(QObject *parent)
     : QObject{parent}
@@ -15,9 +15,18 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
     diffusionEnv = new DiffusionEnvironment(parent);
     diffusionEnv->getEnvironment();
     stableDiffusion = new DiffusionProcess(parent,diffusionEnv);
-    connect(stableDiffusion, SIGNAL(diffusionConsoleLine(QString)), this, SLOT(diffusionConsoleLine(QString)));
+    connect(stableDiffusion, SIGNAL(generatingImages()), this, SLOT(generatingImages()));
+    connect(stableDiffusion, SIGNAL(imagesGenerated()), this, SLOT(imagesGenerated()));
     connect(stableDiffusion, SIGNAL(diffusionFinished()), this, SLOT(stableDiffusionFinished()));
+    connect(stableDiffusion, SIGNAL(gotConsoleLog(QString)), this, SLOT(updateStatusMessage(QString)));
 
+//    QMessageBox msgBox;
+//    msgBox.critical(nullptr, "csTitle", "csMsg asddddddd");
+//    msgBox.show();
+      //QTimer::singleShot(5000, this, &TextToImageBackend::generateImage());
+
+    deafultAssetsPath = Utils::pathAppend(qApp->applicationDirPath(),"assets");
+    samplesPath = Utils::localPathToUrl(deafultAssetsPath);
 }
 
 void TextToImageBackend::generateImage()
@@ -29,6 +38,12 @@ void TextToImageBackend::generateImage()
         showErrorDlg(tr("Please provide a prompt text."));
         return;
     }
+
+    if (stableDiffusion->getStatus()==StableDiffusionStatus::NotStarted)
+        updateStatusMessage(tr("Initializing,please wait..."));
+    else
+        updateStatusMessage(tr("Starting image generation..."));
+
     stableDiffusion->generateImages(m_options);
     qDebug()<<"Prompt : "<<m_options->prompt().trimmed();
     qDebug()<<"Scale : "<<m_options->scale();
@@ -38,43 +53,15 @@ void TextToImageBackend::generateImage()
     qDebug()<<"DDIM steps :"<<m_options->ddimSteps();
     qDebug()<<"Sampler :"<<m_options->sampler();
     isProcessing = true;
+    samplesPath = Utils::localPathToUrl(deafultAssetsPath);
+    emit samplesPathChanged();
     emit isProcessingChanged();
-    updateStatusMessage("Starting image generation...");
-
 }
 
 void TextToImageBackend::stopProcessing()
 {
     stableDiffusion->stopProcess();
 
-}
-
-void TextToImageBackend::diffusionConsoleLine(QString consoleLine)
-{
-   updateStatusMessage(consoleLine);
-
-   if(rxOutputFolder.indexIn(consoleLine)>-1){
-      QString folderPath = rxOutputFolder.cap(1);
-      samplesPath = QUrl::fromLocalFile(QDir::cleanPath(folderPath));
-      qDebug()<<"++++++++++++++++++++"<<samplesPath;
-   }
-
-   if (consoleLine.contains("Awaiting your command")) {
-
-        qDebug()<<"ready............";
-        qDebug()<<stableDiffusion->getPromptCommand();
-        stableDiffusion->writeCommand(stableDiffusion->getPromptCommand());
-   }
-
-   if (consoleLine.contains("Outputs:")) {
-       stableDiffusionFinished();
-   }
-
-    if (consoleLine.contains("SAMPLEPATH:")) {
-        QStringList outputFolderInfo = consoleLine.split("SAMPLEPATH:");
-        if (outputFolderInfo.count()==2)
-            samplesPath =  QUrl::fromLocalFile(outputFolderInfo[1]);
-    }
 }
 
 void TextToImageBackend::showErrorDlg(const QString &error)
@@ -116,7 +103,6 @@ void TextToImageBackend::loadSettings()
 
     emit initControls(m_options);
     Utils::ensurePath(m_options->saveDir());
-    diffusionEnv->setOutputDirectory(m_options->saveDir());
 }
 
 void TextToImageBackend::resetSettings()
@@ -134,15 +120,11 @@ void TextToImageBackend::resetSettings()
 
 void TextToImageBackend::stableDiffusionFinished()
 {
-    isProcessing = false;
-    updateStatusMessage("Completed.");
-    emit isProcessingChanged();
-    emit samplesPathChanged();
+    qDebug()<<"Good bye";
 }
 
 void TextToImageBackend::openOutputFolder()
 {
-   // if(!Utils::checkPathExists(samplesPath.toLocalFile()))
     QDesktopServices::openUrl(samplesPath);
 }
 
@@ -163,6 +145,28 @@ void TextToImageBackend::installEnvironment()
        result = (HINSTANCE)::ShellExecuteA(0, "runas", exeFileName.toUtf8().constData(), 0, 0, SW_HIDE);
    }*/
 #endif
+}
+
+void TextToImageBackend::generatingImages()
+{
+    updateStatusMessage("Generating images...");
+}
+
+void TextToImageBackend::imagesGenerated()
+{
+    qDebug()<<"Timer starts";
+    //QTimer::singleShot(2000, this, SLOT(updateCompleted()));
+    updateCompleted();
+}
+
+void TextToImageBackend::updateCompleted()
+{
+    qDebug()<<"updateCompleted";
+    isProcessing = false;
+    updateStatusMessage("Completed.");
+    samplesPath = stableDiffusion->getSamplesPath();
+    emit isProcessingChanged();
+    emit samplesPathChanged();
 }
 
 bool TextToImageBackend::getIsProcessing() const

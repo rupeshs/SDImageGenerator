@@ -2,10 +2,14 @@
 #define DIFFUSIONPROCESS_H
 
 #include <QObject>
-#include <QProcess>
+#include <QDir>
 #include "diffusionenvironment.h"
 #include "diffusionoptions.h"
 #include "myprocess.h"
+#include "utils.h"
+
+static QRegExp rxOutputFolder("Writing files to directory: \"(.*)\"");
+enum class StableDiffusionStatus { NotStarted, Starting, Ready, Processing };
 
 class DiffusionProcess: public QObject
 {
@@ -14,7 +18,6 @@ class DiffusionProcess: public QObject
 public:
     explicit DiffusionProcess(QObject *parent = nullptr,DiffusionEnvironment *diffEnv=nullptr);
 
-    void setProgram(QString programPath){ exePath = programPath;}
     void addArgument(QString arg){ dreamProcess->addArgument(arg); }
     void addPromptArguments(QString arg){promptArguments.append(arg);}
     void clearPromptArguments(){promptArguments.clear();}
@@ -23,10 +26,10 @@ public:
     void stopProcess();
     void generateImages(DiffusionOptions *diffusionOptions);
 
-    int getStyleStrength() const;
-    void setStyleStrength(int newStyleStrength);
-
     const QString &getPromptCommand() const;
+    StableDiffusionStatus getStatus() const;
+
+    const QUrl &getSamplesPath() const;
 
 public slots:
     void readProcessOutput(QByteArray);
@@ -34,21 +37,22 @@ public slots:
     void processError(QProcess::ProcessError error);
     void writeCommand(const QString & command);
 
-
 signals:
-    void diffusionConsoleLine(QString consoleLine);
+    void generatingImages();
+    void imagesGenerated();
     void diffusionFinished();
+    void gotConsoleLog(const QString &message);
 
 private:
-    QProcess *stableDiffusionProcess;
     MyProcess *dreamProcess;
     QStringList arguments;
     QStringList promptArguments;
-    QString exePath;
     QString promptCommand;
-    int styleStrength;
+    StableDiffusionStatus status;
+    QUrl samplesPath;
 
     void startDreaming();
+    void setStatus(StableDiffusionStatus newStatus);
 
 };
 

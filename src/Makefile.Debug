@@ -364,6 +364,9 @@ debug/moc_diffusionenvvalidator.cpp: diffusionenvvalidator.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
 		debug/moc_predefs.h \
 		../../../../Qt5/5.15.2/mingw81_64/bin/moc.exe
 	D:\Qt5\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/textimg/apps/SDImageGenerator/src/debug/moc_predefs.h -ID:/Qt5/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/textimg/apps/SDImageGenerator/src -ID:/Qt5/5.15.2/mingw81_64/include -ID:/Qt5/5.15.2/mingw81_64/include/QtQuickControls2 -ID:/Qt5/5.15.2/mingw81_64/include/QtQuick -ID:/Qt5/5.15.2/mingw81_64/include/QtWidgets -ID:/Qt5/5.15.2/mingw81_64/include/QtGui -ID:/Qt5/5.15.2/mingw81_64/include/QtANGLE -ID:/Qt5/5.15.2/mingw81_64/include/QtQmlModels -ID:/Qt5/5.15.2/mingw81_64/include/QtQml -ID:/Qt5/5.15.2/mingw81_64/include/QtNetwork -ID:/Qt5/5.15.2/mingw81_64/include/QtCore -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -ID:/Qt5/Tools/mingw810_64/x86_64-w64-mingw32/include diffusionenvvalidator.h -o debug\moc_diffusionenvvalidator.cpp
@@ -505,15 +508,16 @@ debug/moc_diffusionprocess.cpp: diffusionprocess.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDir \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qhash.h \
 		diffusionenvironment.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFile \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTextStream \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qlocale.h \
@@ -539,6 +543,18 @@ debug/moc_diffusionprocess.cpp: diffusionprocess.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qpointer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmetaobject.h \
+		myprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTemporaryFile \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTimer \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtimer.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
+		utils.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QString \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
 		debug/moc_predefs.h \
 		../../../../Qt5/5.15.2/mingw81_64/bin/moc.exe
 	D:\Qt5\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/textimg/apps/SDImageGenerator/src/debug/moc_predefs.h -ID:/Qt5/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/textimg/apps/SDImageGenerator/src -ID:/Qt5/5.15.2/mingw81_64/include -ID:/Qt5/5.15.2/mingw81_64/include/QtQuickControls2 -ID:/Qt5/5.15.2/mingw81_64/include/QtQuick -ID:/Qt5/5.15.2/mingw81_64/include/QtWidgets -ID:/Qt5/5.15.2/mingw81_64/include/QtGui -ID:/Qt5/5.15.2/mingw81_64/include/QtANGLE -ID:/Qt5/5.15.2/mingw81_64/include/QtQmlModels -ID:/Qt5/5.15.2/mingw81_64/include/QtQml -ID:/Qt5/5.15.2/mingw81_64/include/QtNetwork -ID:/Qt5/5.15.2/mingw81_64/include/QtCore -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -ID:/Qt5/Tools/mingw810_64/x86_64-w64-mingw32/include diffusionprocess.h -o debug\moc_diffusionprocess.cpp
@@ -681,12 +697,13 @@ debug/moc_texttoimagebackend.cpp: texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
 		diffusionprocess.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
-		diffusionenvironment.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFile \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDir \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
+		diffusionenvironment.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFile \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTextStream \
 		defines.h \
 		diffusionoptions.h \
@@ -703,19 +720,21 @@ debug/moc_texttoimagebackend.cpp: texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qpointer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmetaobject.h \
-		diffusionenvvalidator.h \
-		errors.h \
-		utils.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QString \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDir \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDebug \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
+		myprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTemporaryFile \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTimer \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtimer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
+		utils.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QString \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
+		diffusionenvvalidator.h \
+		errors.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDebug \
 		debug/moc_predefs.h \
 		../../../../Qt5/5.15.2/mingw81_64/bin/moc.exe
 	D:\Qt5\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/textimg/apps/SDImageGenerator/src/debug/moc_predefs.h -ID:/Qt5/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/textimg/apps/SDImageGenerator/src -ID:/Qt5/5.15.2/mingw81_64/include -ID:/Qt5/5.15.2/mingw81_64/include/QtQuickControls2 -ID:/Qt5/5.15.2/mingw81_64/include/QtQuick -ID:/Qt5/5.15.2/mingw81_64/include/QtWidgets -ID:/Qt5/5.15.2/mingw81_64/include/QtGui -ID:/Qt5/5.15.2/mingw81_64/include/QtANGLE -ID:/Qt5/5.15.2/mingw81_64/include/QtQmlModels -ID:/Qt5/5.15.2/mingw81_64/include/QtQml -ID:/Qt5/5.15.2/mingw81_64/include/QtNetwork -ID:/Qt5/5.15.2/mingw81_64/include/QtCore -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -ID:/Qt5/Tools/mingw810_64/x86_64-w64-mingw32/include texttoimagebackend.h -o debug\moc_texttoimagebackend.cpp
@@ -827,7 +846,10 @@ debug/diffusionenvironment.o: diffusionenvironment.cpp diffusionenvironment.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmargins.h \
 		utils.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QString \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\diffusionenvironment.o diffusionenvironment.cpp
 
 debug/diffusionenvvalidator.o: diffusionenvvalidator.cpp diffusionenvvalidator.h \
@@ -908,7 +930,10 @@ debug/diffusionenvvalidator.o: diffusionenvvalidator.cpp diffusionenvvalidator.h
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDir \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\diffusionenvvalidator.o diffusionenvvalidator.cpp
 
 debug/diffusionoptions.o: diffusionoptions.cpp diffusionoptions.h \
@@ -1046,15 +1071,16 @@ debug/diffusionprocess.o: diffusionprocess.cpp diffusionprocess.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDir \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qhash.h \
 		diffusionenvironment.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFile \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTextStream \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qlocale.h \
@@ -1080,6 +1106,18 @@ debug/diffusionprocess.o: diffusionprocess.cpp diffusionprocess.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qpointer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmetaobject.h \
+		myprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTemporaryFile \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTimer \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtimer.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
+		utils.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QString \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\diffusionprocess.o diffusionprocess.cpp
 
@@ -1216,26 +1254,29 @@ debug/main.o: main.cpp ../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QGuiAppli
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QSettings \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsettings.h \
 		diffusionprocess.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDir \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
 		diffusionenvironment.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFile \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTextStream \
 		defines.h \
 		diffusionoptions.h \
-		diffusionenvvalidator.h \
-		errors.h \
-		utils.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QString \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDir \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDebug \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
+		myprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTemporaryFile \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTimer \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtimer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
+		utils.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QString \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
+		diffusionenvvalidator.h \
+		errors.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDebug \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQuickControls2/QQuickStyle \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQuickControls2/qquickstyle.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQuickControls2/qtquickcontrols2global.h
@@ -1305,7 +1346,17 @@ debug/myprocess.o: myprocess.cpp myprocess.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTimer \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtimer.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDebug \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmap.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qlocale.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qset.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\myprocess.o myprocess.cpp
 
 debug/texttoimagebackend.o: texttoimagebackend.cpp texttoimagebackend.h \
@@ -1377,12 +1428,13 @@ debug/texttoimagebackend.o: texttoimagebackend.cpp texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
 		diffusionprocess.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
-		diffusionenvironment.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFile \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDir \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
+		diffusionenvironment.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFile \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTextStream \
 		defines.h \
 		diffusionoptions.h \
@@ -1399,19 +1451,21 @@ debug/texttoimagebackend.o: texttoimagebackend.cpp texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qpointer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmetaobject.h \
-		diffusionenvvalidator.h \
-		errors.h \
-		utils.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QString \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDir \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDebug \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
+		myprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTemporaryFile \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTimer \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtimer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
+		utils.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QString \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
+		diffusionenvvalidator.h \
+		errors.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDebug \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QGuiApplication \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qguiapplication.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qtguiglobal.h \
@@ -1425,7 +1479,38 @@ debug/texttoimagebackend.o: texttoimagebackend.cpp texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmargins.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QDesktopServices \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qdesktopservices.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qstandardpaths.h
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qstandardpaths.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/QMessageBox \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qmessagebox.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qtwidgets-config.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qdialog.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qwidget.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpaintdevice.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qrect.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpalette.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qcolor.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qrgb.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qrgba64.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qbrush.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qmatrix.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpolygon.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qregion.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdatastream.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qline.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qtransform.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qimage.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpixelformat.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpixmap.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qfont.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qfontmetrics.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qfontinfo.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qsizepolicy.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qcursor.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qkeysequence.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qevent.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qvector2d.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\texttoimagebackend.o texttoimagebackend.cpp
 
 debug/utils.o: utils.cpp utils.h \
@@ -1490,7 +1575,10 @@ debug/utils.o: utils.cpp utils.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qhash.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\utils.o utils.cpp
 
 debug/main_qml.o: debug/main_qml.cpp 

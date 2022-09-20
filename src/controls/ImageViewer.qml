@@ -4,15 +4,12 @@ import QtQuick.Controls 2.15
 import Qt.labs.folderlistmodel 2.3
 
 Image {
-    property string folderpath
-    property alias currentImagePath : mainImage.source
-    property string placeHolderImageSource
-    
+    property url folderPath
+    property url currentImagePath
+
     id: imageViewer
     height: mainImage.height +lstView.height //+buttonOpen.height
     width: mainImage.width
-
-
 
     ColumnLayout{
         anchors.fill: parent
@@ -24,8 +21,7 @@ Image {
             sourceSize.height: 450
             Layout.margins:  5
             opacity: 1
-           // source :currentImagePath
-
+            source: currentImagePath
         }
 
         ListView {
@@ -34,7 +30,6 @@ Image {
             width: 450
             height: 70
             orientation: ListView.Horizontal
-
             spacing: 10
             Layout.leftMargin:  10
             clip: true
@@ -43,21 +38,41 @@ Image {
                 active: true
             }
 
-            function changeImageSource(imagePath)
+            function initImageSource()
             {
-                mainImage.source = "file:/"+imagePath;
+                if (folderModel.count > 0) {
+                    //const curIndex = folderModel.count -1;
+                    const imageSource = folderModel.get(0 ,"filePath");
+                    if (imageSource)
+                        mainImage.source = "file:/" + imageSource;
+                    //console.log("fffffffffffffffffffff",lstView.currentIndex)
+                    //lstView.positionViewAtIndex(curIndex, ListView.End)
+                    //lstView.positionViewAtEnd();
+                    //lstView.currentIndex = curIndex;
+                    //lstView.currentItem
+                }
+            }
+            function changeCurrentImageSource()
+            {
+                if (folderModel.count > 0) {
+                    const imageSource = folderModel.get(lstView.currentIndex ,"filePath");
+                    if (imageSource)
+                        mainImage.source = "file:/" + imageSource;
+                }
             }
 
             FolderListModel {
                 id: folderModel
                 nameFilters: ["*.png","*.jpg"]
-                folder:imageViewer.folderpath
+                folder: imageViewer.folderPath
+                sortReversed: true
             }
 
             Component {
                 id: fileDelegate
                 Column {
-                    opacity: ListView.isCurrentItem ? 1 : 0.5
+                    id : columnId
+                    opacity: ListView.isCurrentItem ? 1 : 0.3
                     Image {
                         width: 70
                         height: 70
@@ -73,9 +88,10 @@ Image {
                     }
                     Component.onCompleted: {
                         if (index == 0){
-                            console.log("Load first image")
-                            if (imageViewer.folderpath)
-                                mainImage.source = "file:/"+folderModel.get(lstView.currentIndex,"filePath");
+                            console.log("Load first image -> ",imageViewer.folderPath)
+                            if (imageViewer.folderPath)
+                                lstView.initImageSource();
+
                         }
 
                     }
@@ -83,15 +99,12 @@ Image {
 
             }
             onCurrentIndexChanged: {
-                if (imageViewer.folderpath)
-                    changeImageSource(folderModel.get(lstView.currentIndex,"filePath"))
-
+                if (imageViewer.folderPath)
+                    lstView.changeCurrentImageSource();
             }
             model: folderModel
             delegate: fileDelegate
         }
-
-
 
     }
 }

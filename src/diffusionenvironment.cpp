@@ -53,15 +53,6 @@ const QString &DiffusionEnvironment::getStableDiffusionScript() const
     return stableDiffusionScript;
 }
 
-const QString &DiffusionEnvironment::getOutputDirectory() const
-{
-    return outputDirectory;
-}
-
-void DiffusionEnvironment::setOutputDirectory(const QString &newOutputDirectory)
-{
-    outputDirectory = newOutputDirectory;
-}
 void DiffusionEnvironment::setCondaActivatePath(const QString &newCondaActivatePath)
 {
     condaActivatePath = newCondaActivatePath;

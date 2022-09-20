@@ -63,6 +63,7 @@ void MyProcess::clearArguments() {
 }
 
 bool MyProcess::isRunning() {
+    qDebug()<<(state() == QProcess::Running);
 	return (state() == QProcess::Running);
 }
 

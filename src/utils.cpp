@@ -28,3 +28,9 @@ void Utils::ensurePath(const QString& path)
         QDir(path).mkdir(path);
 
 }
+
+QUrl Utils::localPathToUrl(const QString &path)
+{
+   QString cleanedPath = QDir::cleanPath(path);
+   return QUrl::fromLocalFile(cleanedPath);
+}

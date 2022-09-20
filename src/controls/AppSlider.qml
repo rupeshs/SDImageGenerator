@@ -57,7 +57,7 @@ ColumnLayout{
             Rectangle {
                 width: control.visualPosition * parent.width
                 height: parent.height
-                color: "#26a8ff"
+                color: "orange"
                 radius: 2
             }
         }

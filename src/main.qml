@@ -105,7 +105,8 @@ ApplicationWindow {
             text: qsTr("Text to Image")
             icon.source: "images/moon-stars-fill.png"
             background: Rectangle {
-                color: tabBar.currentIndex ==0 ? "#262625": "#2e2e2e"
+                //#26a8ff
+                color: tabBar.currentIndex ==0 ? "green": "#2e2e2e"
             }
 
         }
@@ -113,15 +114,16 @@ ApplicationWindow {
             text: qsTr("Images")
             icon.source: "images/images.png"
             background: Rectangle {
-                color: tabBar.currentIndex ==1 ? "#262625": "#2e2e2e"
+                color: tabBar.currentIndex ==1 ? "green": "#2e2e2e"
             }
+
 
         }
         TabButton {
             text: qsTr("Settings")
               icon.source: "images/gear.png"
             background: Rectangle {
-                color: tabBar.currentIndex ==2 ? "#262625": "#2e2e2e"
+                color: tabBar.currentIndex ==2 ? "green": "#2e2e2e"
             }
 
         }
@@ -129,7 +131,7 @@ ApplicationWindow {
             text: qsTr("About")
               icon.source: "images/gear.png"
             background: Rectangle {
-                color: tabBar.currentIndex ==3 ? "#262625": "#2e2e2e"
+                color: tabBar.currentIndex ==3 ? "green": "#2e2e2e"
             }
 
         }
@@ -218,19 +220,9 @@ ApplicationWindow {
                             font.pointSize: 10
                             Layout.bottomMargin: 5
                         }
-                        /* Button{
-                        id : buttonOpen
-                        Layout.alignment: Qt.AlignLeft
-                        text : "Open Output Folder"
-                        icon.source: "images/folder2-open.png"
-                        enabled: !stableDiffusionBackend.isProcessing
-                        onClicked: stableDiffusionBackend.openOutputFolder();
-                    }*/
                     }
-
-
                 }
-            }//
+            }
             Timer {
                 id: elasedTimer
                 interval: 1000;
@@ -248,7 +240,7 @@ ApplicationWindow {
                 Label {
                     text: stableDiffusionBackend.diffusionStatusMessage
                     font.pointSize: 10
-                    Layout.bottomMargin: 10
+                    Layout.bottomMargin: 15
                 }
             }
         }
@@ -260,7 +252,7 @@ ApplicationWindow {
                     id: imageViewer
                     Layout.leftMargin: 70
                     currentImagePath: "../../images/placeholder.png"
-                    folderpath: stableDiffusionBackend.samplesUrl
+                    folderPath: stableDiffusionBackend.samplesUrl
                 }
                 Button {
                     width:32
@@ -441,7 +433,7 @@ ApplicationWindow {
             ColumnLayout{
                 anchors.centerIn: parent
                 Text{
-                    text : qsTr("SDImageGenerator")
+                    text : qsTr("SDImageGenerator v0.1.0 Beta")
                     color : "white"
                     font.pointSize: 14
                     Layout.alignment: Qt.AlignHCenter

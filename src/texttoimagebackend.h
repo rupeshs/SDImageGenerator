@@ -39,7 +39,6 @@ public:
 public slots:
     void generateImage();
     void stopProcessing();
-    void diffusionConsoleLine(QString);
     void showErrorDlg(const QString &errorMesg);
     void saveSettings();
     void loadSettings();
@@ -48,6 +47,9 @@ public slots:
     void openOutputFolder();
     void setOutputFolder(QUrl url);
     void installEnvironment();
+    void generatingImages();
+    void imagesGenerated();
+    void updateCompleted();
 
 signals:
     void showMessageBox();
@@ -71,9 +73,12 @@ private:
     bool isProcessing;
     QSettings *settings;
     QString curOutputFolder;
+    QString deafultAssetsPath;
 
     void initBackend();
     bool verifyEnvironment();
+
+private slots:
     void updateStatusMessage(const QString&);
 
 };
