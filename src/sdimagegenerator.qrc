@@ -5,5 +5,7 @@
         <file>images/folder2-open.png</file>
         <file>images/gear.png</file>
         <file>images/images.png</file>
+        <file>images/next.png</file>
+        <file>images/previous.png</file>
     </qresource>
 </RCC>

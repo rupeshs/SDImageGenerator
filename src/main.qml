@@ -7,6 +7,7 @@ import "controls" as Controls
 import StableDiffusion 1.0
 import Qt.labs.platform 1.1
 
+
 ApplicationWindow {
     id: window
 
@@ -247,22 +248,21 @@ ApplicationWindow {
 
         Page{
             id: paneImages
-            RowLayout{
-                Controls.ImageViewer{
-                    id: imageViewer
-                    Layout.leftMargin: 70
-                    currentImagePath: "../../images/placeholder.png"
-                    folderPath: stableDiffusionBackend.samplesUrl
-                }
-                Button {
-                    width:32
-                    Layout.alignment:  Qt.AlignBottom
-                    icon.source: "images/folder2-open.png"
-                    ToolTip.visible: hovered
-                    ToolTip.text: qsTr("Open output folder")
-                    onClicked: stableDiffusionBackend.openOutputFolder();
-                }
+
+            Controls.FolderImageViewer{
+                folderPath: stableDiffusionBackend.samplesUrl
             }
+
+
+            Button {
+                 width: 48
+                 height: 48
+                 Layout.alignment:  Qt.AlignBottom
+                 icon.source: "images/folder2-open.png"
+                 ToolTip.visible: hovered
+                 ToolTip.text: qsTr("Open output folder")
+                 onClicked: stableDiffusionBackend.openOutputFolder();
+             }
         }
 
         ScrollView
@@ -348,6 +348,7 @@ ApplicationWindow {
                         slider.to: 2000
                         slider.value: 512
                         Layout.fillWidth:true
+
                     }
 
                     Controls.AppSlider{
@@ -359,6 +360,7 @@ ApplicationWindow {
                         slider.to:2000
                         slider.value: 512
                         Layout.fillWidth:true
+
                     }
 
                     Controls.AppSlider{

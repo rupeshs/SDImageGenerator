@@ -12,6 +12,7 @@ debug/controls_AppLabel_qml.o
 debug/controls_RichTextEdit_qml.o
 debug/controls_ImageViewer_qml.o
 debug/controls_AppTextArea_qml.o
+debug/controls_FolderImageViewer_qml.o
 debug/qmlcache_loader.o
 debug/qrc_qml_qmlcache.o
 debug/qrc_sdimagegenerator.o

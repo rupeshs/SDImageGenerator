@@ -7,5 +7,6 @@
         <file>controls/AppLabel.qml</file>
         <file>controls/AppTextArea.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>controls/FolderImageViewer.qml</file>
     </qresource>
 </RCC>

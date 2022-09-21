@@ -42,6 +42,7 @@ ColumnLayout{
 
     Slider {
         id: control
+
         value: 0.5
         Layout.fillWidth: true
         background: Rectangle {
