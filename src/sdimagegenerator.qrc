@@ -7,5 +7,6 @@
         <file>images/images.png</file>
         <file>images/next.png</file>
         <file>images/previous.png</file>
+        <file>images/file-text.png</file>
     </qresource>
 </RCC>

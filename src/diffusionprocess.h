@@ -7,6 +7,7 @@
 #include "diffusionoptions.h"
 #include "myprocess.h"
 #include "utils.h"
+#include <QRegExp>
 
 static QRegExp rxOutputFolder("Writing files to directory: \"(.*)\"");
 enum class StableDiffusionStatus { NotStarted, Starting, Ready, Processing };

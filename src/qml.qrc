@@ -8,5 +8,6 @@
         <file>controls/AppTextArea.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>controls/FolderImageViewer.qml</file>
+        <file>controls/CircularProgressBar.qml</file>
     </qresource>
 </RCC>

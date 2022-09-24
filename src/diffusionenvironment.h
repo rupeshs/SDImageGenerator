@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QTextStream>
 #include "defines.h"
+#include "utils.h"
 
 class DiffusionEnvironment : public QObject
 {
@@ -18,6 +19,13 @@ public:
     const QString &getStableDiffusionPath() const;
     const QString &getStableDiffusionScript() const;
 
+    const QString &getStableDiffusionModelPath() const;
+    void setStableDiffusionModelPath(const QString &newStableDiffusionModelPath);
+
+    const QString &getCurlPath() const;
+
+    const QString &getStableDiffusionModelUrl() const;
+
 signals:
 
 private:
@@ -26,12 +34,16 @@ private:
     QString condaActivatePath;
     QString pythonEnvPath;
     QString stableDiffusionPath;
-    QString stableDiffusionScript;
+    QString stableDiffusionScriptPath;
+    QString stableDiffusionModelPath;
+    QString curlPath;
+    QString stableDiffusionModelUrl;
 
     void setCondaActivatePath(const QString &newCondaActivatePath);
     void setPythonEnvPath(const QString &newPythonEnvPath);
     void setStableDiffusionPath(const QString &newStableDiffusionPath);
     void setEnvironment();
+
 
 };
 

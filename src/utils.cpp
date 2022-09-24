@@ -34,3 +34,14 @@ QUrl Utils::localPathToUrl(const QString &path)
    QString cleanedPath = QDir::cleanPath(path);
    return QUrl::fromLocalFile(cleanedPath);
 }
+
+QString Utils::getLogMessage(const QString& type,const QString& functionName,int line,const QString& msg)
+{
+    QString log;
+#ifdef QT_DEBUG
+       log =  QString(" [%1] [%2 -> %3] %4").arg(type).arg(functionName).arg(line).arg(msg);
+#else
+       log = QString(" [%1] %2").arg(type).arg(msg);
+#endif
+   return log;
+}

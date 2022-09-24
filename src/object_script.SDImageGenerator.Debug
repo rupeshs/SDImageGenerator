@@ -1,13 +1,16 @@
 debug/diffusionenvironment.o
+debug/diffusionenvironmentstatus.o
 debug/diffusionenvvalidator.o
 debug/diffusionoptions.o
 debug/diffusionprocess.o
+debug/installerprocess.o
 debug/main.o
 debug/myprocess.o
 debug/texttoimagebackend.o
 debug/utils.o
 debug/main_qml.o
 debug/controls_AppSlider_qml.o
+debug/controls_CircularProgressBar_qml.o
 debug/controls_AppLabel_qml.o
 debug/controls_RichTextEdit_qml.o
 debug/controls_ImageViewer_qml.o
@@ -17,8 +20,10 @@ debug/qmlcache_loader.o
 debug/qrc_qml_qmlcache.o
 debug/qrc_sdimagegenerator.o
 debug/moc_diffusionenvironment.o
+debug/moc_diffusionenvironmentstatus.o
 debug/moc_diffusionenvvalidator.o
 debug/moc_diffusionoptions.o
 debug/moc_diffusionprocess.o
+debug/moc_installerprocess.o
 debug/moc_myprocess.o
 debug/moc_texttoimagebackend.o

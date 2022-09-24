@@ -9,9 +9,9 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
     connect(dreamProcess,SIGNAL(lineAvailable(QByteArray)),this,SLOT(readProcessOutput(QByteArray)));
     connect(dreamProcess,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(processFinished(int,QProcess::ExitStatus)));
 
-    qDebug()<<"DiffusionProcess:: CondaActivatePath"<<diffusionEnv->getCondaActivatePath();
-    qDebug()<<"DiffusionProcess:: PythonEnvPath"<<diffusionEnv->getPythonEnvPath();
-    qDebug()<<"DiffusionProcess:: StableDiffusionPath"<<diffusionEnv->getStableDiffusionPath();
+    qDebug()<<"CondaActivatePath"<<diffusionEnv->getCondaActivatePath();
+    qDebug()<<"PythonEnvPath"<<diffusionEnv->getPythonEnvPath();
+    qDebug()<<"StableDiffusionPath"<<diffusionEnv->getStableDiffusionPath();
     dreamProcess->setWorkingDirectory(diffusionEnv->getStableDiffusionPath());
 
     addArgument(diffusionEnv->getCondaActivatePath());
@@ -41,7 +41,6 @@ void DiffusionProcess::readProcessOutput(QByteArray line)
     }
 
     if (consoleLine.contains("Awaiting your command")) {
-         qDebug()<<"ready............";
          qDebug()<<getPromptCommand();
          writeCommand(getPromptCommand());
          emit generatingImages();
@@ -54,14 +53,14 @@ void DiffusionProcess::readProcessOutput(QByteArray line)
 
 void DiffusionProcess::processFinished(int exit_code, QProcess::ExitStatus exit_status)
 {
-    qDebug() << "DiffusionProcess::processFinished: exit_code:" << exit_code << "exit_status:" << exit_status;
+    qDebug() << "exit_code:" << exit_code << "exit_status:" << exit_status;
     emit diffusionFinished();
 }
 void DiffusionProcess::processError(QProcess::ProcessError error) {
 
-    qDebug() << "DiffusionProcess::processError:" << error;
+    qDebug() << "ProcessError:" << error;
     if (error == QProcess::FailedToStart) {
-        qDebug("DiffusionProcess::processError: process failed to start");
+        qDebug()<<"Process failed to start";
     }
 }
 

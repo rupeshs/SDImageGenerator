@@ -63,7 +63,6 @@ void MyProcess::clearArguments() {
 }
 
 bool MyProcess::isRunning() {
-    qDebug()<<(state() == QProcess::Running);
 	return (state() == QProcess::Running);
 }
 
@@ -159,10 +158,10 @@ int MyProcess::canReadLine(const QByteArray & ba, int from) {
 Do some clean up, and be sure that all output has been read.
 */
 void MyProcess::procFinished() {
-	qDebug("MyProcess::procFinished");
+    qDebug("procFinished");
 
 #if !USE_TEMP_FILE
-	qDebug("MyProcess::procFinished: Bytes available: %ld", bytesAvailable());
+    qDebug("procFinished: Bytes available: %ld", bytesAvailable());
 	if ( bytesAvailable() > 0 ) readStdOut();
 #else
 	timer.stop();
@@ -176,7 +175,7 @@ void MyProcess::procFinished() {
 }
 
 QStringList MyProcess::splitArguments(const QString & args) {
-	qDebug("MyProcess::splitArguments: '%s'", args.toUtf8().constData());
+    qDebug("splitArguments: '%s'", args.toUtf8().constData());
 
 	QStringList l;
 
@@ -196,7 +195,7 @@ QStringList MyProcess::splitArguments(const QString & args) {
 	}
 
 	for (int n = 0; n < l.count(); n++) {
-		qDebug("MyProcess::splitArguments: arg: %d '%s'", n, l[n].toUtf8().constData());
+        qDebug("splitArguments: arg: %d '%s'", n, l[n].toUtf8().constData());
 	}
 
 	return l;

@@ -3,31 +3,17 @@
 #include <QDebug>
 #include <QDir>
 #include <QGuiApplication>
-#include "utils.h"
+
 
 DiffusionEnvironment::DiffusionEnvironment(QObject *parent)
     : QObject{parent}
 {
-    envPathsFileName = Utils::pathAppend(qApp->applicationDirPath(),QString(ENV_PATHS_FILE));
-    qDebug()<<envPathsFileName;
+
 }
 
 void DiffusionEnvironment::getEnvironment()
 {
-    QFile inputFile(envPathsFileName);
-    if (inputFile.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&inputFile);
-       while (!in.atEnd())
-       {
-          QString line = in.readLine();
-          line.remove(QChar('"'), Qt::CaseInsensitive);
-          paths.append(line.trimmed());
-       }
-       inputFile.close();
-    }
-    assert(paths.length()==3);
-    setEnvironment();
+   setEnvironment();
 
 }
 
@@ -48,7 +34,27 @@ const QString &DiffusionEnvironment::getStableDiffusionPath() const
 
 const QString &DiffusionEnvironment::getStableDiffusionScript() const
 {
-    return stableDiffusionScript;
+    return stableDiffusionScriptPath;
+}
+
+const QString &DiffusionEnvironment::getStableDiffusionModelPath() const
+{
+    return stableDiffusionModelPath;
+}
+
+void DiffusionEnvironment::setStableDiffusionModelPath(const QString &newStableDiffusionModelPath)
+{
+    stableDiffusionModelPath = newStableDiffusionModelPath;
+}
+
+const QString &DiffusionEnvironment::getCurlPath() const
+{
+    return curlPath;
+}
+
+const QString &DiffusionEnvironment::getStableDiffusionModelUrl() const
+{
+    return stableDiffusionModelUrl;
 }
 
 void DiffusionEnvironment::setCondaActivatePath(const QString &newCondaActivatePath)
@@ -68,10 +74,17 @@ void DiffusionEnvironment::setStableDiffusionPath(const QString &newStableDiffus
 
 void DiffusionEnvironment::setEnvironment()
 {
-  if (paths.length() > 0) {
-      setCondaActivatePath( paths[0]);
-      setPythonEnvPath( paths[1]);
-      setStableDiffusionPath(paths[2]);
-      stableDiffusionScript = Utils::pathAppend(stableDiffusionPath,QString(STABLE_DIFFUSION_DREAM));
-  }
+#ifdef Q_OS_WIN
+    QString condaPath = Utils::pathAppend(qApp->applicationDirPath(),QString(MINICONDA_ENV_DIRECTORY_WIN));
+    condaActivatePath= Utils::pathAppend(condaPath,CONDA_ACTIVATE_SCRIPT_WIN);
+    curlPath = Utils::pathAppend(condaPath,CURL_DIRECTORY_WIN);
+#endif
+    //TODO : Linux
+
+    pythonEnvPath = Utils::pathAppend(qApp->applicationDirPath(),QString(PYTHON_ENV_DIRECTORY));
+    stableDiffusionPath = Utils::pathAppend(qApp->applicationDirPath(),QString(STABLE_DIFFUSION_DIRECTORY));
+    stableDiffusionScriptPath = Utils::pathAppend(stableDiffusionPath,QString(STABLE_DIFFUSION_DREAM));
+    stableDiffusionModelPath = Utils::pathAppend(stableDiffusionPath,QString(STABLE_DIFFUSION_MODEL_1_4));
+    stableDiffusionModelUrl = STABLE_DIFFUSION_MODEL_1_4_URL;
+
 }

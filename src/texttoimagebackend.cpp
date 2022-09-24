@@ -27,6 +27,21 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
 
     deafultAssetsPath = Utils::pathAppend(qApp->applicationDirPath(),"assets");
     samplesPath = Utils::localPathToUrl(deafultAssetsPath);
+
+    envValidator = new DiffusionEnvValidator(this,diffusionEnv);
+    EnvStatus envStatus = envValidator->Validate();
+
+    m_envStatus = new DiffusionEnvironmentStatus();
+
+    //setEnvStatus(m_envStatus);
+
+    if (envStatus != EnvStatus::Ready) {
+        qDebug()<<"Environment not ready,please install from install tab";
+        QTimer::singleShot(0, this, [this](){emit environmentNotReady();});
+    }
+    modelDownloader = nullptr;
+    pythonEnvInstaller = nullptr;
+
 }
 
 void TextToImageBackend::generateImage()
@@ -45,13 +60,13 @@ void TextToImageBackend::generateImage()
         updateStatusMessage(tr("Starting image generation..."));
 
     stableDiffusion->generateImages(m_options);
-    qDebug()<<"Prompt : "<<m_options->prompt().trimmed();
-    qDebug()<<"Scale : "<<m_options->scale();
-    qDebug()<<"Image width :"<<m_options->imageWidth();
-    qDebug()<<"Image height :"<<m_options->imageHeight();
-    qDebug()<<"Number of Images to generate :"<<m_options->numberOfImages();
-    qDebug()<<"DDIM steps :"<<m_options->ddimSteps();
-    qDebug()<<"Sampler :"<<m_options->sampler();
+    qInfo()<<"Prompt : "<<m_options->prompt().trimmed();
+    qInfo()<<"Scale : "<<m_options->scale();
+    qInfo()<<"Image width :"<<m_options->imageWidth();
+    qInfo()<<"Image height :"<<m_options->imageHeight();
+    qInfo()<<"Number of Images to generate :"<<m_options->numberOfImages();
+    qInfo()<<"DDIM steps :"<<m_options->ddimSteps();
+    qInfo()<<"Sampler :"<<m_options->sampler();
     isProcessing = true;
     samplesPath = Utils::localPathToUrl(deafultAssetsPath);
     emit samplesPathChanged();
@@ -87,6 +102,7 @@ void TextToImageBackend::saveSettings()
 
 void TextToImageBackend::loadSettings()
 {
+    qInfo()<<"Loading app settings";
     m_options->setPrompt(settings->value("StableDiffusion/prompt","").toString());
     m_options->setScale(settings->value("StableDiffusion/scale",DEFAULT_SCALE).toDouble());
     m_options->setImageWidth(settings->value("StableDiffusion/imageWidth",DEFAULT_IMAGE_WIDTH).toDouble());
@@ -101,7 +117,11 @@ void TextToImageBackend::loadSettings()
     if(seed)
         m_options->setSeed(seed);
 
-    emit initControls(m_options);
+    m_envStatus->setIsCondaReady(envValidator->validateCondaPath());
+    m_envStatus->setIsPythonEnvReady(envValidator->validatePythonEnvPath());
+    m_envStatus->setIsStableDiffusionModelReady(envValidator->validateModelPath());
+
+    emit initControls(m_options,m_envStatus);
     Utils::ensurePath(m_options->saveDir());
 }
 
@@ -115,7 +135,7 @@ void TextToImageBackend::resetSettings()
     m_options->setSampler(DEFAULT_SAMPLER);
     m_options->setSeed(DEFAULT_SEED);
 
-    emit initControls(m_options);
+    emit initControls(m_options,m_envStatus);
 }
 
 void TextToImageBackend::stableDiffusionFinished()
@@ -154,19 +174,56 @@ void TextToImageBackend::generatingImages()
 
 void TextToImageBackend::imagesGenerated()
 {
-    qDebug()<<"Timer starts";
-    //QTimer::singleShot(2000, this, SLOT(updateCompleted()));
     updateCompleted();
 }
 
 void TextToImageBackend::updateCompleted()
 {
-    qDebug()<<"updateCompleted";
+    qDebug()<<"Images generated.";
     isProcessing = false;
     updateStatusMessage("Completed.");
     samplesPath = stableDiffusion->getSamplesPath();
     emit isProcessingChanged();
     emit samplesPathChanged();
+}
+
+void TextToImageBackend::openLogs()
+{
+    QDesktopServices::openUrl(Utils::pathAppend(qApp->applicationDirPath(),LOG_FILE_NAME));
+}
+
+void TextToImageBackend::downloadModel()
+{
+    if ( !modelDownloader ){
+        modelDownloader = new InstallerProcess(this,diffusionEnv);
+        //https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media
+        connect(modelDownloader, SIGNAL(gotConsoleLog(QString)), this, SLOT(updateInstallerStatusMessage(QString)));
+        connect(modelDownloader, SIGNAL(installCompleted(int,bool)), this, SLOT(installCompleted(int,bool)));
+    }
+    qDebug()<<diffusionEnv->getCurlPath();
+    qDebug()<<diffusionEnv->getStableDiffusionModelPath();
+    modelDownloader->downloadStableDiffusionModel();
+}
+
+void TextToImageBackend::installPythonEnv()
+{
+    if ( !pythonEnvInstaller ) {
+        qDebug()<< "inttttttttttttttttttttttttt";
+        pythonEnvInstaller = new InstallerProcess(this,diffusionEnv);
+        connect(pythonEnvInstaller, SIGNAL(gotConsoleLog(QString)), this, SLOT(updateInstallerStatusMessage(QString)));
+        connect(pythonEnvInstaller, SIGNAL(installCompleted(int,bool)), this, SLOT(installCompleted(int,bool)));
+    }
+    pythonEnvInstaller->installCondaEnv();
+}
+
+DiffusionEnvironmentStatus *TextToImageBackend::envStatus() const
+{
+    return m_envStatus;
+}
+
+void TextToImageBackend::setEnvStatus(DiffusionEnvironmentStatus *newEnvStatus)
+{
+    m_envStatus = newEnvStatus;
 }
 
 bool TextToImageBackend::getIsProcessing() const
@@ -217,6 +274,7 @@ bool TextToImageBackend::verifyEnvironment()
 void TextToImageBackend::updateStatusMessage(const QString &message)
 {
     diffusionStatusMsg = message;
+    qDebug()<<message;
     emit statusChanged();
 }
 
@@ -236,7 +294,30 @@ void TextToImageBackend::classBegin()
 
 void TextToImageBackend::componentComplete()
 {
-    qDebug()<<"TextToImageBackend: Component ready";
+    qDebug()<<"Component ready";
     loadSettings();
 
+}
+void TextToImageBackend::updateInstallerStatusMessage(const QString &message)
+{
+    installerStatusMsg = message;
+    qDebug()<<message;
+    emit installerStatusChanged(message,-1);
+}
+
+void TextToImageBackend::installCompleted(int exitCode,bool isDownloader)
+{
+    if (isDownloader) {
+        qDebug()<<"Download completed(Exit code) -> "<<exitCode;
+        if (Utils::checkPathExists(diffusionEnv->getStableDiffusionModelPath())
+                && exitCode == 0) {
+            QString msg(tr("Downloaded model successfully."));
+            qDebug()<<msg;
+            emit installerStatusChanged(msg,1.0);
+        } else {
+            QString msg(tr("Model download failed,check logs."));
+            qDebug()<<msg;
+            emit installerStatusChanged(msg,0.0);
+        }
+    }
 }

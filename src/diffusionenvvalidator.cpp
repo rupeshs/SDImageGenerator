@@ -8,15 +8,33 @@ DiffusionEnvValidator::DiffusionEnvValidator(QObject *parent,DiffusionEnvironmen
 
 EnvStatus DiffusionEnvValidator::Validate()
 {
- if (!Utils::checkPathExists(diffusionEnv->getCondaActivatePath()))
+ if (!validateCondaPath())
      return EnvStatus::CondaNotFound;
 
- if (!Utils::checkPathExists(diffusionEnv->getPythonEnvPath()))
+ if (!validatePythonEnvPath())
      return EnvStatus::PythonEnvNotFound;
 
  if (!Utils::checkPathExists(diffusionEnv->getStableDiffusionPath()))
      return EnvStatus::StableDiffusionNotFound;
 
+ if (!validateModelPath())
+     return EnvStatus::StableDiffusionModelNotFound;
+
  return EnvStatus::Ready;
 
+}
+
+bool DiffusionEnvValidator::validateCondaPath()
+{
+    return Utils::checkPathExists(diffusionEnv->getCondaActivatePath());
+}
+
+bool DiffusionEnvValidator::validatePythonEnvPath()
+{
+    return Utils::checkPathExists(diffusionEnv->getPythonEnvPath());
+}
+
+bool DiffusionEnvValidator::validateModelPath()
+{
+   return Utils::checkPathExists(diffusionEnv->getStableDiffusionModelPath());
 }

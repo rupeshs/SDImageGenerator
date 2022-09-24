@@ -1,13 +1,16 @@
 release/diffusionenvironment.o
+release/diffusionenvironmentstatus.o
 release/diffusionenvvalidator.o
 release/diffusionoptions.o
 release/diffusionprocess.o
+release/installerprocess.o
 release/main.o
 release/myprocess.o
 release/texttoimagebackend.o
 release/utils.o
 release/main_qml.o
 release/controls_AppSlider_qml.o
+release/controls_CircularProgressBar_qml.o
 release/controls_AppLabel_qml.o
 release/controls_RichTextEdit_qml.o
 release/controls_ImageViewer_qml.o
@@ -17,8 +20,10 @@ release/qmlcache_loader.o
 release/qrc_qml_qmlcache.o
 release/qrc_sdimagegenerator.o
 release/moc_diffusionenvironment.o
+release/moc_diffusionenvironmentstatus.o
 release/moc_diffusionenvvalidator.o
 release/moc_diffusionoptions.o
 release/moc_diffusionprocess.o
+release/moc_installerprocess.o
 release/moc_myprocess.o
 release/moc_texttoimagebackend.o

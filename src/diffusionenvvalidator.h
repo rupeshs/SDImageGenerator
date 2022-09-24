@@ -12,12 +12,14 @@ class DiffusionEnvValidator : public QObject
 public:
     explicit DiffusionEnvValidator(QObject *parent = nullptr, DiffusionEnvironment *diffusionEnv = nullptr);
     EnvStatus Validate();
+    bool validateCondaPath();
+    bool validatePythonEnvPath();
+    bool validateModelPath();
 
 signals:
 
 private:
     DiffusionEnvironment *diffusionEnv;
-
 };
 
 #endif // DIFFUSIONENVVALIDATOR_H

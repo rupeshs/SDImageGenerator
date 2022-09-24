@@ -6,6 +6,7 @@ enum class EnvStatus
      CondaNotFound,
      PythonEnvNotFound,
      StableDiffusionNotFound,
+     StableDiffusionModelNotFound,
      Ready
   };
 #endif // ERRORS_H

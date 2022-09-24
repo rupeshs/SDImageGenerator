@@ -45,7 +45,7 @@ ApplicationWindow {
             msgDialog.visible = true;
         }
 
-        function onInitControls(options) {
+        function onInitControls(options,envStatus) {
             promptInput.text = options.prompt;
             scaleSlider.slider.value = options.scale;
             widthSlider.slider.value = options.imageWidth;
@@ -58,6 +58,13 @@ ApplicationWindow {
                 seedInput.text = "";
             else
                 seedInput.text = options.seed;
+
+            minicondaCheck.checked = envStatus.isCondaReady;
+            minicondaCheck.checkable = false;
+            pythonCheck.checked = envStatus.isPythonEnvReady;
+            pythonCheck.checkable = false;
+            modelCheck.checked = envStatus.isStableDiffusionModelReady;
+            modelCheck.checkable = false;
         }
 
         function onSetOutputDirectory(directory){
@@ -67,6 +74,24 @@ ApplicationWindow {
             if (!stableDiffusionBackend.isProcessing)
             {
                 tabBar.currentIndex = 1;
+            }
+        }
+        function onEnvironmentNotReady() {
+            tabBar.currentIndex = 3;
+            tabBar.itemAt(0).enabled = false;
+            tabBar.itemAt(1).enabled = false;
+            tabBar.itemAt(2).enabled = false;
+        }
+
+        function onInstallerStatusChanged(msg , progress) {
+            console.log(msg, progress);
+            installerStatusLabel.text = msg;
+            if (progress >= 0) {
+                installerDownloadPbar.value = progress.toFixed(2);
+            }
+            else {
+                installerDownloadPbar.visible = false;
+                installerStatusLabel.font.pointSize = 12;
             }
 
         }
@@ -107,7 +132,7 @@ ApplicationWindow {
             icon.source: "images/moon-stars-fill.png"
             background: Rectangle {
                 //#26a8ff
-                color: tabBar.currentIndex ==0 ? "green": "#2e2e2e"
+                color: tabBar.currentIndex == 0 ? "green": "#393A3B"
             }
 
         }
@@ -115,24 +140,32 @@ ApplicationWindow {
             text: qsTr("Images")
             icon.source: "images/images.png"
             background: Rectangle {
-                color: tabBar.currentIndex ==1 ? "green": "#2e2e2e"
+                color: tabBar.currentIndex == 1 ? "green": "#393A3B"
             }
-
 
         }
         TabButton {
             text: qsTr("Settings")
               icon.source: "images/gear.png"
             background: Rectangle {
-                color: tabBar.currentIndex ==2 ? "green": "#2e2e2e"
+                color: tabBar.currentIndex == 2 ? "green": "#393A3B"
+            }
+        }
+        TabButton {
+            text: qsTr("Install")
+              icon.source: "images/gear.png"
+            background: Rectangle {
+                color: tabBar.currentIndex == 3 ? "green": "#393A3B"
             }
 
         }
+
+
         TabButton {
             text: qsTr("About")
               icon.source: "images/gear.png"
             background: Rectangle {
-                color: tabBar.currentIndex ==3 ? "green": "#2e2e2e"
+                color: tabBar.currentIndex == 4 ? "green": "#393A3B"
             }
 
         }
@@ -147,24 +180,21 @@ ApplicationWindow {
         currentIndex: 0
         anchors.topMargin: tabBar.height
         Page{
-
-
             RowLayout{
                 Item{
                     width:20
                 }
                 ColumnLayout{
                     Item{
-                        height:180
+                        height:140
                     }
                     Label{
                         text:qsTr("Prompt")
-
                     }
 
                     Item{
                         width: 550
-                        height:100
+                        height:150
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignHCenter
 
@@ -199,11 +229,20 @@ ApplicationWindow {
                                 stableDiffusionBackend.generateImage();
                             }
                         }
+                        Button{
+                            Layout.alignment: Qt.AlignRight
+                            text: "Logs"
+                            icon.color: "white"
+                            icon.source: "images/file-text.png"
+
+
+                            onClicked: {
+
+                                stableDiffusionBackend.openLogs();
+                            }
+                        }
                         Item{
-
-
                             Layout.fillWidth: true
-
                         }
                         BusyIndicator {
                             id: busyIndicator
@@ -345,8 +384,9 @@ ApplicationWindow {
                         header.text: qsTr("Width")
                         description.text: qsTr("The width of the generated image.")
                         slider.from: 256
-                        slider.to: 2000
+                        slider.to: 2048
                         slider.value: 512
+                        slider.stepSize: 64
                         Layout.fillWidth:true
 
                     }
@@ -357,8 +397,9 @@ ApplicationWindow {
                         header.text: qsTr("Height")
                         description.text: qsTr("The height of the generated image.")
                         slider.from:256
-                        slider.to:2000
+                        slider.to:2048
                         slider.value: 512
+                        slider.stepSize: 64
                         Layout.fillWidth:true
 
                     }
@@ -431,6 +472,60 @@ ApplicationWindow {
                 }
             }
         }
+
+        Page {
+         ColumnLayout{
+
+               CheckBox {
+                    id : minicondaCheck
+
+                    checkable: false
+                    checked: stableDiffusionBackend.envStatus.isCondaReady
+                    Layout.leftMargin: 10
+                    Layout.topMargin: 20
+                    text: qsTr("Miniconda")
+
+                }
+                RowLayout{
+                CheckBox {
+                    id : pythonCheck
+
+                    checkable: false
+                    checked: stableDiffusionBackend.envStatus.isPytonEnvReady
+                     Layout.leftMargin: 10
+                    text: qsTr("Environment")
+                }
+                Button{
+                    text : "Install"
+                    onClicked:  {
+                        downloadDialog.visible = true;
+                        stableDiffusionBackend.installPythonEnv()
+                    }
+
+                }
+                }
+                RowLayout{
+                CheckBox {
+                    id : modelCheck
+
+                    checkable: false
+                    checked: tableDiffusionBackend.envStatus.isStableDiffusionModelReady
+                     Layout.leftMargin: 10
+                    text: qsTr("StableDiffusion model")
+                }
+                Button{
+                    text : "Download model"
+                    onClicked:  {
+                        downloadDialog.visible = true;
+                        stableDiffusionBackend.downloadModel();
+                    }
+
+                }
+                }
+
+          }
+        }
+
         Page {
             ColumnLayout{
                 anchors.centerIn: parent
@@ -463,6 +558,49 @@ ApplicationWindow {
         updateOptions();
         stableDiffusionBackend.saveSettings();
         stableDiffusionBackend.stopProcessing();
+    }
+
+    Window {
+        id: downloadDialog
+        width: 550
+        height: 200
+        color: "#2e2e2e"
+        title: "Installing..."
+
+        ColumnLayout{
+        anchors.centerIn: parent
+        spacing:  10
+
+        Controls.CircularProgressBar{
+            id: installerDownloadPbar
+
+            Layout.alignment: Qt.AlignHCenter
+            lineWidth: 10
+            value: 0.0
+            size: 150
+            secondaryColor: "#e0e0e0"
+            primaryColor: "#29b6f6"
+
+            Text {
+                text: parseInt(installerDownloadPbar.value * 100) + "%"
+                anchors.centerIn: parent
+                font.pointSize: 20
+                color: installerDownloadPbar.primaryColor
+            }
+        }
+
+        Label{
+            id: installerStatusLabel
+            //anchors.centerIn: parent
+            Layout.alignment: Qt.AlignBottom
+
+            color: "white"
+            //font.pointSize: 14
+            //font.bold: true
+
+
+        }
+        }
     }
 
 }

@@ -8,9 +8,11 @@ QT += widgets
 
 SOURCES += \
         diffusionenvironment.cpp \
+        diffusionenvironmentstatus.cpp \
         diffusionenvvalidator.cpp \
         diffusionoptions.cpp \
         diffusionprocess.cpp \
+        installer/installerprocess.cpp \
         main.cpp \
         myprocess.cpp \
         texttoimagebackend.cpp \
@@ -33,10 +35,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     defines.h \
     diffusionenvironment.h \
+    diffusionenvironmentstatus.h \
     diffusionenvvalidator.h \
     diffusionoptions.h \
     diffusionprocess.h \
     errors.h \
+    installer/installerprocess.h \
     myprocess.h \
     texttoimagebackend.h \
     utils.h
