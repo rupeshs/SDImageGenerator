@@ -199,7 +199,7 @@ void TextToImageBackend::downloadModel()
     if (Utils::checkPathExists(diffusionEnv->getStableDiffusionModelPath())){
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setText(tr("Model already exists."));
+        msgBox.setText(tr("Model file already exists."));
         msgBox.setInformativeText(tr("Do you want to download it again?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);

@@ -529,7 +529,7 @@ ApplicationWindow {
                         checkable: false
                         checked: tableDiffusionBackend.envStatus.isStableDiffusionModelReady
                         Layout.leftMargin: 10
-                        text: qsTr("StableDiffusion model")
+                        text: qsTr("Stable diffusion model")
                     }
                     Button{
                         text : "Download model"
@@ -555,7 +555,7 @@ ApplicationWindow {
 
                 }
                 Text{
-                    text : qsTr("Text to image AI generator")
+                    text : qsTr("Text to image generator AI")
                     color : "grey"
                     Layout.alignment: Qt.AlignHCenter
                     font.pointSize: 12
