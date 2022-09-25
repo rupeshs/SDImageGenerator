@@ -23,7 +23,6 @@ public:
     void setStableDiffusionModelPath(const QString &newStableDiffusionModelPath);
 
     const QString &getCurlPath() const;
-
     const QString &getStableDiffusionModelUrl() const;
 
 signals:

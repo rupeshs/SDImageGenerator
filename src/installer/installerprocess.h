@@ -23,6 +23,7 @@ public slots:
     void readProcessOutput(QByteArray);
     void processFinished(int, QProcess::ExitStatus);
     void processError(QProcess::ProcessError error);
+    void stopProcess();
 
 signals:
      void gotConsoleLog(const QString &message);

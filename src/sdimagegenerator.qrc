@@ -8,5 +8,7 @@
         <file>images/next.png</file>
         <file>images/previous.png</file>
         <file>images/file-text.png</file>
+        <file>images/file-arrow-down.png</file>
+        <file>images/download.png</file>
     </qresource>
 </RCC>

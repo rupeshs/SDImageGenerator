@@ -52,7 +52,8 @@ void InstallerProcess::readProcessOutput(QByteArray line)
         emit gotConsoleLog(line);
     if (line.contains("conda update"))
         emit gotConsoleLog("Please wait...");
-
+    if (line.contains("CondaValueError: prefix already exists"))
+         emit gotConsoleLog("Installation already exists!");
 
     if(rxDownloadPercentage.indexIn(consoleLine)>-1){
        int percentage = rxDownloadPercentage.cap(1).toInt();
@@ -78,4 +79,14 @@ void InstallerProcess::processError(QProcess::ProcessError error)
 float InstallerProcess::getDownloadProgress() const
 {
     return downloadProgress;
+}
+void InstallerProcess::stopProcess()
+{
+    if (installerProc) {
+        installerProc->terminate();
+        if (!installerProc->waitForFinished(2000)) {
+            installerProc->kill();
+            installerProc->waitForFinished();
+        }
+    }
 }

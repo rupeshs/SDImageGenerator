@@ -66,7 +66,12 @@ RowLayout{
         onStatusChanged: {
             if (folderModel.status == FolderListModel.Ready){
                 currentIndex = 0;
-                if (folderModel.count >0 ) {
+                if (folderModel.count === 1 ) {
+                    displayImage();
+                    previousButton.enabled = false;
+                    nextButton.enabled = false
+
+                }else if (folderModel.count >1 ) {
                     displayImage();
                     previousButton.enabled = false;
                     nextButton.enabled = true;

@@ -59,7 +59,9 @@ public slots:
     void openLogs();
     void downloadModel();
     void installPythonEnv();
-
+    void stopInstaller();
+    void stopDownloader();
+    void cudaMemoryError();
 
 signals:
     void showMessageBox();
@@ -74,7 +76,9 @@ signals:
     void isProcessingChanged();
     void environmentNotReady();
     void installerStatusChanged(const QString &msg, float downloadPercentage);
+    void downloaderStatusChanged(const QString &msg, float downloadPercentage);
     void downloadPercentageChanged();
+    void setupInstallerUi(bool isDownloader);
 
 
 private:
@@ -102,6 +106,7 @@ private:
 private slots:
     void updateStatusMessage(const QString&);
     void updateInstallerStatusMessage(const QString&);
+    void updateDownloaderStatusMessage(const QString&);
     void installCompleted(int exitCode,bool isDownloader);
 
 };

@@ -218,6 +218,7 @@ debug/qrc_qml_qmlcache.cpp: qml_qmlcache.qrc \
 
 debug/qrc_sdimagegenerator.cpp: sdimagegenerator.qrc \
 		../../../../Qt5/5.15.2/mingw81_64/bin/rcc.exe \
+		images/download.png \
 		images/folder2-open.png \
 		images/images.png \
 		images/next.png \
@@ -225,7 +226,8 @@ debug/qrc_sdimagegenerator.cpp: sdimagegenerator.qrc \
 		images/previous.png \
 		images/file-text.png \
 		images/placeholder.png \
-		images/gear.png
+		images/gear.png \
+		images/file-arrow-down.png
 	D:\Qt5\5.15.2\mingw81_64\bin\rcc.exe -name sdimagegenerator sdimagegenerator.qrc -o debug\qrc_sdimagegenerator.cpp
 
 compiler_moc_predefs_make_all: debug/moc_predefs.h
@@ -733,30 +735,43 @@ debug/moc_installerprocess.cpp: installer/installerprocess.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
-		myprocess.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qhash.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTemporaryFile \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTimer \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtimer.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDebug \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qhash.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmap.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qlocale.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qset.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QRegExp \
+		diffusionenvironment.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFile \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTextStream \
+		defines.h \
+		utils.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QString \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDir \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
+		myprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTemporaryFile \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTimer \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtimer.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
 		debug/moc_predefs.h \
 		../../../../Qt5/5.15.2/mingw81_64/bin/moc.exe
 	D:\Qt5\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/textimg/apps/SDImageGenerator/src/debug/moc_predefs.h -ID:/Qt5/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/textimg/apps/SDImageGenerator/src -ID:/Qt5/5.15.2/mingw81_64/include -ID:/Qt5/5.15.2/mingw81_64/include/QtQuickControls2 -ID:/Qt5/5.15.2/mingw81_64/include/QtQuick -ID:/Qt5/5.15.2/mingw81_64/include/QtWidgets -ID:/Qt5/5.15.2/mingw81_64/include/QtGui -ID:/Qt5/5.15.2/mingw81_64/include/QtANGLE -ID:/Qt5/5.15.2/mingw81_64/include/QtQmlModels -ID:/Qt5/5.15.2/mingw81_64/include/QtQml -ID:/Qt5/5.15.2/mingw81_64/include/QtNetwork -ID:/Qt5/5.15.2/mingw81_64/include/QtCore -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -ID:/Qt5/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -ID:/Qt5/Tools/mingw810_64/x86_64-w64-mingw32/include installer\installerprocess.h -o debug\moc_installerprocess.cpp
@@ -1462,30 +1477,43 @@ debug/installerprocess.o: installer/installerprocess.cpp installer/installerproc
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
-		myprocess.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qhash.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTemporaryFile \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTimer \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtimer.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDebug \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qhash.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmap.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qlocale.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qset.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QRegExp
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QRegExp \
+		diffusionenvironment.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFile \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTextStream \
+		defines.h \
+		utils.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QString \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDir \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
+		myprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QProcess \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTemporaryFile \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTimer \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtimer.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\installerprocess.o installer\installerprocess.cpp
 
 debug/main.o: main.cpp ../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QGuiApplication \

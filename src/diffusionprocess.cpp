@@ -34,6 +34,9 @@ void DiffusionProcess::readProcessOutput(QByteArray line)
     if (!line.isEmpty())
         emit gotConsoleLog(line);
 
+    if (consoleLine.contains("conda.bat"))
+       emit gotConsoleLog(QString("Initializing,please wait..."));
+
     if(rxOutputFolder.indexIn(consoleLine)>-1){
        QString outFolderPath = rxOutputFolder.cap(1);
        samplesPath = Utils::localPathToUrl(outFolderPath);
@@ -46,9 +49,13 @@ void DiffusionProcess::readProcessOutput(QByteArray line)
          emit generatingImages();
     }
 
-    if (consoleLine.contains("Outputs:")) {
+    if (consoleLine.contains("Outputs:"))
         emit imagesGenerated();
-    }
+
+
+    if (consoleLine.contains("RuntimeError: CUDA out of memory"))
+        emit cudaMemoryError();
+
 }
 
 void DiffusionProcess::processFinished(int exit_code, QProcess::ExitStatus exit_status)
@@ -108,17 +115,15 @@ void DiffusionProcess::startProcess()
 
 void DiffusionProcess::stopProcess()
 {
-
     writeCommand("q");
-    //dreamProcess->sto
 
-    /*if (stableDiffusionProcess) {
-        stableDiffusionProcess->terminate();
-        if (!stableDiffusionProcess->waitForFinished(2000)) {
-            stableDiffusionProcess->kill();
-            stableDiffusionProcess->waitForFinished();
+    if (dreamProcess) {
+        dreamProcess->terminate();
+        if (!dreamProcess->waitForFinished(2000)) {
+            dreamProcess->kill();
+            dreamProcess->waitForFinished();
         }
-    }*/
+    }
 }
 
 void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
@@ -151,7 +156,7 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
     }
 
     promptCommand="";
-    for (auto argument : promptArguments) {
+    foreach (QString argument , promptArguments) {
         promptCommand.append(argument);
         promptCommand.append(" ");
     }

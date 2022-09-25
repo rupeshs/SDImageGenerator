@@ -26,6 +26,8 @@ ApplicationWindow {
         id : stableDiffusionBackend
     }
 
+
+
     MessageDialog
     {
         id: msgDialog
@@ -59,8 +61,8 @@ ApplicationWindow {
             else
                 seedInput.text = options.seed;
 
-            minicondaCheck.checked = envStatus.isCondaReady;
-            minicondaCheck.checkable = false;
+            //minicondaCheck.checked = envStatus.isCondaReady;
+            //minicondaCheck.checkable = false;
             pythonCheck.checked = envStatus.isPythonEnvReady;
             pythonCheck.checkable = false;
             modelCheck.checked = envStatus.isStableDiffusionModelReady;
@@ -83,17 +85,29 @@ ApplicationWindow {
             tabBar.itemAt(2).enabled = false;
         }
 
-        function onInstallerStatusChanged(msg , progress) {
-            console.log(msg, progress);
-            installerStatusLabel.text = msg;
-            if (progress >= 0) {
-                installerDownloadPbar.value = progress.toFixed(2);
-            }
-            else {
+        function onSetupInstallerUi(isDownloader) {
+            console.log("onSetupInstallerUi");
+            downloadDialog.isDownloader = isDownloader;
+            if (isDownloader) {
+                installerDownloadPbar.visible = true;
+                installerStatusLabel.font.pointSize = 9;
+                downloadDialog.title = qsTr("SDImageGenerator - Downloading model...");
+                downloadDialog.visible = true ;
+            } else {
                 installerDownloadPbar.visible = false;
                 installerStatusLabel.font.pointSize = 12;
+                downloadDialog.title = qsTr("SDImageGenerator - Installing...");
+                downloadDialog.visible = true ;
             }
 
+        }
+
+        function onInstallerStatusChanged(msg , progress) {
+            installerStatusLabel.text = msg;
+        }
+        function onDownloaderStatusChanged(msg , progress) {
+            installerStatusLabel.text = msg;
+            installerDownloadPbar.value = progress.toFixed(2);
         }
     }
     function getElapsedTime()
@@ -146,14 +160,14 @@ ApplicationWindow {
         }
         TabButton {
             text: qsTr("Settings")
-              icon.source: "images/gear.png"
+            icon.source: "images/gear.png"
             background: Rectangle {
                 color: tabBar.currentIndex == 2 ? "green": "#393A3B"
             }
         }
         TabButton {
             text: qsTr("Install")
-              icon.source: "images/gear.png"
+            icon.source: "images/download.png"
             background: Rectangle {
                 color: tabBar.currentIndex == 3 ? "green": "#393A3B"
             }
@@ -163,7 +177,7 @@ ApplicationWindow {
 
         TabButton {
             text: qsTr("About")
-              icon.source: "images/gear.png"
+            icon.source: "images/gear.png"
             background: Rectangle {
                 color: tabBar.currentIndex == 4 ? "green": "#393A3B"
             }
@@ -294,14 +308,14 @@ ApplicationWindow {
 
 
             Button {
-                 width: 48
-                 height: 48
-                 Layout.alignment:  Qt.AlignBottom
-                 icon.source: "images/folder2-open.png"
-                 ToolTip.visible: hovered
-                 ToolTip.text: qsTr("Open output folder")
-                 onClicked: stableDiffusionBackend.openOutputFolder();
-             }
+                width: 48
+                height: 48
+                Layout.alignment:  Qt.AlignBottom
+                icon.source: "images/folder2-open.png"
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Open output folder")
+                onClicked: stableDiffusionBackend.openOutputFolder();
+            }
         }
 
         ScrollView
@@ -329,17 +343,6 @@ ApplicationWindow {
                     }
 
                     Controls.AppLabel{
-                        labelText:qsTr("Install Environment")
-                        labelInfo: qsTr("Install/update environment")
-
-
-                    }
-                    Button{
-                        text: "Install env"
-                        onClicked: stableDiffusionBackend.installEnvironment()
-                    }
-
-                    Controls.AppLabel{
                         labelText:qsTr("Sampler")
                         labelInfo: qsTr("The diffusion sampling method. Default is PLMS.")
 
@@ -352,13 +355,13 @@ ApplicationWindow {
                             width: 150
                             Layout.fillHeight: true
                             model: ['ddim',
-                                    'k_dpm_2_a',
-                                    'k_dpm_2',
-                                    'k_euler_a',
-                                    'k_euler',
-                                    'k_heun',
-                                    'k_lms',
-                                    'plms']
+                                'k_dpm_2_a',
+                                'k_dpm_2',
+                                'k_euler_a',
+                                'k_euler',
+                                'k_heun',
+                                'k_lms',
+                                'plms']
                         }
                     }
 
@@ -474,9 +477,16 @@ ApplicationWindow {
         }
 
         Page {
-         ColumnLayout{
+            ColumnLayout{
+                Label{
 
-               CheckBox {
+                    Layout.leftMargin: 10
+                    Layout.topMargin: 30
+                    text : "Install enviroment/download model"
+
+                }
+
+                /*CheckBox {
                     id : minicondaCheck
 
                     checkable: false
@@ -485,45 +495,52 @@ ApplicationWindow {
                     Layout.topMargin: 20
                     text: qsTr("Miniconda")
 
+                }*/
+                Item{
+                    Layout.fillWidth: true
+                    height: 20
                 }
                 RowLayout{
-                CheckBox {
-                    id : pythonCheck
 
-                    checkable: false
-                    checked: stableDiffusionBackend.envStatus.isPytonEnvReady
-                     Layout.leftMargin: 10
-                    text: qsTr("Environment")
-                }
-                Button{
-                    text : "Install"
-                    onClicked:  {
-                        downloadDialog.visible = true;
-                        stableDiffusionBackend.installPythonEnv()
+
+                    CheckBox {
+                        id : pythonCheck
+
+                        checkable: false
+
+                        checked: stableDiffusionBackend.envStatus.isPytonEnvReady
+                        Layout.leftMargin: 10
+                        text: qsTr("Environment")
                     }
+                    Button{
+                        text : "Install"
+                        icon.source:  "images/download.png"
+                        onClicked:  {
+                            stableDiffusionBackend.installPythonEnv();
+                        }
 
-                }
+                    }
                 }
                 RowLayout{
-                CheckBox {
-                    id : modelCheck
+                    CheckBox {
+                        id : modelCheck
 
-                    checkable: false
-                    checked: tableDiffusionBackend.envStatus.isStableDiffusionModelReady
-                     Layout.leftMargin: 10
-                    text: qsTr("StableDiffusion model")
-                }
-                Button{
-                    text : "Download model"
-                    onClicked:  {
-                        downloadDialog.visible = true;
-                        stableDiffusionBackend.downloadModel();
+                        checkable: false
+                        checked: tableDiffusionBackend.envStatus.isStableDiffusionModelReady
+                        Layout.leftMargin: 10
+                        text: qsTr("StableDiffusion model")
                     }
+                    Button{
+                        text : "Download model"
+                        icon.source:  "images/file-arrow-down.png"
+                        onClicked:  {
+                            stableDiffusionBackend.downloadModel();
+                        }
 
-                }
+                    }
                 }
 
-          }
+            }
         }
 
         Page {
@@ -560,47 +577,54 @@ ApplicationWindow {
         stableDiffusionBackend.stopProcessing();
     }
 
-    Window {
+    ApplicationWindow  {
         id: downloadDialog
+        property bool isDownloader
+
         width: 550
         height: 200
         color: "#2e2e2e"
         title: "Installing..."
+        maximumHeight:  200
+        minimumHeight:  200
+        maximumWidth:  550
+        minimumWidth:  550
 
         ColumnLayout{
-        anchors.centerIn: parent
-        spacing:  10
+            anchors.centerIn: parent
+            spacing:  10
 
-        Controls.CircularProgressBar{
-            id: installerDownloadPbar
+            Controls.CircularProgressBar{
+                id: installerDownloadPbar
 
-            Layout.alignment: Qt.AlignHCenter
-            lineWidth: 10
-            value: 0.0
-            size: 150
-            secondaryColor: "#e0e0e0"
-            primaryColor: "#29b6f6"
+                Layout.alignment: Qt.AlignHCenter
+                lineWidth: 10
+                value: 0.0
+                size: 150
+                secondaryColor: "#e0e0e0"
+                primaryColor: "#29b6f6"
 
-            Text {
-                text: parseInt(installerDownloadPbar.value * 100) + "%"
-                anchors.centerIn: parent
-                font.pointSize: 20
-                color: installerDownloadPbar.primaryColor
+                Text {
+                    text: parseInt(installerDownloadPbar.value * 100) + "%"
+                    anchors.centerIn: parent
+                    font.pointSize: 20
+                    color: installerDownloadPbar.primaryColor
+                }
+            }
+
+            Label{
+                id: installerStatusLabel
+                Layout.alignment: Qt.AlignBottom
+                color: "white"
             }
         }
-
-        Label{
-            id: installerStatusLabel
-            //anchors.centerIn: parent
-            Layout.alignment: Qt.AlignBottom
-
-            color: "white"
-            //font.pointSize: 14
-            //font.bold: true
-
-
-        }
+        onClosing : {
+            console.log("closee");
+            downloadDialog.title = qsTr("Stopping please wait...")
+            if (isDownloader)
+                stableDiffusionBackend.stopDownloader();
+            else
+                stableDiffusionBackend.stopInstaller();
         }
     }
-
 }
