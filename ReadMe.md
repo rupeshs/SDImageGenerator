@@ -1,7 +1,15 @@
-## Stable Diffusion GUI 
+## SDImageGenerator
+SDImageGeneator is a text-to-image generation AI app for Windows/Linux. It is still actively under development. The Linux version of the app is coming soon.
 
-Please note this repo is in actively under development.
+## Features 
+- Simple interface
+- Portable package, simply extract and run the app
+- Image viewer for generated images
+- Application logs
+- Configurable image generation settings
 
-## Windows Users 
-
-Download and install miniconda (Python 3.9) from https://docs.conda.io/en/latest/miniconda.html#windows-installers
+## System Requirements:
+- Windows 10/11 64-bit
+- Recent Nvidia GPU, preferably RTX ( 4 GB or more VRAM memory)
+- 12 GB RAM (16+ recommended)
+- ~11 GB disk space after installation (on SSD for best performance)
