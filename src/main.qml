@@ -221,7 +221,7 @@ ApplicationWindow {
 
                             Controls.AppTextArea{
                                 id: promptInput
-                                placeholderText: "A virus playing guitar"
+                                placeholderText: "A fantasy landscape"
                                 font.pointSize: 12
                             }
                         }
@@ -551,6 +551,12 @@ ApplicationWindow {
                     color : "white"
                     font.pointSize: 14
                     Layout.alignment: Qt.AlignHCenter
+
+                }
+                Text{
+                    text : qsTr("Text to image AI generator")
+                    color : "grey"
+                    font.pointSize: 12
 
                 }
                 Text{
