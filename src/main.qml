@@ -557,26 +557,40 @@ ApplicationWindow {
                 Text{
                     text : qsTr("Text to image AI generator")
                     color : "grey"
+                    Layout.alignment: Qt.AlignHCenter
                     font.pointSize: 12
 
                 }
                 Text{
-                    text : qsTr("SDImageGenerator is a stable diffusion UI")
+                    text : qsTr("SDImageGenerator is a stable diffusion frontend")
                     color : "grey"
                     font.pointSize: 12
+                    Layout.alignment: Qt.AlignHCenter
 
                 }
-                Text {
-                    text: "<a href='https://github.com/rupeshs/SDImageGenerator/blob/main/ReadMe.md'>Terms of use</a>"
-                    color : "grey"
-                    linkColor: "white"
-                    font.pointSize: 12
-                    onLinkActivated: Qt.openUrlExternally(link)
-                }
+
                 Text{
                     text : qsTr("Copyright © 2022 Rupesh Sreeraman")
                     color : "grey"
                     font.pointSize: 12
+                    Layout.alignment: Qt.AlignHCenter
+                }
+
+                Text {
+                    text: "Using stable diffusion model: <a href='https://github.com/rupeshs/stablediffusion-mod/blob/main/Stable_Diffusion_v1_Model_Card.md'>Model card</a>"
+                    color : "grey"
+                    linkColor: "lightblue"
+                    font.pointSize: 12
+                    Layout.alignment: Qt.AlignHCenter
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
+                Text {
+                    text: "<a href='https://github.com/rupeshs/SDImageGenerator/blob/main/Terms%20of%20use.md'>Terms of use</a>"
+                    color : "grey"
+                    linkColor: "lightblue"
+                    font.pointSize: 12
+                    Layout.alignment: Qt.AlignHCenter
+                    onLinkActivated: Qt.openUrlExternally(link)
                 }
 
             }
