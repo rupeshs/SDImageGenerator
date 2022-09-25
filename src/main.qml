@@ -325,6 +325,7 @@ ApplicationWindow {
             clip: true
             Layout.fillWidth: true
             Layout.fillHeight: true
+             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
             RowLayout
             {
@@ -565,11 +566,19 @@ ApplicationWindow {
                     font.pointSize: 12
 
                 }
+                Text {
+                    text: "<a href='https://github.com/rupeshs/SDImageGenerator/blob/main/ReadMe.md'>Terms of use</a>"
+                    color : "grey"
+                    linkColor: "white"
+                    font.pointSize: 12
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
                 Text{
                     text : qsTr("Copyright © 2022 Rupesh Sreeraman")
                     color : "grey"
                     font.pointSize: 12
                 }
+
             }
 
 

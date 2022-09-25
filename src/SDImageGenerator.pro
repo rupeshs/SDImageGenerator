@@ -33,6 +33,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    WinVersion.h \
     defines.h \
     diffusionenvironment.h \
     diffusionenvironmentstatus.h \
@@ -44,3 +45,5 @@ HEADERS += \
     myprocess.h \
     texttoimagebackend.h \
     utils.h
+
+RC_FILE = sdImagefenerator.rc
