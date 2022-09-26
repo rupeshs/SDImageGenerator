@@ -29,6 +29,7 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
     qDebug()<<"PythonEnvPath"<<diffusionEnv->getPythonEnvPath();
     qDebug()<<"StableDiffusionPath"<<diffusionEnv->getStableDiffusionPath();
     dreamProcess->setWorkingDirectory(diffusionEnv->getStableDiffusionPath());
+    qDebug()<<"Directory"<<dreamProcess->workingDirectory();
 
     addArgument(diffusionEnv->getCondaActivatePath());
     addArgument("&&");

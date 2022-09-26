@@ -17,14 +17,14 @@
 #ifndef WINVERSION_H
 #define WINVERSION_H
 
-#define VER_FILEVERSION             0,1,0,0
+#define VER_FILEVERSION             0,1,5,0
 #define VER_FILEVERSION_STR         "0.1.0.0\0"
 
-#define VER_PRODUCTVERSION          0,1,0,0
-#define VER_PRODUCTVERSION_STR      "0.1.0.0\0"
+#define VER_PRODUCTVERSION          0,1,5,0
+#define VER_PRODUCTVERSION_STR      "0.1.5.0\0"
 
 #define VER_COMPANYNAME_STR         "Rupesh Sreeraman\0"
-#define VER_FILEDESCRIPTION_STR     "SDImageGenerator 0.1.0\0"
+#define VER_FILEDESCRIPTION_STR     "SDImageGenerator 0.1.5\0"
 #define VER_INTERNALNAME_STR        "sdimagegenerator\0"
 #define VER_LEGALCOPYRIGHT_STR      "Copyright(c) 2022 Rupesh Sreeraman\0"
 #define VER_ORIGINALFILENAME_STR    "SDImageGenerator.exe\0"

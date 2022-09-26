@@ -54,6 +54,8 @@ void InstallerProcess::readProcessOutput(QByteArray line)
         emit gotConsoleLog("Please wait...");
     if (line.contains("CondaValueError: prefix already exists"))
          emit gotConsoleLog("Installation already exists!");
+    if (line.toLower().contains("done"))
+         emit gotConsoleLog("Please wait,it will take few minutes...");
 
     if(rxDownloadPercentage.indexIn(consoleLine)>-1){
        int percentage = rxDownloadPercentage.cap(1).toInt();

@@ -105,32 +105,34 @@ void TextToImageBackend::showErrorDlg(const QString &error)
 
 void TextToImageBackend::saveSettings()
 {
-    settings->beginGroup("StableDiffusion");
     qDebug()<<"Save StableDiffusion settings : "<<QString::number(m_options->metaObject()->propertyCount());
-    for (int i =m_options->metaObject()->propertyOffset(); i <m_options->metaObject()->propertyCount() ; ++i) {
-        QString settingName = m_options->metaObject()->property(i).name();
-        QVariant settingValue =  m_options->metaObject()->property(i).read(m_options);
-        if ( settingName=="prompt")
-            settings->setValue(settingName,settingValue.toString().trimmed());
-        else
-            settings->setValue(settingName,settingValue);
-    }
+    settings->beginGroup("Main");
+    settings->setValue("prompt", m_options->prompt());
+    settings->setValue("scale", m_options->scale());
+    settings->setValue("imageWidth", m_options->imageWidth());
+    settings->setValue("imageHeight", m_options->imageHeight());
+    settings->setValue("numberOfImages", m_options->numberOfImages());
+    settings->setValue("ddimSteps", m_options->ddimSteps());
+    settings->setValue("sampler", m_options->sampler());
+    settings->setValue("seed", m_options->seed());
+    settings->setValue("saveDir", m_options->saveDir());
+    settings->endGroup();
 }
 
 void TextToImageBackend::loadSettings()
 {
     qInfo()<<"Loading app settings";
-    m_options->setPrompt(settings->value("StableDiffusion/prompt","").toString());
-    m_options->setScale(settings->value("StableDiffusion/scale",DEFAULT_SCALE).toDouble());
-    m_options->setImageWidth(settings->value("StableDiffusion/imageWidth",DEFAULT_IMAGE_WIDTH).toDouble());
-    m_options->setImageHeight(settings->value("StableDiffusion/imageHeight",DEFAULT_IMAGE_HEIGHT).toDouble());
-    m_options->setNumberOfImages(settings->value("StableDiffusion/numberOfImages",DEFAULT_NUMBER_OF_IMAGES).toDouble());
-    m_options->setDdimSteps(settings->value("StableDiffusion/ddimSteps",DEFAULT_DDIM_STEPS).toDouble());
-    m_options->setSampler(settings->value("StableDiffusion/sampler",DEFAULT_SAMPLER).toString());
+    m_options->setPrompt(settings->value("Main/prompt","").toString());
+    m_options->setScale(settings->value("Main/scale",DEFAULT_SCALE).toDouble());
+    m_options->setImageWidth(settings->value("Main/imageWidth",DEFAULT_IMAGE_WIDTH).toDouble());
+    m_options->setImageHeight(settings->value("Main/imageHeight",DEFAULT_IMAGE_HEIGHT).toDouble());
+    m_options->setNumberOfImages(settings->value("Main/numberOfImages",DEFAULT_NUMBER_OF_IMAGES).toDouble());
+    m_options->setDdimSteps(settings->value("Main/ddimSteps",DEFAULT_DDIM_STEPS).toDouble());
+    m_options->setSampler(settings->value("Main/sampler",DEFAULT_SAMPLER).toString());
     QString defaultOutDir = Utils::pathAppend(qApp->applicationDirPath(),STABLE_DIFFUSION_RESULTS_FOLDER_NAME);
-    m_options->setSaveDir(settings->value("StableDiffusion/saveDir",defaultOutDir).toString());
+    m_options->setSaveDir(settings->value("Main/saveDir",defaultOutDir).toString());
 
-    double seed = settings->value("StableDiffusion/seed",DEFAULT_SEED).toDouble();
+    double seed = settings->value("Main/seed",DEFAULT_SEED).toDouble();
     if(seed)
         m_options->setSeed(seed);
 

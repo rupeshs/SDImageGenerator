@@ -26,8 +26,6 @@ ApplicationWindow {
         id : stableDiffusionBackend
     }
 
-
-
     MessageDialog
     {
         id: msgDialog
@@ -548,7 +546,7 @@ ApplicationWindow {
             ColumnLayout{
                 anchors.centerIn: parent
                 Text{
-                    text : qsTr("SDImageGenerator v0.1.0 Beta")
+                    text : qsTr("SDImageGenerator v0.1.5 Beta")
                     color : "white"
                     font.pointSize: 14
                     Layout.alignment: Qt.AlignHCenter
@@ -608,6 +606,7 @@ ApplicationWindow {
 
     ApplicationWindow  {
         id: downloadDialog
+
         property bool isDownloader
 
         width: 550
@@ -618,6 +617,7 @@ ApplicationWindow {
         minimumHeight:  200
         maximumWidth:  550
         minimumWidth:  550
+        flags: Qt.Dialog
 
         ColumnLayout{
             anchors.centerIn: parent
@@ -648,7 +648,6 @@ ApplicationWindow {
             }
         }
         onClosing : {
-            console.log("closee");
             downloadDialog.title = qsTr("Stopping please wait...")
             if (isDownloader)
                 stableDiffusionBackend.stopDownloader();
