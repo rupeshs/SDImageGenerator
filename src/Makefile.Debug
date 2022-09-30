@@ -498,18 +498,6 @@ debug/moc_diffusionenvvalidator.cpp: diffusionenvvalidator.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurl.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
-		diffusionenvironmentstatus.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqml.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlprivate.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qtqmlglobal.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qtqml-config.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtNetwork/qtnetworkglobal.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtNetwork/qtnetwork-config.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlparserstatus.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmllist.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlpropertyvaluesource.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qpointer.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmetaobject.h \
 		errors.h \
 		installer/pythonenvvalidator.h \
 		myprocess.h \
@@ -1082,11 +1070,11 @@ debug/moc_texttoimagebackend.cpp: texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QRegExp \
 		diffusionenvvalidator.h \
-		diffusionenvironmentstatus.h \
 		errors.h \
 		installer/pythonenvvalidator.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDebug \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QStringList \
+		diffusionenvironmentstatus.h \
 		installer/installerprocess.h \
 		debug/moc_predefs.h \
 		../../../../Qt5/5.15.2/mingw81_64/bin/moc.exe
@@ -1367,18 +1355,6 @@ debug/diffusionenvvalidator.o: diffusionenvvalidator.cpp diffusionenvvalidator.h
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurl.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
-		diffusionenvironmentstatus.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqml.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlprivate.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qtqmlglobal.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qtqml-config.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtNetwork/qtnetworkglobal.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtNetwork/qtnetwork-config.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlparserstatus.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmllist.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlpropertyvaluesource.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qpointer.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmetaobject.h \
 		errors.h \
 		installer/pythonenvvalidator.h \
 		myprocess.h \
@@ -1922,11 +1898,11 @@ debug/main.o: main.cpp ../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QGuiAppli
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QRegExp \
 		diffusionenvvalidator.h \
-		diffusionenvironmentstatus.h \
 		errors.h \
 		installer/pythonenvvalidator.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDebug \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QStringList \
+		diffusionenvironmentstatus.h \
 		installer/installerprocess.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQuickControls2/QQuickStyle \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQuickControls2/qquickstyle.h \
@@ -2118,11 +2094,11 @@ debug/texttoimagebackend.o: texttoimagebackend.cpp texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QRegExp \
 		diffusionenvvalidator.h \
-		diffusionenvironmentstatus.h \
 		errors.h \
 		installer/pythonenvvalidator.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDebug \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QStringList \
+		diffusionenvironmentstatus.h \
 		installer/installerprocess.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QGuiApplication \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qguiapplication.h \

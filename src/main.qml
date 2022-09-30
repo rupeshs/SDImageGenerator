@@ -56,6 +56,7 @@ ApplicationWindow {
             saveFolder.text = options.saveDir
             seedInput.text = options.seed;
             gridCheckBox.checked = options.grid;
+            seamlessCheckBox.checked = options.seamless;
 
             modelCheck.checked = envStatus.isStableDiffusionModelReady;
             modelCheck.checkable = false;
@@ -130,6 +131,7 @@ ApplicationWindow {
         stableDiffusionBackend.options.saveDir = saveFolder.text
         stableDiffusionBackend.options.seed = seedInput.text
         stableDiffusionBackend.options.grid = gridCheckBox.checked
+        stableDiffusionBackend.options.seamless = seamlessCheckBox.checked
 
     }
     TabBar {
@@ -473,11 +475,22 @@ ApplicationWindow {
 
                       text: "Grid"
                     }
+                    Controls.AppLabel{
+                        labelText:qsTr("Seamless Tiling")
+                        labelInfo: qsTr("Activate seamless tiling for interesting effects")
+
+                    }
+                    CheckBox{
+                      id : seamlessCheckBox
+
+                      text: "Seamless tiling"
+                    }
 
                     Button{
                         text : "Reset All"
                         onClicked: stableDiffusionBackend.resetSettings()
                     }
+
                 }
             }
         }
@@ -604,7 +617,7 @@ ApplicationWindow {
     }
 
     onClosing: {
-
+        window.title = qsTr("Stopping please wait...");
         updateOptions();
         stableDiffusionBackend.saveSettings();
         stableDiffusionBackend.stopProcessing();

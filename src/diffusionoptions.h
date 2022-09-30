@@ -33,6 +33,7 @@ class DiffusionOptions : public QObject
     Q_PROPERTY(QString seed READ seed WRITE setSeed CONSTANT)
     Q_PROPERTY(QString saveDir READ saveDir WRITE setSaveDir CONSTANT)
     Q_PROPERTY(bool grid READ grid WRITE setGrid CONSTANT)
+    Q_PROPERTY(bool seamless READ seamless WRITE setSeamless CONSTANT)
     QML_ELEMENT
 
 public:
@@ -68,6 +69,9 @@ public:
     bool grid() const;
     void setGrid(bool newGrid);
 
+    bool seamless() const;
+    void setSeamless(bool newSeamless);
+
 private:
     QString m_prompt;
     qreal m_scale;
@@ -79,6 +83,7 @@ private:
     QString m_seed;
     QString m_saveDir;
     bool m_grid;
+    bool m_seamless;
 
 };
 

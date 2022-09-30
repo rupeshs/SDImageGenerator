@@ -110,6 +110,7 @@ void TextToImageBackend::saveSettings()
     settings->setValue("seed", m_options->seed());
     settings->setValue("saveDir", m_options->saveDir());
     settings->setValue("grid", m_options->grid());
+    settings->setValue("seamless", m_options->seamless());
     settings->endGroup();
 }
 
@@ -129,6 +130,7 @@ void TextToImageBackend::loadSettings()
 
     Utils::ensurePath(m_options->saveDir());
     m_options->setGrid(settings->value("Main/grid",DEFAULT_GRID).toBool());
+    m_options->setSeamless(settings->value("Main/seamless",DEFAULT_SEAMLESS).toBool());
     emit setupInstallerUi(false);
 
 }
@@ -144,6 +146,7 @@ void TextToImageBackend::resetSettings()
     m_options->setSeed(DEFAULT_SEED);
     m_options->setSaveDir(diffusionEnv->getDefaultOutDir());
     m_options->setGrid(DEFAULT_GRID);
+    m_options->setSeamless(DEFAULT_SEAMLESS);
 
     emit initControls(m_options,m_envStatus);
 }

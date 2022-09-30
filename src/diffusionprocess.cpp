@@ -164,6 +164,9 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
     if (diffusionOptions->grid())
         addPromptArguments("--grid");
 
+    if (diffusionOptions->seamless())
+        addPromptArguments("--seamless");
+
     if (!diffusionOptions->seed().isEmpty()){
         addPromptArguments("--seed");
         addPromptArguments(diffusionOptions->seed());

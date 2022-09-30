@@ -115,3 +115,13 @@ void DiffusionOptions::setGrid(bool newGrid)
 {
     m_grid = newGrid;
 }
+
+bool DiffusionOptions::seamless() const
+{
+    return m_seamless;
+}
+
+void DiffusionOptions::setSeamless(bool newSeamless)
+{
+    m_seamless = newSeamless;
+}
