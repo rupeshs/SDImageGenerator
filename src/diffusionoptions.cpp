@@ -105,3 +105,13 @@ void DiffusionOptions::setSaveDir(const QString &newSaveDir)
 {
     m_saveDir = newSaveDir;
 }
+
+bool DiffusionOptions::grid() const
+{
+    return m_grid;
+}
+
+void DiffusionOptions::setGrid(bool newGrid)
+{
+    m_grid = newGrid;
+}

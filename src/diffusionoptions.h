@@ -32,6 +32,7 @@ class DiffusionOptions : public QObject
     Q_PROPERTY(QString sampler READ sampler WRITE setSampler CONSTANT)
     Q_PROPERTY(QString seed READ seed WRITE setSeed CONSTANT)
     Q_PROPERTY(QString saveDir READ saveDir WRITE setSaveDir CONSTANT)
+    Q_PROPERTY(bool grid READ grid WRITE setGrid CONSTANT)
     QML_ELEMENT
 
 public:
@@ -64,6 +65,9 @@ public:
     const QString &saveDir() const;
     void setSaveDir(const QString &newSaveDir);
 
+    bool grid() const;
+    void setGrid(bool newGrid);
+
 private:
     QString m_prompt;
     qreal m_scale;
@@ -74,6 +78,7 @@ private:
     QString m_sampler;
     QString m_seed;
     QString m_saveDir;
+    bool m_grid;
 
 };
 

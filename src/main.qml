@@ -55,6 +55,7 @@ ApplicationWindow {
             samplerComboBox.currentIndex = samplerComboBox.indexOfValue(options.sampler);
             saveFolder.text = options.saveDir
             seedInput.text = options.seed;
+            gridCheckBox.checked = options.grid;
 
             modelCheck.checked = envStatus.isStableDiffusionModelReady;
             modelCheck.checkable = false;
@@ -128,6 +129,7 @@ ApplicationWindow {
         stableDiffusionBackend.options.sampler = samplerComboBox.currentText
         stableDiffusionBackend.options.saveDir = saveFolder.text
         stableDiffusionBackend.options.seed = seedInput.text
+        stableDiffusionBackend.options.grid = gridCheckBox.checked
 
     }
     TabBar {
@@ -460,6 +462,16 @@ ApplicationWindow {
                             onClicked: folderDialog.open()
 
                         }
+                    }
+                    Controls.AppLabel{
+                        labelText:qsTr("Grid")
+                        labelInfo: qsTr("Turn on grid mode to return a single image combining all the images")
+
+                    }
+                    CheckBox{
+                      id : gridCheckBox
+
+                      text: "Grid"
                     }
 
                     Button{

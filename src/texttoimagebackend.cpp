@@ -109,6 +109,7 @@ void TextToImageBackend::saveSettings()
     settings->setValue("sampler", m_options->sampler());
     settings->setValue("seed", m_options->seed());
     settings->setValue("saveDir", m_options->saveDir());
+    settings->setValue("grid", m_options->grid());
     settings->endGroup();
 }
 
@@ -127,7 +128,9 @@ void TextToImageBackend::loadSettings()
     m_options->setSeed(seed);
 
     Utils::ensurePath(m_options->saveDir());
+    m_options->setGrid(settings->value("Main/grid",DEFAULT_GRID).toBool());
     emit setupInstallerUi(false);
+
 }
 
 void TextToImageBackend::resetSettings()
@@ -140,6 +143,7 @@ void TextToImageBackend::resetSettings()
     m_options->setSampler(DEFAULT_SAMPLER);
     m_options->setSeed(DEFAULT_SEED);
     m_options->setSaveDir(diffusionEnv->getDefaultOutDir());
+    m_options->setGrid(DEFAULT_GRID);
 
     emit initControls(m_options,m_envStatus);
 }

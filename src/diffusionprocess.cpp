@@ -161,6 +161,9 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
     addPromptArguments("--steps");
     addPromptArguments(QString::number(diffusionOptions->ddimSteps()));
 
+    if (diffusionOptions->grid())
+        addPromptArguments("--grid");
+
     if (!diffusionOptions->seed().isEmpty()){
         addPromptArguments("--seed");
         addPromptArguments(diffusionOptions->seed());
