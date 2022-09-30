@@ -20,37 +20,38 @@ DiffusionEnvValidator::DiffusionEnvValidator(QObject *parent,DiffusionEnvironmen
     : QObject{parent}
 {
     diffusionEnv = diffEnv;
-}
-
-EnvStatus DiffusionEnvValidator::Validate()
-{
- if (!validateCondaPath())
-     return EnvStatus::CondaNotFound;
-
- if (!validatePythonEnvPath())
-     return EnvStatus::PythonEnvNotFound;
-
- if (!Utils::checkPathExists(diffusionEnv->getStableDiffusionPath()))
-     return EnvStatus::StableDiffusionNotFound;
-
- if (!validateModelPath())
-     return EnvStatus::StableDiffusionModelNotFound;
-
- return EnvStatus::Ready;
+    pipValidator = new PythonEnvValidator(parent,diffEnv);
+    connect(pipValidator,SIGNAL(packageValidationCompleted(int,bool)),this,SLOT(packageValidationCompleted(int,bool)));
 
 }
 
-bool DiffusionEnvValidator::validateCondaPath()
+void DiffusionEnvValidator::Validate()
 {
-    return Utils::checkPathExists(diffusionEnv->getCondaActivatePath());
-}
-
-bool DiffusionEnvValidator::validatePythonEnvPath()
-{
-    return Utils::checkPathExists(diffusionEnv->getPythonEnvPath());
+    pipValidator->validatePackages();
 }
 
 bool DiffusionEnvValidator::validateModelPath()
 {
-   return Utils::checkPathExists(diffusionEnv->getStableDiffusionModelPath());
+    if( Utils::checkPathExists(diffusionEnv->getStableDiffusionModelPath())) {
+        return validateModelFile();
+    }
+    return false;
+}
+
+bool DiffusionEnvValidator::validateModelFileSize()
+{
+    return validateModelFile();
+}
+
+void DiffusionEnvValidator::packageValidationCompleted(int , bool isPackagesReady)
+{
+    bool modelReady = validateModelPath();
+    emit environmentCurrentStatus(isPackagesReady, modelReady);
+
+}
+
+bool DiffusionEnvValidator::validateModelFile()
+{
+    QFile modelFile(diffusionEnv->getStableDiffusionModelPath());
+    return STABLE_DIFFUSION_MODEL_1_4_FILE_SIZE == modelFile.size();
 }

@@ -19,9 +19,7 @@
 
 enum class EnvStatus
   {
-     CondaNotFound,
-     PythonEnvNotFound,
-     StableDiffusionNotFound,
+     PythonEnvNotReady,
      StableDiffusionModelNotFound,
      Ready
   };

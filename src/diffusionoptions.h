@@ -30,7 +30,7 @@ class DiffusionOptions : public QObject
     Q_PROPERTY(qreal numberOfImages READ numberOfImages WRITE setNumberOfImages CONSTANT)
     Q_PROPERTY(qreal ddimSteps READ ddimSteps WRITE setDdimSteps CONSTANT)
     Q_PROPERTY(QString sampler READ sampler WRITE setSampler CONSTANT)
-    Q_PROPERTY(qreal seed READ seed WRITE setSeed CONSTANT)
+    Q_PROPERTY(QString seed READ seed WRITE setSeed CONSTANT)
     Q_PROPERTY(QString saveDir READ saveDir WRITE setSaveDir CONSTANT)
     QML_ELEMENT
 
@@ -58,8 +58,8 @@ public:
     const QString &sampler() const;
     void setSampler(const QString &newSampler);
 
-    qreal seed() const;
-    void setSeed(qreal newSeed);
+    QString seed() const;
+    void setSeed(const QString &newSeed);
 
     const QString &saveDir() const;
     void setSaveDir(const QString &newSaveDir);
@@ -72,7 +72,7 @@ private:
     qreal m_numberOfImages;
     qreal m_ddimSteps;
     QString m_sampler;
-    qreal m_seed;
+    QString m_seed;
     QString m_saveDir;
 
 };

@@ -73,6 +73,11 @@ const QString &DiffusionEnvironment::getStableDiffusionModelUrl() const
     return stableDiffusionModelUrl;
 }
 
+const QString &DiffusionEnvironment::getDefaultOutDir() const
+{
+    return defaultOutDir;
+}
+
 void DiffusionEnvironment::setCondaActivatePath(const QString &newCondaActivatePath)
 {
     condaActivatePath = newCondaActivatePath;
@@ -102,5 +107,6 @@ void DiffusionEnvironment::setEnvironment()
     stableDiffusionScriptPath = Utils::pathAppend(stableDiffusionPath,QString(STABLE_DIFFUSION_DREAM));
     stableDiffusionModelPath = Utils::pathAppend(stableDiffusionPath,QString(STABLE_DIFFUSION_MODEL_1_4));
     stableDiffusionModelUrl = STABLE_DIFFUSION_MODEL_1_4_URL;
+    defaultOutDir = Utils::pathAppend(qApp->applicationDirPath(),STABLE_DIFFUSION_RESULTS_FOLDER_NAME);
 
 }

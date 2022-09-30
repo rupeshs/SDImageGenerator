@@ -13,6 +13,7 @@ SOURCES += \
         diffusionoptions.cpp \
         diffusionprocess.cpp \
         installer/installerprocess.cpp \
+        installer/pythonenvvalidator.cpp \
         main.cpp \
         myprocess.cpp \
         texttoimagebackend.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     diffusionprocess.h \
     errors.h \
     installer/installerprocess.h \
+    installer/pythonenvvalidator.h \
     myprocess.h \
     texttoimagebackend.h \
     utils.h

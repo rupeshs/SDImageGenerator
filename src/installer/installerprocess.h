@@ -16,6 +16,7 @@ public:
     explicit InstallerProcess(QObject *parent = nullptr,DiffusionEnvironment *diffEnv=nullptr);
     void downloadStableDiffusionModel();
     void installCondaEnv();
+    void installPipPackages();
 
     float getDownloadProgress() const;
 
@@ -34,6 +35,8 @@ private:
     DiffusionEnvironment *diffusionEnv;
     float downloadProgress;
     bool isDownloader;
+
+    void addPackageArgs(const QString &packagePath);
 };
 
 #endif // INSTALLERPROCESS_H

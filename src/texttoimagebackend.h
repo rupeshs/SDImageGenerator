@@ -68,7 +68,6 @@ public slots:
     void stableDiffusionFinished();
     void openOutputFolder();
     void setOutputFolder(QUrl url);
-    void installEnvironment();
     void generatingImages();
     void imagesGenerated();
     void updateCompleted();
@@ -78,6 +77,9 @@ public slots:
     void stopInstaller();
     void stopDownloader();
     void cudaMemoryError();
+    void environmentCurrentStatus(bool isPackagesReady,bool isStableDiffusionModelReady);
+    void handlePackagesStatus(bool isPackagesReady);
+    void handleModelStatus(bool isModelReady);
 
 signals:
     void showMessageBox();
@@ -95,6 +97,7 @@ signals:
     void downloaderStatusChanged(const QString &msg, float downloadPercentage);
     void downloadPercentageChanged();
     void setupInstallerUi(bool isDownloader);
+    void closeLoadingScreen();
 
 
 private:
@@ -117,7 +120,7 @@ private:
     QString installerStatusMsg;
 
     void initBackend();
-    bool verifyEnvironment();
+
 
 private slots:
     void updateStatusMessage(const QString&);

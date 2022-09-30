@@ -44,23 +44,36 @@ void InstallerProcess::installCondaEnv()
 
 }
 
+void InstallerProcess::installPipPackages()
+{
+    installerProc->clearArguments();
+    installerProc->addArgument(diffusionEnv->getCondaActivatePath());
+    installerProc->addArgument("&&");
+    installerProc->addArgument("conda");
+    installerProc->addArgument("activate");
+    installerProc->addArgument("sdimgenv");
+    installerProc->addArgument("&&");
+    addPackageArgs("./src/clip");
+    addPackageArgs("./src/gfpgan");
+    addPackageArgs("./src/k-diffusion");
+    addPackageArgs("./src/taming-transformers");
+    addPackageArgs(".");
+    installerProc->setWorkingDirectory(diffusionEnv->getStableDiffusionPath());
+    installerProc->start();
+
+
+}
+
 void InstallerProcess::readProcessOutput(QByteArray line)
 {
     QString consoleLine(line);
 
     if (!line.isEmpty())
         emit gotConsoleLog(line);
-    if (line.contains("conda update"))
-        emit gotConsoleLog("Please wait...");
-    if (line.contains("CondaValueError: prefix already exists"))
-         emit gotConsoleLog("Installation already exists!");
-    if (line.toLower().contains("done"))
-         emit gotConsoleLog("Please wait,it will take few minutes...");
 
     if(rxDownloadPercentage.indexIn(consoleLine)>-1){
        int percentage = rxDownloadPercentage.cap(1).toInt();
        downloadProgress = percentage / 100.0;
-       qDebug()<<QString::number(downloadProgress);
      }
 }
 
@@ -91,4 +104,13 @@ void InstallerProcess::stopProcess()
             installerProc->waitForFinished();
         }
     }
+}
+
+void InstallerProcess::addPackageArgs(const QString &packagePath)
+{
+    installerProc->addArgument("pip");
+    installerProc->addArgument("install");
+    installerProc->addArgument("--no-input");
+    installerProc->addArgument("-e");
+    installerProc->addArgument(packagePath);
 }

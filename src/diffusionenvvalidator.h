@@ -18,24 +18,30 @@
 #define DIFFUSIONENVVALIDATOR_H
 
 #include <QObject>
-#include <diffusionenvironment.h>
+#include "diffusionenvironment.h"
 #include "errors.h"
 #include "utils.h"
+#include "installer/pythonenvvalidator.h"
 
 class DiffusionEnvValidator : public QObject
 {
     Q_OBJECT
 public:
     explicit DiffusionEnvValidator(QObject *parent = nullptr, DiffusionEnvironment *diffusionEnv = nullptr);
-    EnvStatus Validate();
-    bool validateCondaPath();
-    bool validatePythonEnvPath();
+    void Validate();
     bool validateModelPath();
+    bool validateModelFileSize();
+public slots:
+    void packageValidationCompleted(int,bool);
 
 signals:
+    void environmentCurrentStatus(bool isPythonReady, bool isModelReady);
 
 private:
     DiffusionEnvironment *diffusionEnv;
+    PythonEnvValidator *pipValidator;
+
+    bool validateModelFile();
 };
 
 #endif // DIFFUSIONENVVALIDATOR_H

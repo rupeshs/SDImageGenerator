@@ -4,6 +4,7 @@ release/diffusionenvvalidator.o
 release/diffusionoptions.o
 release/diffusionprocess.o
 release/installerprocess.o
+release/pythonenvvalidator.o
 release/main.o
 release/myprocess.o
 release/texttoimagebackend.o
@@ -25,5 +26,6 @@ release/moc_diffusionenvvalidator.o
 release/moc_diffusionoptions.o
 release/moc_diffusionprocess.o
 release/moc_installerprocess.o
+release/moc_pythonenvvalidator.o
 release/moc_myprocess.o
 release/moc_texttoimagebackend.o

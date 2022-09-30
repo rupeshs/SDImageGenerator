@@ -54,15 +54,8 @@ ApplicationWindow {
             ddimStepsSlider.slider.value = options.ddimSteps;
             samplerComboBox.currentIndex = samplerComboBox.indexOfValue(options.sampler);
             saveFolder.text = options.saveDir
-            if (options.seed === 0)
-                seedInput.text = "";
-            else
-                seedInput.text = options.seed;
+            seedInput.text = options.seed;
 
-            //minicondaCheck.checked = envStatus.isCondaReady;
-            //minicondaCheck.checkable = false;
-            pythonCheck.checked = envStatus.isPythonEnvReady;
-            pythonCheck.checkable = false;
             modelCheck.checked = envStatus.isStableDiffusionModelReady;
             modelCheck.checkable = false;
         }
@@ -82,9 +75,12 @@ ApplicationWindow {
             tabBar.itemAt(1).enabled = false;
             tabBar.itemAt(2).enabled = false;
         }
+         function onCloseLoadingScreen() {
+             downloadDialog.visible = false;
+         }
 
         function onSetupInstallerUi(isDownloader) {
-            console.log("onSetupInstallerUi");
+
             downloadDialog.isDownloader = isDownloader;
             if (isDownloader) {
                 installerDownloadPbar.visible = true;
@@ -94,7 +90,7 @@ ApplicationWindow {
             } else {
                 installerDownloadPbar.visible = false;
                 installerStatusLabel.font.pointSize = 12;
-                downloadDialog.title = qsTr("SDImageGenerator - Installing...");
+                downloadDialog.title = qsTr("SDImageGenerator - Loading...");
                 downloadDialog.visible = true ;
             }
 
@@ -106,6 +102,7 @@ ApplicationWindow {
         function onDownloaderStatusChanged(msg , progress) {
             installerStatusLabel.text = msg;
             installerDownloadPbar.value = progress.toFixed(2);
+            busyIndicatorInstaller.visible = false;
         }
     }
     function getElapsedTime()
@@ -130,10 +127,8 @@ ApplicationWindow {
         stableDiffusionBackend.options.ddimSteps = parseInt(ddimStepsSlider.slider.value)
         stableDiffusionBackend.options.sampler = samplerComboBox.currentText
         stableDiffusionBackend.options.saveDir = saveFolder.text
-        if (seedInput.text)
-            stableDiffusionBackend.options.seed = seedInput.text
-        else
-            stableDiffusionBackend.options.seed = 0
+        stableDiffusionBackend.options.seed = seedInput.text
+
     }
     TabBar {
         id: tabBar
@@ -343,7 +338,7 @@ ApplicationWindow {
 
                     Controls.AppLabel{
                         labelText:qsTr("Sampler")
-                        labelInfo: qsTr("The diffusion sampling method. Default is PLMS.")
+                        labelInfo: qsTr("The diffusion sampling method. Default is K_LMS.")
 
                     }
                     Item{
@@ -438,7 +433,7 @@ ApplicationWindow {
 
                         Layout.fillWidth:true
                         placeholderText: "Random seed"
-                        validator: IntValidator {bottom: 1; top: 9999999}
+                        validator: RegExpValidator { regExp: /[0-9]+/ }
                     }
 
                     Controls.AppLabel{
@@ -481,7 +476,7 @@ ApplicationWindow {
 
                     Layout.leftMargin: 10
                     Layout.topMargin: 30
-                    text : "Install enviroment/download model"
+                    text : "Download model"
 
                 }
 
@@ -499,7 +494,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     height: 20
                 }
-                RowLayout{
+                /*RowLayout{
 
 
                     CheckBox {
@@ -519,13 +514,12 @@ ApplicationWindow {
                         }
 
                     }
-                }
+                }*/
                 RowLayout{
                     CheckBox {
                         id : modelCheck
 
                         checkable: false
-                        checked: tableDiffusionBackend.envStatus.isStableDiffusionModelReady
                         Layout.leftMargin: 10
                         text: qsTr("Stable diffusion model")
                     }
@@ -640,11 +634,18 @@ ApplicationWindow {
                     color: installerDownloadPbar.primaryColor
                 }
             }
+            RowLayout{
+            spacing : 10
+            BusyIndicator{
+              id : busyIndicatorInstaller
+            }
 
             Label{
                 id: installerStatusLabel
+                text: "Please wait..."
                 Layout.alignment: Qt.AlignBottom
                 color: "white"
+            }
             }
         }
         onClosing : {

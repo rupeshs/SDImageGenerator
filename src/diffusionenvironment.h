@@ -41,6 +41,8 @@ public:
     const QString &getCurlPath() const;
     const QString &getStableDiffusionModelUrl() const;
 
+    const QString &getDefaultOutDir() const;
+
 signals:
 
 private:
@@ -53,6 +55,7 @@ private:
     QString stableDiffusionModelPath;
     QString curlPath;
     QString stableDiffusionModelUrl;
+    QString defaultOutDir;
 
     void setCondaActivatePath(const QString &newCondaActivatePath);
     void setPythonEnvPath(const QString &newPythonEnvPath);

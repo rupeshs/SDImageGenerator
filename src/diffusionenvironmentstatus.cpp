@@ -16,16 +16,6 @@
 
 #include "diffusionenvironmentstatus.h"
 
-bool DiffusionEnvironmentStatus::isCondaReady() const
-{
-    return m_isCondaReady;
-}
-
-void DiffusionEnvironmentStatus::setIsCondaReady(bool newIsCondaReady)
-{
-    m_isCondaReady = newIsCondaReady;
-}
-
 bool DiffusionEnvironmentStatus::isPythonEnvReady() const
 {
     return m_isPythonEnvReady;

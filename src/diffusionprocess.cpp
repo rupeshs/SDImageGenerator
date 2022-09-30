@@ -156,17 +156,16 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
     addPromptArguments(QString::number(diffusionOptions->imageWidth()));
     addPromptArguments("--height");
     addPromptArguments(QString::number(diffusionOptions->imageHeight()));
-    //addPromptArguments("--n_iter");
-    //addPromptArguments(QString::number(1));
     addPromptArguments("--iterations");
     addPromptArguments(QString::number(diffusionOptions->numberOfImages()));
     addPromptArguments("--steps");
     addPromptArguments(QString::number(diffusionOptions->ddimSteps()));
 
-    if (diffusionOptions->seed()>0){
+    if (!diffusionOptions->seed().isEmpty()){
         addPromptArguments("--seed");
-        addPromptArguments(QString::number(diffusionOptions->seed()));
+        addPromptArguments(diffusionOptions->seed());
     }
+
     if (!dreamProcess->isRunning()){
         addArgument("--outdir");
         addArgument(diffusionOptions->saveDir());

@@ -86,12 +86,12 @@ void DiffusionOptions::setSampler(const QString &newSampler)
     m_sampler = newSampler;
 }
 
-qreal DiffusionOptions::seed() const
+QString DiffusionOptions::seed() const
 {
     return m_seed;
 }
 
-void DiffusionOptions::setSeed(qreal newSeed)
+void DiffusionOptions::setSeed(const QString & newSeed)
 {
     m_seed = newSeed;
 }

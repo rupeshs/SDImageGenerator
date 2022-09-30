@@ -37,34 +37,25 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
     connect(stableDiffusion, SIGNAL(gotConsoleLog(QString)), this, SLOT(updateStatusMessage(QString)));
     connect(stableDiffusion, SIGNAL(cudaMemoryError()), this, SLOT(cudaMemoryError()));
 
-//    QMessageBox msgBox;
-//    msgBox.critical(nullptr, "csTitle", "csMsg asddddddd");
-//    msgBox.show();
-      //QTimer::singleShot(5000, this, &TextToImageBackend::generateImage());
-
     deafultAssetsPath = Utils::pathAppend(qApp->applicationDirPath(),"default");
     samplesPath = Utils::localPathToUrl(deafultAssetsPath);
 
     envValidator = new DiffusionEnvValidator(this,diffusionEnv);
-    EnvStatus envStatus = envValidator->Validate();
+    connect(envValidator, SIGNAL(environmentCurrentStatus(bool,bool)), this, SLOT(environmentCurrentStatus(bool,bool)));
+    envValidator->Validate();
 
     m_envStatus = new DiffusionEnvironmentStatus();
 
-    //setEnvStatus(m_envStatus);
-
-    if (envStatus != EnvStatus::Ready) {
-        qDebug()<<"Environment is not ready,please install it from the install tab";
-        QTimer::singleShot(0, this, [this](){emit environmentNotReady();});
-    }
     modelDownloader = nullptr;
     pythonEnvInstaller = nullptr;
-
 }
 
 void TextToImageBackend::generateImage()
 {
-    if (!verifyEnvironment())
+    if (!Utils::checkPathExists(m_options->saveDir())) {
+        showErrorDlg(tr("Please choose a output directory from settings tab."));
         return;
+    }
 
     if (m_options->prompt().isEmpty()) {
         showErrorDlg(tr("Please provide a prompt text."));
@@ -84,6 +75,8 @@ void TextToImageBackend::generateImage()
     qInfo()<<"Number of Images to generate :"<< m_options->numberOfImages();
     qInfo()<<"DDIM steps :"<< m_options->ddimSteps();
     qInfo()<<"Sampler :"<< m_options->sampler();
+    qInfo()<<"Seed :"<< m_options->seed();
+    qInfo()<<"Save dir :"<< m_options->saveDir();
     isProcessing = true;
     samplesPath = Utils::localPathToUrl(deafultAssetsPath);
     emit samplesPathChanged();
@@ -93,7 +86,6 @@ void TextToImageBackend::generateImage()
 void TextToImageBackend::stopProcessing()
 {
     stableDiffusion->stopProcess();
-
 }
 
 void TextToImageBackend::showErrorDlg(const QString &error)
@@ -106,6 +98,7 @@ void TextToImageBackend::showErrorDlg(const QString &error)
 void TextToImageBackend::saveSettings()
 {
     qDebug()<<"Save StableDiffusion settings : "<<QString::number(m_options->metaObject()->propertyCount());
+    qDebug()<<m_options->seed();
     settings->beginGroup("Main");
     settings->setValue("prompt", m_options->prompt());
     settings->setValue("scale", m_options->scale());
@@ -129,19 +122,12 @@ void TextToImageBackend::loadSettings()
     m_options->setNumberOfImages(settings->value("Main/numberOfImages",DEFAULT_NUMBER_OF_IMAGES).toDouble());
     m_options->setDdimSteps(settings->value("Main/ddimSteps",DEFAULT_DDIM_STEPS).toDouble());
     m_options->setSampler(settings->value("Main/sampler",DEFAULT_SAMPLER).toString());
-    QString defaultOutDir = Utils::pathAppend(qApp->applicationDirPath(),STABLE_DIFFUSION_RESULTS_FOLDER_NAME);
-    m_options->setSaveDir(settings->value("Main/saveDir",defaultOutDir).toString());
+    m_options->setSaveDir(settings->value("Main/saveDir",diffusionEnv->getDefaultOutDir()).toString());
+    QString seed = settings->value("Main/seed",DEFAULT_SEED).toString();
+    m_options->setSeed(seed);
 
-    double seed = settings->value("Main/seed",DEFAULT_SEED).toDouble();
-    if(seed)
-        m_options->setSeed(seed);
-
-    m_envStatus->setIsCondaReady(envValidator->validateCondaPath());
-    m_envStatus->setIsPythonEnvReady(envValidator->validatePythonEnvPath());
-    m_envStatus->setIsStableDiffusionModelReady(envValidator->validateModelPath());
-
-    emit initControls(m_options,m_envStatus);
     Utils::ensurePath(m_options->saveDir());
+    emit setupInstallerUi(false);
 }
 
 void TextToImageBackend::resetSettings()
@@ -153,6 +139,7 @@ void TextToImageBackend::resetSettings()
     m_options->setDdimSteps(DEFAULT_DDIM_STEPS);
     m_options->setSampler(DEFAULT_SAMPLER);
     m_options->setSeed(DEFAULT_SEED);
+    m_options->setSaveDir(diffusionEnv->getDefaultOutDir());
 
     emit initControls(m_options,m_envStatus);
 }
@@ -170,20 +157,6 @@ void TextToImageBackend::openOutputFolder()
 void TextToImageBackend::setOutputFolder(QUrl url)
 {
     emit setOutputDirectory(url.toLocalFile());
-}
-
-void TextToImageBackend::installEnvironment()
-{
-#ifdef Q_OS_WIN
-   QString exeFileName(qApp->applicationDirPath()+"/install-env.exe");
-
-  ::ShellExecuteA(0, "open", exeFileName.toUtf8().constData(), 0, 0, SW_HIDE);
-  /* if (SE_ERR_ACCESSDENIED == result)
-   {
-       // Requesting elevation(Windows Vista/Window7/window8)
-       result = (HINSTANCE)::ShellExecuteA(0, "runas", exeFileName.toUtf8().constData(), 0, 0, SW_HIDE);
-   }*/
-#endif
 }
 
 void TextToImageBackend::generatingImages()
@@ -217,7 +190,12 @@ void TextToImageBackend::downloadModel()
     if (Utils::checkPathExists(diffusionEnv->getStableDiffusionModelPath())){
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setText(tr("Model file already exists."));
+
+        if (envValidator->validateModelFileSize())
+            msgBox.setText(tr("Model file already exists."));
+        else
+            msgBox.setText(tr("Model file size does not match!"));
+
         msgBox.setInformativeText(tr("Do you want to download it again?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
@@ -227,7 +205,6 @@ void TextToImageBackend::downloadModel()
     }
     if ( !modelDownloader ){
         modelDownloader = new InstallerProcess(this,diffusionEnv);
-        //https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media
         connect(modelDownloader, SIGNAL(gotConsoleLog(QString)), this, SLOT(updateDownloaderStatusMessage(QString)));
         connect(modelDownloader, SIGNAL(installCompleted(int,bool)), this, SLOT(installCompleted(int,bool)));
     }
@@ -241,11 +218,9 @@ void TextToImageBackend::installPythonEnv()
 {
     if ( !pythonEnvInstaller ) {
         pythonEnvInstaller = new InstallerProcess(this,diffusionEnv);
-        connect(pythonEnvInstaller, SIGNAL(gotConsoleLog(QString)), this, SLOT(updateInstallerStatusMessage(QString)));
         connect(pythonEnvInstaller, SIGNAL(installCompleted(int,bool)), this, SLOT(installCompleted(int,bool)));
     }
-    emit setupInstallerUi(false);
-    pythonEnvInstaller->installCondaEnv();
+    pythonEnvInstaller->installPipPackages();
 
 }
 
@@ -266,6 +241,39 @@ void TextToImageBackend::cudaMemoryError()
     msgBox.setText(tr("CUDA memory error: Failed to generate image,please reduce image size."));
     msgBox.exec();
 
+}
+
+void TextToImageBackend::environmentCurrentStatus(bool isPackagesReady, bool isStableDiffusionModelReady)
+{
+    handlePackagesStatus(isPackagesReady);
+    handleModelStatus(isStableDiffusionModelReady);
+
+    m_envStatus->setIsPythonEnvReady(isPackagesReady);
+    m_envStatus->setIsStableDiffusionModelReady(isStableDiffusionModelReady);
+    emit initControls(m_options,m_envStatus);
+}
+
+void TextToImageBackend::handlePackagesStatus(bool isPackagesReady)
+{
+    if (!isPackagesReady) {
+        qDebug()<<"Environment is not ready,setting it up...";
+        installPythonEnv();
+    }
+    else{
+        qDebug()<<"Environment check : OK";
+        emit closeLoadingScreen();
+    }
+}
+
+void TextToImageBackend::handleModelStatus(bool isStableDiffusionModelReady)
+{
+    if (isStableDiffusionModelReady){
+        qDebug()<<"Stable diffusion original model(v1.4) check : OK ";
+
+    } else {
+        qDebug()<<"Stable diffusion original model(v1.4) check: Failed ";
+        emit environmentNotReady();
+    }
 }
 
 DiffusionEnvironmentStatus *TextToImageBackend::envStatus() const
@@ -290,37 +298,7 @@ void TextToImageBackend::setIsProcessing(bool newIsProcessing)
 
 void TextToImageBackend::initBackend()
 {
-    verifyEnvironment();
-}
-
-bool TextToImageBackend::verifyEnvironment()
-{
-    DiffusionEnvValidator envValidator(this,diffusionEnv);
-    EnvStatus envStatus = envValidator.Validate();
-
-    if (envStatus == EnvStatus::Ready){
-        qDebug()<<"Environment ready!";
-        return true;
-    }
-
-    if (envStatus == EnvStatus::CondaNotFound){
-        qDebug()<<"Miniconda not found!";
-        errorMsg=tr("Miniconda not found!");
-
-    }
-    if (envStatus == EnvStatus::PythonEnvNotFound) {
-        qDebug()<<"Python environment not found!";
-        errorMsg=tr("Python environment not found!");
-    }
-
-    if (envStatus == EnvStatus::StableDiffusionNotFound) {
-        qDebug()<<"Stable-diffusion directory not found!";
-        errorMsg=tr("Stable-diffusion directory not found!");
-    }
-    emit gotErrorMessage();
-    emit showMessageBox();
-
-    return false;
+    //verifyEnvironment();
 }
 
 void TextToImageBackend::updateStatusMessage(const QString &message)
@@ -380,11 +358,10 @@ void TextToImageBackend::installCompleted(int exitCode,bool isDownloader)
             emit downloaderStatusChanged(msg,0.0);
         }
     } else {
-        if ( exitCode == 0 ) {
-            QString msg(tr("Installation completed successfully,please restart app."));
-            qDebug()<<msg;
-            emit installerStatusChanged(msg,0.0);
-
-        }
+        if ( exitCode == 0 )
+            qDebug()<<"Environment is ready.";
+        else
+            qDebug()<<"Environment is setup failed.";
+        emit closeLoadingScreen();
     }
 }
