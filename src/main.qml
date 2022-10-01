@@ -21,6 +21,8 @@ ApplicationWindow {
     title: qsTr("SDImageGenerator")
     font.pointSize: 12
     property double startTime: 0
+    property bool initApp: true;
+
 
     TextToImageBackend{
         id : stableDiffusionBackend
@@ -57,6 +59,7 @@ ApplicationWindow {
             seedInput.text = options.seed;
             gridCheckBox.checked = options.grid;
             seamlessCheckBox.checked = options.seamless;
+            fullPrcisionCheckBox.checked = options.fullPrecision;
 
             modelCheck.checked = envStatus.isStableDiffusionModelReady;
             modelCheck.checkable = false;
@@ -121,17 +124,18 @@ ApplicationWindow {
 
     function updateOptions(){
 
-        stableDiffusionBackend.options.prompt = promptInput.text
-        stableDiffusionBackend.options.scale = scaleSlider.slider.value.toFixed(1)
-        stableDiffusionBackend.options.imageWidth = parseInt(widthSlider.slider.value)
-        stableDiffusionBackend.options.imageHeight = parseInt(heightSlider.slider.value)
-        stableDiffusionBackend.options.numberOfImages = parseInt(imageCountSlider.slider.value)
-        stableDiffusionBackend.options.ddimSteps = parseInt(ddimStepsSlider.slider.value)
-        stableDiffusionBackend.options.sampler = samplerComboBox.currentText
-        stableDiffusionBackend.options.saveDir = saveFolder.text
-        stableDiffusionBackend.options.seed = seedInput.text
-        stableDiffusionBackend.options.grid = gridCheckBox.checked
-        stableDiffusionBackend.options.seamless = seamlessCheckBox.checked
+        stableDiffusionBackend.options.prompt = promptInput.text;
+        stableDiffusionBackend.options.scale = scaleSlider.slider.value.toFixed(1);
+        stableDiffusionBackend.options.imageWidth = parseInt(widthSlider.slider.value);
+        stableDiffusionBackend.options.imageHeight = parseInt(heightSlider.slider.value);
+        stableDiffusionBackend.options.numberOfImages = parseInt(imageCountSlider.slider.value);
+        stableDiffusionBackend.options.ddimSteps = parseInt(ddimStepsSlider.slider.value);
+        stableDiffusionBackend.options.sampler = samplerComboBox.currentText;
+        stableDiffusionBackend.options.saveDir = saveFolder.text;
+        stableDiffusionBackend.options.seed = seedInput.text;
+        stableDiffusionBackend.options.grid = gridCheckBox.checked;
+        stableDiffusionBackend.options.seamless = seamlessCheckBox.checked;
+        stableDiffusionBackend.options.fullPrecision = fullPrcisionCheckBox.checked;
 
     }
     TabBar {
@@ -484,6 +488,24 @@ ApplicationWindow {
                       id : seamlessCheckBox
 
                       text: "Seamless tiling"
+                    }
+                    Controls.AppLabel{
+                        labelText:qsTr("Full precision")
+                        labelInfo: qsTr("Run in slower full-precision mode.Needed for some older video cards.")
+
+                    }
+                    CheckBox{
+                      id : fullPrcisionCheckBox
+
+                      text: "Full precision"
+                      onCheckedChanged: {
+                          if (!initApp){
+                              msgDialog.title = "SDImageGenerator";
+                              msgDialog.text = "Please restart the app to apply the setting.";
+                              msgDialog.visible = true;
+                          }
+                          initApp = false;
+                      }
                     }
 
                     Button{

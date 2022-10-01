@@ -34,6 +34,7 @@ class DiffusionOptions : public QObject
     Q_PROPERTY(QString saveDir READ saveDir WRITE setSaveDir CONSTANT)
     Q_PROPERTY(bool grid READ grid WRITE setGrid CONSTANT)
     Q_PROPERTY(bool seamless READ seamless WRITE setSeamless CONSTANT)
+    Q_PROPERTY(bool fullPrecision READ fullPrecision WRITE setFullPrecision CONSTANT)
     QML_ELEMENT
 
 public:
@@ -72,6 +73,9 @@ public:
     bool seamless() const;
     void setSeamless(bool newSeamless);
 
+    bool fullPrecision() const;
+    void setFullPrecision(bool newFullPrecision);
+
 private:
     QString m_prompt;
     qreal m_scale;
@@ -84,6 +88,7 @@ private:
     QString m_saveDir;
     bool m_grid;
     bool m_seamless;
+    bool m_fullPrecision;
 
 };
 

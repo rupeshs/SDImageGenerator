@@ -21,6 +21,7 @@ static const char* DEFAULT_SAMPLER = "k_lms";
 static const char* DEFAULT_SEED = "";
 static const bool  DEFAULT_GRID = false;
 static const bool  DEFAULT_SEAMLESS = false;
+static const bool  DEFAULT_FULL_PRECISION = false;
 static const char* LOG_FILE_NAME = "SdImageGenerator_logs.txt";
 
 #endif // DEFINES_H

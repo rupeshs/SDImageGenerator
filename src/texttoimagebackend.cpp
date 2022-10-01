@@ -98,7 +98,6 @@ void TextToImageBackend::showErrorDlg(const QString &error)
 void TextToImageBackend::saveSettings()
 {
     qDebug()<<"Save StableDiffusion settings : "<<QString::number(m_options->metaObject()->propertyCount());
-    qDebug()<<m_options->seed();
     settings->beginGroup("Main");
     settings->setValue("prompt", m_options->prompt());
     settings->setValue("scale", m_options->scale());
@@ -111,6 +110,7 @@ void TextToImageBackend::saveSettings()
     settings->setValue("saveDir", m_options->saveDir());
     settings->setValue("grid", m_options->grid());
     settings->setValue("seamless", m_options->seamless());
+    settings->setValue("fullPrecision", m_options->fullPrecision());
     settings->endGroup();
 }
 
@@ -131,6 +131,7 @@ void TextToImageBackend::loadSettings()
     Utils::ensurePath(m_options->saveDir());
     m_options->setGrid(settings->value("Main/grid",DEFAULT_GRID).toBool());
     m_options->setSeamless(settings->value("Main/seamless",DEFAULT_SEAMLESS).toBool());
+    m_options->setFullPrecision(settings->value("Main/fullPrecision",DEFAULT_FULL_PRECISION).toBool());
     emit setupInstallerUi(false);
 
 }
@@ -147,6 +148,7 @@ void TextToImageBackend::resetSettings()
     m_options->setSaveDir(diffusionEnv->getDefaultOutDir());
     m_options->setGrid(DEFAULT_GRID);
     m_options->setSeamless(DEFAULT_SEAMLESS);
+    m_options->setFullPrecision(DEFAULT_FULL_PRECISION);
 
     emit initControls(m_options,m_envStatus);
 }

@@ -110,6 +110,18 @@ void DiffusionProcess::setStatus(StableDiffusionStatus newStatus)
     status = newStatus;
 }
 
+void DiffusionProcess::addDreamScriptArgs(DiffusionOptions *diffusionOptions)
+{
+    if (!dreamProcess->isRunning()){
+        // Main options
+        addArgument("--outdir");
+        addArgument(diffusionOptions->saveDir());
+
+        if (diffusionOptions->fullPrecision())
+            addArgument("--full_precision");
+    }
+}
+
 void DiffusionProcess::startDreaming()
 {
     if (dreamProcess->isRunning())
@@ -171,11 +183,7 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
         addPromptArguments("--seed");
         addPromptArguments(diffusionOptions->seed());
     }
-
-    if (!dreamProcess->isRunning()){
-        addArgument("--outdir");
-        addArgument(diffusionOptions->saveDir());
-    }
+    addDreamScriptArgs(diffusionOptions);
 
     promptCommand="";
     foreach (QString argument , promptArguments) {
@@ -183,6 +191,6 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
         promptCommand.append(" ");
     }
     qDebug()<<promptCommand;
-    startDreaming();
 
+    startDreaming();
 }

@@ -125,3 +125,13 @@ void DiffusionOptions::setSeamless(bool newSeamless)
 {
     m_seamless = newSeamless;
 }
+
+bool DiffusionOptions::fullPrecision() const
+{
+    return m_fullPrecision;
+}
+
+void DiffusionOptions::setFullPrecision(bool newFullPrecision)
+{
+    m_fullPrecision = newFullPrecision;
+}
