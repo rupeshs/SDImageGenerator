@@ -26,7 +26,6 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
     connect(dreamProcess,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(processFinished(int,QProcess::ExitStatus)));
 
     qDebug()<<"CondaActivatePath"<<diffusionEnv->getCondaActivatePath();
-    qDebug()<<"PythonEnvPath"<<diffusionEnv->getPythonEnvPath();
     qDebug()<<"StableDiffusionPath"<<diffusionEnv->getStableDiffusionPath();
     dreamProcess->setWorkingDirectory(diffusionEnv->getStableDiffusionPath());
     qDebug()<<"Directory"<<dreamProcess->workingDirectory();
@@ -35,7 +34,7 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
     addArgument("&&");
     addArgument("conda");
     addArgument("activate");
-    addArgument( diffusionEnv->getPythonEnvPath());
+    addArgument("sdimgenv");
     addArgument("&&");
     addArgument("python");
     addArgument(diffusionEnv->getStableDiffusionScript());

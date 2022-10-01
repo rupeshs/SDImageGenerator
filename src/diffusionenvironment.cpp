@@ -38,11 +38,6 @@ const QString &DiffusionEnvironment::getCondaActivatePath() const
     return condaActivatePath;
 }
 
-const QString &DiffusionEnvironment::getPythonEnvPath() const
-{
-    return pythonEnvPath;
-}
-
 const QString &DiffusionEnvironment::getStableDiffusionPath() const
 {
     return stableDiffusionPath;
@@ -83,11 +78,6 @@ void DiffusionEnvironment::setCondaActivatePath(const QString &newCondaActivateP
     condaActivatePath = newCondaActivatePath;
 }
 
-void DiffusionEnvironment::setPythonEnvPath(const QString &newPythonEnvPath)
-{
-    pythonEnvPath = newPythonEnvPath;
-}
-
 void DiffusionEnvironment::setStableDiffusionPath(const QString &newStableDiffusionPath)
 {
     stableDiffusionPath = newStableDiffusionPath;
@@ -102,7 +92,6 @@ void DiffusionEnvironment::setEnvironment()
 #endif
     //TODO : Linux
 
-    pythonEnvPath = Utils::pathAppend(qApp->applicationDirPath(),QString(PYTHON_ENV_DIRECTORY));
     stableDiffusionPath = Utils::pathAppend(qApp->applicationDirPath(),QString(STABLE_DIFFUSION_DIRECTORY));
     stableDiffusionScriptPath = Utils::pathAppend(stableDiffusionPath,QString(STABLE_DIFFUSION_DREAM));
     stableDiffusionModelPath = Utils::pathAppend(stableDiffusionPath,QString(STABLE_DIFFUSION_MODEL_1_4));

@@ -32,7 +32,7 @@ void InstallerProcess::installCondaEnv()
     installerProc->addArgument("conda");
     installerProc->addArgument("env");
     installerProc->addArgument("create");
-    installerProc->addArgument(QString("--prefix=") + diffusionEnv->getPythonEnvPath());
+    //installerProc->addArgument(QString("--prefix=") + diffusionEnv->getPythonEnvPath());
     QString envFile = Utils::pathAppend(diffusionEnv->getStableDiffusionPath(),STABLE_DIFFUSION_ENVIRONMENT_YAML);
     installerProc->addArgument("-f");
     installerProc->addArgument(envFile);

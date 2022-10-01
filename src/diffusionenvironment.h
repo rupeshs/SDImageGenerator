@@ -31,7 +31,6 @@ public:
 
     void getEnvironment();
     const QString &getCondaActivatePath() const;
-    const QString &getPythonEnvPath() const;
     const QString &getStableDiffusionPath() const;
     const QString &getStableDiffusionScript() const;
 
@@ -49,7 +48,6 @@ private:
     QString envPathsFileName;
     QStringList paths;
     QString condaActivatePath;
-    QString pythonEnvPath;
     QString stableDiffusionPath;
     QString stableDiffusionScriptPath;
     QString stableDiffusionModelPath;
