@@ -8,13 +8,14 @@ ColumnLayout{
     property alias slider : control
     property bool displayFloat: false
     property real fontSize: 12
+    property real decimalPointNumbers : 1
 
     spacing: 10
 
     function formatText()
     {
         if(displayFloat)
-            valueLabel.text = control.value.toFixed(1)
+            valueLabel.text = control.value.toFixed(decimalPointNumbers)
         else
             valueLabel.text = parseInt(control.value)
     }
@@ -29,6 +30,7 @@ ColumnLayout{
         }
         Label{
             id: valueLabel
+
         }
     }
 
@@ -58,7 +60,7 @@ ColumnLayout{
             Rectangle {
                 width: control.visualPosition * parent.width
                 height: parent.height
-                color: "#26a8ff"
+                color: control.enabled? "#26a8ff" : "gray"
                 radius: 2
             }
         }

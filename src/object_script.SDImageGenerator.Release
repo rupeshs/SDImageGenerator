@@ -7,6 +7,7 @@ release/installerprocess.o
 release/pythonenvvalidator.o
 release/main.o
 release/myprocess.o
+release/settings.o
 release/texttoimagebackend.o
 release/utils.o
 release/main_qml.o
@@ -28,4 +29,5 @@ release/moc_diffusionprocess.o
 release/moc_installerprocess.o
 release/moc_pythonenvvalidator.o
 release/moc_myprocess.o
+release/moc_settings.o
 release/moc_texttoimagebackend.o

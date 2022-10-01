@@ -7,6 +7,7 @@ debug/installerprocess.o
 debug/pythonenvvalidator.o
 debug/main.o
 debug/myprocess.o
+debug/settings.o
 debug/texttoimagebackend.o
 debug/utils.o
 debug/main_qml.o
@@ -28,4 +29,5 @@ debug/moc_diffusionprocess.o
 debug/moc_installerprocess.o
 debug/moc_pythonenvvalidator.o
 debug/moc_myprocess.o
+debug/moc_settings.o
 debug/moc_texttoimagebackend.o

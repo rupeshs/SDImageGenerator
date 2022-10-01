@@ -29,6 +29,8 @@
 #include <qqml.h>
 #include <QUrl>
 #include <QTimer>
+#include "settings.h"
+
 #ifdef Q_OS_WIN
   #include <windows.h>
 #endif
@@ -109,6 +111,7 @@ private:
     QSettings *settings;
     InstallerProcess *modelDownloader;
     InstallerProcess *pythonEnvInstaller;
+    Settings *appSettings;
     //float downloadPercentage;
 
     QString errorMsg;

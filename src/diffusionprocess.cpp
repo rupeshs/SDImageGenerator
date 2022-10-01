@@ -182,6 +182,16 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
         addPromptArguments("--seed");
         addPromptArguments(diffusionOptions->seed());
     }
+    if (diffusionOptions->upscaler()) {
+        addPromptArguments("--upscale");
+        QString upscaleFactor = diffusionOptions->upscaleFactor();
+        upscaleFactor.chop(1);
+        addPromptArguments(upscaleFactor);
+        addPromptArguments(QString::number(diffusionOptions->upscaleStrength()));
+        addPromptArguments("--save_original");
+
+    }
+
     addDreamScriptArgs(diffusionOptions);
 
     promptCommand="";

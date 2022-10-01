@@ -135,3 +135,33 @@ void DiffusionOptions::setFullPrecision(bool newFullPrecision)
 {
     m_fullPrecision = newFullPrecision;
 }
+
+bool DiffusionOptions::upscaler() const
+{
+    return m_upscaler;
+}
+
+void DiffusionOptions::setUpscaler(bool newUpscaler)
+{
+    m_upscaler = newUpscaler;
+}
+
+const QString &DiffusionOptions::upscaleFactor() const
+{
+    return m_upscaleFactor;
+}
+
+void DiffusionOptions::setUpscaleFactor(const QString &newUpscaleFactor)
+{
+    m_upscaleFactor = newUpscaleFactor;
+}
+
+qreal DiffusionOptions::upscaleStrength() const
+{
+    return m_upscaleStrength;
+}
+
+void DiffusionOptions::setUpscaleStrength(qreal newUpscaleStrength)
+{
+    m_upscaleStrength = newUpscaleStrength;
+}

@@ -60,6 +60,12 @@ ApplicationWindow {
             gridCheckBox.checked = options.grid;
             seamlessCheckBox.checked = options.seamless;
             fullPrcisionCheckBox.checked = options.fullPrecision;
+            upscalerCheckBox.checked = options.upscaler;
+            upscaleStrengthSlider.slider.value = options.upscaleStrength;
+            if (options.upscaleFactor === "4x")
+                radiobuttonScaleFour.checked = true
+            else
+                radiobuttonScaleTwo.checked = true
 
             modelCheck.checked = envStatus.isStableDiffusionModelReady;
             modelCheck.checkable = false;
@@ -75,10 +81,11 @@ ApplicationWindow {
             }
         }
         function onEnvironmentNotReady() {
-            tabBar.currentIndex = 3;
+            tabBar.currentIndex = 4;
             tabBar.itemAt(0).enabled = false;
             tabBar.itemAt(1).enabled = false;
             tabBar.itemAt(2).enabled = false;
+            tabBar.itemAt(3).enabled = false;
         }
          function onCloseLoadingScreen() {
              downloadDialog.visible = false;
@@ -136,14 +143,16 @@ ApplicationWindow {
         stableDiffusionBackend.options.grid = gridCheckBox.checked;
         stableDiffusionBackend.options.seamless = seamlessCheckBox.checked;
         stableDiffusionBackend.options.fullPrecision = fullPrcisionCheckBox.checked;
-
+        stableDiffusionBackend.options.upscaler = upscalerCheckBox.checked ;
+        stableDiffusionBackend.options.upscaleStrength = upscaleStrengthSlider.slider.value.toFixed(2);
+        stableDiffusionBackend.options.upscaleFactor = upscaleFactorGroup.checkedButton.text;
     }
     TabBar {
         id: tabBar
         width: parent.width
 
         TabButton {
-            text: qsTr("Text to Image")
+            //text: qsTr("Text to Image")
             icon.source: "images/moon-stars-fill.png"
             background: Rectangle {
                 //#26a8ff
@@ -152,7 +161,7 @@ ApplicationWindow {
 
         }
         TabButton {
-            text: qsTr("Images")
+           // text: qsTr("Images")
             icon.source: "images/images.png"
             background: Rectangle {
                 color: tabBar.currentIndex == 1 ? "green": "#393A3B"
@@ -160,27 +169,34 @@ ApplicationWindow {
 
         }
         TabButton {
-            text: qsTr("Settings")
+            //text: qsTr("Settings")
             icon.source: "images/gear.png"
             background: Rectangle {
                 color: tabBar.currentIndex == 2 ? "green": "#393A3B"
             }
         }
         TabButton {
-            text: qsTr("Install")
-            icon.source: "images/download.png"
+            //text: qsTr("Enhance")
+            icon.source: "images/enhance.png"
             background: Rectangle {
                 color: tabBar.currentIndex == 3 ? "green": "#393A3B"
             }
 
         }
+        TabButton {
+            //text: qsTr("Install")
+            icon.source: "images/download.png"
+            background: Rectangle {
+                color: tabBar.currentIndex == 4 ? "green": "#393A3B"
+            }
+        }
 
 
         TabButton {
-            text: qsTr("About")
-            icon.source: "images/gear.png"
+            //text: qsTr("About")
+            icon.source: "images/info-square.png"
             background: Rectangle {
-                color: tabBar.currentIndex == 4 ? "green": "#393A3B"
+                color: tabBar.currentIndex == 5 ? "green": "#393A3B"
             }
 
         }
@@ -326,7 +342,7 @@ ApplicationWindow {
             clip: true
             Layout.fillWidth: true
             Layout.fillHeight: true
-             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
             RowLayout
             {
@@ -512,15 +528,74 @@ ApplicationWindow {
                         text : "Reset All"
                         onClicked: stableDiffusionBackend.resetSettings()
                     }
+                }
+            }
+        }
+        Page{
+            id : pageEnhance
+            Layout.alignment: Qt.AlignCenter
+            ColumnLayout{
+                Item{
+                    height: 20
+                }
+                GroupBox{
+                    id: upscalerGroup
+                    Layout.preferredWidth: window.width - 20
+                    Layout.leftMargin: 10
 
+                    label: CheckBox {
+                        id: upscalerCheckBox
+                        checked: false
+                        text: qsTr("Upscaler")
+                    }
+                    ColumnLayout{
+                        anchors.fill: parent
+                        enabled: upscalerCheckBox.checked
+
+
+                        ButtonGroup {
+                            id: upscaleFactorGroup
+
+                            buttons: rowScaleFactor.children
+                        }
+                        RowLayout{
+                            id : rowScaleFactor
+                            Label{
+                                text : "Upscale factor :";
+                            }
+                            RadioButton {
+                                id : radiobuttonScaleTwo
+
+                                checked: true
+                                text: qsTr("2x")
+                            }
+                            RadioButton {
+                                id : radiobuttonScaleFour
+
+                                text: qsTr("4x")
+                            }
+                        }
+                        Controls.AppSlider{
+                            id: upscaleStrengthSlider
+
+                            header.text: qsTr("Upscaling strength")
+                            description.visible: false
+                            slider.from: 0
+                            slider.to: 1
+                            slider.value: 0.75
+                            Layout.fillWidth: true
+                            displayFloat: true
+                            decimalPointNumbers : 2
+                        }
+                    }
                 }
             }
         }
 
         Page {
+
             ColumnLayout{
                 Label{
-
                     Layout.leftMargin: 10
                     Layout.topMargin: 30
                     text : "Download model"
@@ -643,6 +718,7 @@ ApplicationWindow {
         updateOptions();
         stableDiffusionBackend.saveSettings();
         stableDiffusionBackend.stopProcessing();
+
     }
 
     ApplicationWindow  {

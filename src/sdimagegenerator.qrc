@@ -10,5 +10,7 @@
         <file>images/file-text.png</file>
         <file>images/file-arrow-down.png</file>
         <file>images/download.png</file>
+        <file>images/enhance.png</file>
+        <file>images/info-square.png</file>
     </qresource>
 </RCC>

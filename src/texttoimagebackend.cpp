@@ -28,8 +28,10 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
     settings = new QSettings(qApp->applicationDirPath()+"/sdimagegenerator.ini",QSettings::IniFormat,this);
 
     m_options = new DiffusionOptions();
+
     diffusionEnv = new DiffusionEnvironment(parent);
     diffusionEnv->getEnvironment();
+    appSettings = new Settings(parent, m_options,diffusionEnv);
     stableDiffusion = new DiffusionProcess(parent,diffusionEnv);
     connect(stableDiffusion, SIGNAL(generatingImages()), this, SLOT(generatingImages()));
     connect(stableDiffusion, SIGNAL(imagesGenerated()), this, SLOT(imagesGenerated()));
@@ -98,58 +100,21 @@ void TextToImageBackend::showErrorDlg(const QString &error)
 void TextToImageBackend::saveSettings()
 {
     qDebug()<<"Save StableDiffusion settings : "<<QString::number(m_options->metaObject()->propertyCount());
-    settings->beginGroup("Main");
-    settings->setValue("prompt", m_options->prompt());
-    settings->setValue("scale", m_options->scale());
-    settings->setValue("imageWidth", m_options->imageWidth());
-    settings->setValue("imageHeight", m_options->imageHeight());
-    settings->setValue("numberOfImages", m_options->numberOfImages());
-    settings->setValue("ddimSteps", m_options->ddimSteps());
-    settings->setValue("sampler", m_options->sampler());
-    settings->setValue("seed", m_options->seed());
-    settings->setValue("saveDir", m_options->saveDir());
-    settings->setValue("grid", m_options->grid());
-    settings->setValue("seamless", m_options->seamless());
-    settings->setValue("fullPrecision", m_options->fullPrecision());
-    settings->endGroup();
+    appSettings->save();
 }
 
 void TextToImageBackend::loadSettings()
 {
     qInfo()<<"Loading app settings";
-    m_options->setPrompt(settings->value("Main/prompt","").toString());
-    m_options->setScale(settings->value("Main/scale",DEFAULT_SCALE).toDouble());
-    m_options->setImageWidth(settings->value("Main/imageWidth",DEFAULT_IMAGE_WIDTH).toDouble());
-    m_options->setImageHeight(settings->value("Main/imageHeight",DEFAULT_IMAGE_HEIGHT).toDouble());
-    m_options->setNumberOfImages(settings->value("Main/numberOfImages",DEFAULT_NUMBER_OF_IMAGES).toDouble());
-    m_options->setDdimSteps(settings->value("Main/ddimSteps",DEFAULT_DDIM_STEPS).toDouble());
-    m_options->setSampler(settings->value("Main/sampler",DEFAULT_SAMPLER).toString());
-    m_options->setSaveDir(settings->value("Main/saveDir",diffusionEnv->getDefaultOutDir()).toString());
-    QString seed = settings->value("Main/seed",DEFAULT_SEED).toString();
-    m_options->setSeed(seed);
-
+    appSettings->load();
     Utils::ensurePath(m_options->saveDir());
-    m_options->setGrid(settings->value("Main/grid",DEFAULT_GRID).toBool());
-    m_options->setSeamless(settings->value("Main/seamless",DEFAULT_SEAMLESS).toBool());
-    m_options->setFullPrecision(settings->value("Main/fullPrecision",DEFAULT_FULL_PRECISION).toBool());
     emit setupInstallerUi(false);
 
 }
 
 void TextToImageBackend::resetSettings()
 {
-    m_options->setScale(DEFAULT_SCALE);
-    m_options->setImageWidth(DEFAULT_IMAGE_WIDTH);
-    m_options->setImageHeight(DEFAULT_IMAGE_HEIGHT);
-    m_options->setNumberOfImages(DEFAULT_NUMBER_OF_IMAGES);
-    m_options->setDdimSteps(DEFAULT_DDIM_STEPS);
-    m_options->setSampler(DEFAULT_SAMPLER);
-    m_options->setSeed(DEFAULT_SEED);
-    m_options->setSaveDir(diffusionEnv->getDefaultOutDir());
-    m_options->setGrid(DEFAULT_GRID);
-    m_options->setSeamless(DEFAULT_SEAMLESS);
-    m_options->setFullPrecision(DEFAULT_FULL_PRECISION);
-
+    appSettings->reset();
     emit initControls(m_options,m_envStatus);
 }
 
@@ -217,8 +182,7 @@ void TextToImageBackend::downloadModel()
         connect(modelDownloader, SIGNAL(gotConsoleLog(QString)), this, SLOT(updateDownloaderStatusMessage(QString)));
         connect(modelDownloader, SIGNAL(installCompleted(int,bool)), this, SLOT(installCompleted(int,bool)));
     }
-    qDebug()<<diffusionEnv->getCurlPath();
-    qDebug()<<diffusionEnv->getStableDiffusionModelPath();
+
     emit setupInstallerUi(true);
     modelDownloader->downloadStableDiffusionModel();
 }

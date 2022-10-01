@@ -35,6 +35,9 @@ class DiffusionOptions : public QObject
     Q_PROPERTY(bool grid READ grid WRITE setGrid CONSTANT)
     Q_PROPERTY(bool seamless READ seamless WRITE setSeamless CONSTANT)
     Q_PROPERTY(bool fullPrecision READ fullPrecision WRITE setFullPrecision CONSTANT)
+    Q_PROPERTY(bool upscaler READ upscaler WRITE setUpscaler CONSTANT)
+    Q_PROPERTY(QString upscaleFactor READ upscaleFactor WRITE setUpscaleFactor CONSTANT)
+    Q_PROPERTY(qreal upscaleStrength READ upscaleStrength WRITE setUpscaleStrength CONSTANT)
     QML_ELEMENT
 
 public:
@@ -76,6 +79,15 @@ public:
     bool fullPrecision() const;
     void setFullPrecision(bool newFullPrecision);
 
+    bool upscaler() const;
+    void setUpscaler(bool newUpscaler);
+
+    const QString &upscaleFactor() const;
+    void setUpscaleFactor(const QString &newUpscaleFactor);
+
+    qreal upscaleStrength() const;
+    void setUpscaleStrength(qreal newUpscaleStrength);
+
 private:
     QString m_prompt;
     qreal m_scale;
@@ -89,6 +101,9 @@ private:
     bool m_grid;
     bool m_seamless;
     bool m_fullPrecision;
+    bool m_upscaler;
+    QString m_upscaleFactor;
+    qreal m_upscaleStrength;
 
 };
 

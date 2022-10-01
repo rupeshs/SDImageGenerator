@@ -16,6 +16,7 @@ SOURCES += \
         installer/pythonenvvalidator.cpp \
         main.cpp \
         myprocess.cpp \
+        settings.cpp \
         texttoimagebackend.cpp \
         utils.cpp
 
@@ -45,6 +46,7 @@ HEADERS += \
     installer/installerprocess.h \
     installer/pythonenvvalidator.h \
     myprocess.h \
+    settings.h \
     texttoimagebackend.h \
     utils.h
 

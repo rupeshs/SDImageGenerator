@@ -12,6 +12,8 @@ static const char* STABLE_DIFFUSION_MODEL_1_4_URL = "https://www.googleapis.com/
 static const char* STABLE_DIFFUSION_RESULTS_FOLDER_NAME = "results";
 static const char* STABLE_DIFFUSION_DREAM = "scripts/dream.py";
 static const char* STABLE_DIFFUSION_ENVIRONMENT_YAML ="environment.yaml";
+static const char* LOG_FILE_NAME = "SdImageGenerator_logs.txt";
+
 static const double DEFAULT_SCALE = 7.5;
 static const double DEFAULT_IMAGE_WIDTH = 512;
 static const double DEFAULT_IMAGE_HEIGHT = 512;
@@ -22,7 +24,9 @@ static const char* DEFAULT_SEED = "";
 static const bool  DEFAULT_GRID = false;
 static const bool  DEFAULT_SEAMLESS = false;
 static const bool  DEFAULT_FULL_PRECISION = false;
-static const char* LOG_FILE_NAME = "SdImageGenerator_logs.txt";
+static const bool  DEFAULT_USE_UPSCALER = false;
+static const char* DEFAULT_UPSCALE_FACTOR = "2x";
+static const double DEFAULT_UPSCALE_STREGTH = 0.75;
 
 #endif // DEFINES_H
 
