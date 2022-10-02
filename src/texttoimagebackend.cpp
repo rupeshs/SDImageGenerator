@@ -25,13 +25,13 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
     : QObject{parent}
 {
     isProcessing = false;
-    settings = new QSettings(qApp->applicationDirPath()+"/sdimagegenerator.ini",QSettings::IniFormat,this);
 
     m_options = new DiffusionOptions();
-
     diffusionEnv = new DiffusionEnvironment(parent);
     diffusionEnv->getEnvironment();
+
     appSettings = new Settings(parent, m_options,diffusionEnv);
+
     stableDiffusion = new DiffusionProcess(parent,diffusionEnv);
     connect(stableDiffusion, SIGNAL(generatingImages()), this, SLOT(generatingImages()));
     connect(stableDiffusion, SIGNAL(imagesGenerated()), this, SLOT(imagesGenerated()));
@@ -44,7 +44,7 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
 
     envValidator = new DiffusionEnvValidator(this,diffusionEnv);
     connect(envValidator, SIGNAL(environmentCurrentStatus(bool,bool)), this, SLOT(environmentCurrentStatus(bool,bool)));
-    envValidator->Validate();
+    envValidator->ValidatePythonPackages();
 
     m_envStatus = new DiffusionEnvironmentStatus();
 
@@ -54,9 +54,17 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
 
 void TextToImageBackend::generateImage()
 {
+
     if (!Utils::checkPathExists(m_options->saveDir())) {
         showErrorDlg(tr("Please choose a output directory from settings tab."));
         return;
+    }
+
+    if (m_options->faceRestoration()) {
+        if(!envValidator->validateGfpGanModel()) {
+            showErrorDlg(tr("Please download GFPGAN model from downloads tab."));
+            return;
+        }
     }
 
     if (m_options->prompt().isEmpty()) {
@@ -164,12 +172,7 @@ void TextToImageBackend::downloadModel()
     if (Utils::checkPathExists(diffusionEnv->getStableDiffusionModelPath())){
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Warning);
-
-        if (envValidator->validateModelFileSize())
-            msgBox.setText(tr("Model file already exists."));
-        else
-            msgBox.setText(tr("Model file size does not match!"));
-
+        msgBox.setText(tr("Model file already exists."));
         msgBox.setInformativeText(tr("Do you want to download it again?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
@@ -223,6 +226,7 @@ void TextToImageBackend::environmentCurrentStatus(bool isPackagesReady, bool isS
 
     m_envStatus->setIsPythonEnvReady(isPackagesReady);
     m_envStatus->setIsStableDiffusionModelReady(isStableDiffusionModelReady);
+    m_envStatus->setIsGfpGanModelReady(envValidator->validateGfpGanModel());
     emit initControls(m_options,m_envStatus);
 }
 
@@ -247,6 +251,18 @@ void TextToImageBackend::handleModelStatus(bool isStableDiffusionModelReady)
         qDebug()<<"Stable diffusion original model(v1.4) check: Failed ";
         emit environmentNotReady();
     }
+}
+
+void TextToImageBackend::downloadGfpganModel()
+{
+    if ( !modelDownloader ){
+        modelDownloader = new InstallerProcess(this,diffusionEnv);
+        connect(modelDownloader, SIGNAL(gotConsoleLog(QString)), this, SLOT(updateDownloaderStatusMessage(QString)));
+        connect(modelDownloader, SIGNAL(installCompleted(int,bool)), this, SLOT(installCompleted(int,bool)));
+    }
+
+    emit setupInstallerUi(true);
+    modelDownloader->downloadGfpganModel();
 }
 
 DiffusionEnvironmentStatus *TextToImageBackend::envStatus() const

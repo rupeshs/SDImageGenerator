@@ -45,7 +45,7 @@ class TextToImageBackend : public QObject,public QQmlParserStatus
     Q_PROPERTY(DiffusionOptions* options READ options CONSTANT)
     Q_PROPERTY(DiffusionEnvironmentStatus* envStatus READ envStatus CONSTANT)
     Q_PROPERTY(bool isProcessing MEMBER isProcessing NOTIFY isProcessingChanged)
-   // Q_PROPERTY(QString installerStatusMessage MEMBER installerStatusMsg NOTIFY installerStatusChanged)
+
 public:
     explicit TextToImageBackend(QObject *parent = nullptr);
 
@@ -82,6 +82,7 @@ public slots:
     void environmentCurrentStatus(bool isPackagesReady,bool isStableDiffusionModelReady);
     void handlePackagesStatus(bool isPackagesReady);
     void handleModelStatus(bool isModelReady);
+    void downloadGfpganModel();
 
 signals:
     void showMessageBox();
@@ -108,11 +109,10 @@ private:
     DiffusionOptions *m_options;
     DiffusionEnvironmentStatus *m_envStatus;
     DiffusionEnvValidator *envValidator;
-    QSettings *settings;
+
     InstallerProcess *modelDownloader;
     InstallerProcess *pythonEnvInstaller;
     Settings *appSettings;
-    //float downloadPercentage;
 
     QString errorMsg;
     QString diffusionStatusMsg;
@@ -123,7 +123,6 @@ private:
     QString installerStatusMsg;
 
     void initBackend();
-
 
 private slots:
     void updateStatusMessage(const QString&);

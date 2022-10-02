@@ -22,36 +22,46 @@ DiffusionEnvValidator::DiffusionEnvValidator(QObject *parent,DiffusionEnvironmen
     diffusionEnv = diffEnv;
     pipValidator = new PythonEnvValidator(parent,diffEnv);
     connect(pipValidator,SIGNAL(packageValidationCompleted(int,bool)),this,SLOT(packageValidationCompleted(int,bool)));
-
 }
 
-void DiffusionEnvValidator::Validate()
+void DiffusionEnvValidator::ValidatePythonPackages()
 {
     pipValidator->validatePackages();
 }
 
 bool DiffusionEnvValidator::validateModelPath()
 {
-    if( Utils::checkPathExists(diffusionEnv->getStableDiffusionModelPath())) {
-        return validateModelFile();
-    }
-    return false;
+    return Utils::checkPathExists(diffusionEnv->getStableDiffusionModelPath());
 }
 
 bool DiffusionEnvValidator::validateModelFileSize()
 {
-    return validateModelFile();
+    QFile modelFile(diffusionEnv->getStableDiffusionModelPath());
+    return STABLE_DIFFUSION_MODEL_1_4_FILE_SIZE == modelFile.size();
+}
+
+bool DiffusionEnvValidator::validateGfpganModelPath()
+{
+    return Utils::checkPathExists(diffusionEnv->getGfpGanModelPath());
+}
+
+bool DiffusionEnvValidator::validateGfpganModelFileSize()
+{
+    QFile modelFile(diffusionEnv->getGfpGanModelPath());
+    return GFP_GAN_MODEL_1_3_FILE_SIZE == modelFile.size();
+}
+
+bool DiffusionEnvValidator::validateStableDiffusionModel()
+{
+    return validateModelPath() && validateModelFileSize();
+}
+
+bool DiffusionEnvValidator::validateGfpGanModel()
+{
+   return validateGfpganModelPath() && validateGfpganModelFileSize();
 }
 
 void DiffusionEnvValidator::packageValidationCompleted(int , bool isPackagesReady)
 {
-    bool modelReady = validateModelPath();
-    emit environmentCurrentStatus(isPackagesReady, modelReady);
-
-}
-
-bool DiffusionEnvValidator::validateModelFile()
-{
-    QFile modelFile(diffusionEnv->getStableDiffusionModelPath());
-    return STABLE_DIFFUSION_MODEL_1_4_FILE_SIZE == modelFile.size();
+    emit environmentCurrentStatus(isPackagesReady, validateStableDiffusionModel());
 }

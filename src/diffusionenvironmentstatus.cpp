@@ -35,3 +35,13 @@ void DiffusionEnvironmentStatus::setIsStableDiffusionModelReady(bool newIsStable
 {
     m_isStableDiffusionModelReady = newIsStableDiffusionModelReady;
 }
+
+bool DiffusionEnvironmentStatus::isGfpGanModelReady() const
+{
+    return m_isGfpGanModelReady;
+}
+
+void DiffusionEnvironmentStatus::setIsGfpGanModelReady(bool newIsGfpGanModelReady)
+{
+    m_isGfpGanModelReady = newIsGfpGanModelReady;
+}

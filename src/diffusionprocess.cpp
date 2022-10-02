@@ -121,6 +121,12 @@ void DiffusionProcess::addDreamScriptArgs(DiffusionOptions *diffusionOptions)
     }
 }
 
+void DiffusionProcess::addSaveOriginalImageArg(bool saveImage)
+{
+    if (saveImage)
+        addPromptArguments("--save_original");
+}
+
 void DiffusionProcess::startDreaming()
 {
     if (dreamProcess->isRunning())
@@ -182,14 +188,21 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
         addPromptArguments("--seed");
         addPromptArguments(diffusionOptions->seed());
     }
+
+    if (diffusionOptions->upscaler() || diffusionOptions->faceRestoration())
+        addSaveOriginalImageArg(diffusionOptions->saveOriginalImage());
+
     if (diffusionOptions->upscaler()) {
         addPromptArguments("--upscale");
         QString upscaleFactor = diffusionOptions->upscaleFactor();
         upscaleFactor.chop(1);
         addPromptArguments(upscaleFactor);
         addPromptArguments(QString::number(diffusionOptions->upscaleStrength()));
-        addPromptArguments("--save_original");
 
+    }
+    if (diffusionOptions->faceRestoration()) {
+        addPromptArguments("--gfpgan_strength");
+        addPromptArguments(QString::number(diffusionOptions->faceRestorationStrength()));
     }
 
     addDreamScriptArgs(diffusionOptions);

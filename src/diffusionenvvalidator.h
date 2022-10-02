@@ -28,9 +28,11 @@ class DiffusionEnvValidator : public QObject
     Q_OBJECT
 public:
     explicit DiffusionEnvValidator(QObject *parent = nullptr, DiffusionEnvironment *diffusionEnv = nullptr);
-    void Validate();
-    bool validateModelPath();
-    bool validateModelFileSize();
+
+    void ValidatePythonPackages();
+    bool validateStableDiffusionModel();
+    bool validateGfpGanModel();
+
 public slots:
     void packageValidationCompleted(int,bool);
 
@@ -41,7 +43,10 @@ private:
     DiffusionEnvironment *diffusionEnv;
     PythonEnvValidator *pipValidator;
 
-    bool validateModelFile();
+    bool validateModelPath();
+    bool validateModelFileSize();
+    bool validateGfpganModelPath();
+    bool validateGfpganModelFileSize();
 };
 
 #endif // DIFFUSIONENVVALIDATOR_H

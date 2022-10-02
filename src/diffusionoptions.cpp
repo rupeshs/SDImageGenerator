@@ -165,3 +165,33 @@ void DiffusionOptions::setUpscaleStrength(qreal newUpscaleStrength)
 {
     m_upscaleStrength = newUpscaleStrength;
 }
+
+bool DiffusionOptions::faceRestoration() const
+{
+    return m_faceRestoration;
+}
+
+void DiffusionOptions::setFaceRestoration(bool newFaceRestoration)
+{
+    m_faceRestoration = newFaceRestoration;
+}
+
+qreal DiffusionOptions::faceRestorationStrength() const
+{
+    return m_faceRestorationStrength;
+}
+
+void DiffusionOptions::setFaceRestorationStrength(qreal newFaceRestorationStrength)
+{
+    m_faceRestorationStrength = newFaceRestorationStrength;
+}
+
+bool DiffusionOptions::saveOriginalImage() const
+{
+    return m_saveOriginalImage;
+}
+
+void DiffusionOptions::setSaveOriginalImage(bool newSaveOriginalImage)
+{
+    m_saveOriginalImage = newSaveOriginalImage;
+}

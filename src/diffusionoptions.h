@@ -38,6 +38,9 @@ class DiffusionOptions : public QObject
     Q_PROPERTY(bool upscaler READ upscaler WRITE setUpscaler CONSTANT)
     Q_PROPERTY(QString upscaleFactor READ upscaleFactor WRITE setUpscaleFactor CONSTANT)
     Q_PROPERTY(qreal upscaleStrength READ upscaleStrength WRITE setUpscaleStrength CONSTANT)
+    Q_PROPERTY(bool faceRestoration READ faceRestoration WRITE setFaceRestoration CONSTANT)
+    Q_PROPERTY(qreal faceRestorationStrength READ faceRestorationStrength WRITE setFaceRestorationStrength CONSTANT)
+    Q_PROPERTY(bool saveOriginalImage READ saveOriginalImage WRITE setSaveOriginalImage CONSTANT)
     QML_ELEMENT
 
 public:
@@ -88,6 +91,15 @@ public:
     qreal upscaleStrength() const;
     void setUpscaleStrength(qreal newUpscaleStrength);
 
+    bool faceRestoration() const;
+    void setFaceRestoration(bool newFaceRestoration);
+
+    qreal faceRestorationStrength() const;
+    void setFaceRestorationStrength(qreal newFaceRestorationStrength);
+
+    bool saveOriginalImage() const;
+    void setSaveOriginalImage(bool newSaveOriginalImage);
+
 private:
     QString m_prompt;
     qreal m_scale;
@@ -104,6 +116,9 @@ private:
     bool m_upscaler;
     QString m_upscaleFactor;
     qreal m_upscaleStrength;
+    bool m_faceRestoration;
+    qreal m_faceRestorationStrength;
+    bool m_saveOriginalImage;
 
 };
 

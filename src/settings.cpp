@@ -26,6 +26,9 @@ void Settings::load()
     diffusionSettings->setUpscaler(settings->value("Main/upscaler",DEFAULT_USE_UPSCALER).toBool());
     diffusionSettings->setUpscaleFactor(settings->value("Main/upscaleFactor",DEFAULT_UPSCALE_FACTOR).toString());
     diffusionSettings->setUpscaleStrength(settings->value("Main/upscaleStrength",DEFAULT_UPSCALE_STREGTH).toDouble());
+    diffusionSettings->setFaceRestoration(settings->value("Main/faceRestoration",DEFAULT_USE_FACE_RESTORATION).toBool());
+    diffusionSettings->setFaceRestorationStrength(settings->value("Main/faceRestorationStrength",DEFAULT_FACE_RESTORATION_STRENGTH).toDouble());
+    diffusionSettings->setSaveOriginalImage(settings->value("Main/saveOriginalImage",DEFAULT_SAVE_ORIGINAL_IMAGE).toBool());
 
 }
 
@@ -47,7 +50,9 @@ void Settings::save()
     settings->setValue("upscaler", diffusionSettings->upscaler());
     settings->setValue("upscaleFactor", diffusionSettings->upscaleFactor());
     settings->setValue("upscaleStrength", diffusionSettings->upscaleStrength());
-
+    settings->setValue("faceRestoration", diffusionSettings->faceRestoration());
+    settings->setValue("faceRestorationStrength", diffusionSettings->faceRestorationStrength());
+    settings->setValue("saveOriginalImage", diffusionSettings->saveOriginalImage());
     settings->endGroup();
 }
 
@@ -67,5 +72,8 @@ void Settings::reset()
     diffusionSettings->setUpscaler(DEFAULT_USE_UPSCALER);
     diffusionSettings->setUpscaleFactor(DEFAULT_UPSCALE_FACTOR);
     diffusionSettings->setUpscaleStrength(DEFAULT_UPSCALE_STREGTH);
+    diffusionSettings->setFaceRestoration(DEFAULT_USE_FACE_RESTORATION);
+    diffusionSettings->setFaceRestorationStrength(DEFAULT_FACE_RESTORATION_STRENGTH);
+    diffusionSettings->setSaveOriginalImage(DEFAULT_SAVE_ORIGINAL_IMAGE);
 
 }

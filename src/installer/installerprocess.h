@@ -17,6 +17,7 @@ public:
     void downloadStableDiffusionModel();
     void installCondaEnv();
     void installPipPackages();
+    void downloadGfpganModel();
 
     float getDownloadProgress() const;
 

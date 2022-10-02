@@ -53,11 +53,6 @@ const QString &DiffusionEnvironment::getStableDiffusionModelPath() const
     return stableDiffusionModelPath;
 }
 
-void DiffusionEnvironment::setStableDiffusionModelPath(const QString &newStableDiffusionModelPath)
-{
-    stableDiffusionModelPath = newStableDiffusionModelPath;
-}
-
 const QString &DiffusionEnvironment::getCurlPath() const
 {
     return curlPath;
@@ -71,6 +66,16 @@ const QString &DiffusionEnvironment::getStableDiffusionModelUrl() const
 const QString &DiffusionEnvironment::getDefaultOutDir() const
 {
     return defaultOutDir;
+}
+
+const QString &DiffusionEnvironment::getGfpGanModelPath() const
+{
+    return gfpGanModelPath;
+}
+
+const QString &DiffusionEnvironment::getGfpGanModelUrl() const
+{
+    return gfpGanModelUrl;
 }
 
 void DiffusionEnvironment::setCondaActivatePath(const QString &newCondaActivatePath)
@@ -97,5 +102,7 @@ void DiffusionEnvironment::setEnvironment()
     stableDiffusionModelPath = Utils::pathAppend(stableDiffusionPath,QString(STABLE_DIFFUSION_MODEL_1_4));
     stableDiffusionModelUrl = STABLE_DIFFUSION_MODEL_1_4_URL;
     defaultOutDir = Utils::pathAppend(qApp->applicationDirPath(),STABLE_DIFFUSION_RESULTS_FOLDER_NAME);
-
+    QString gfpGanPath = Utils::pathAppend(stableDiffusionPath,QString(GFP_GAN_PATH));
+    gfpGanModelPath = Utils::pathAppend(gfpGanPath,QString(GFP_GAN_MODEL_1_3));
+    gfpGanModelUrl = GFP_GAN_MODEL_1_3_URL;
 }

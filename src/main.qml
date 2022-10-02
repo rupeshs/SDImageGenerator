@@ -69,6 +69,11 @@ ApplicationWindow {
 
             modelCheck.checked = envStatus.isStableDiffusionModelReady;
             modelCheck.checkable = false;
+            gfpganCheckBox.checked = options.faceRestoration;
+            gfpganStrengthSlider.slider.value = options.faceRestorationStrength;
+            saveOriginalCheckBox.checked = options.saveOriginalImage;
+            gfpganModelCheck.checked = envStatus.isGfpGanModelReady;
+
         }
 
         function onSetOutputDirectory(directory){
@@ -87,9 +92,10 @@ ApplicationWindow {
             tabBar.itemAt(2).enabled = false;
             tabBar.itemAt(3).enabled = false;
         }
-         function onCloseLoadingScreen() {
-             downloadDialog.visible = false;
-         }
+
+        function onCloseLoadingScreen() {
+            downloadDialog.visible = false;
+        }
 
         function onSetupInstallerUi(isDownloader) {
 
@@ -146,6 +152,9 @@ ApplicationWindow {
         stableDiffusionBackend.options.upscaler = upscalerCheckBox.checked ;
         stableDiffusionBackend.options.upscaleStrength = upscaleStrengthSlider.slider.value.toFixed(2);
         stableDiffusionBackend.options.upscaleFactor = upscaleFactorGroup.checkedButton.text;
+        stableDiffusionBackend.options.faceRestoration = gfpganCheckBox.checked;
+        stableDiffusionBackend.options.faceRestorationStrength = gfpganStrengthSlider.slider.value.toFixed(2);
+        stableDiffusionBackend.options.saveOriginalImage = saveOriginalCheckBox.checked;
     }
     TabBar {
         id: tabBar
@@ -154,6 +163,8 @@ ApplicationWindow {
         TabButton {
             //text: qsTr("Text to Image")
             icon.source: "images/moon-stars-fill.png"
+            icon.width: 28
+            icon.height: 28
             background: Rectangle {
                 //#26a8ff
                 color: tabBar.currentIndex == 0 ? "green": "#393A3B"
@@ -163,6 +174,8 @@ ApplicationWindow {
         TabButton {
            // text: qsTr("Images")
             icon.source: "images/images.png"
+            icon.width: 28
+            icon.height: 28
             background: Rectangle {
                 color: tabBar.currentIndex == 1 ? "green": "#393A3B"
             }
@@ -171,6 +184,9 @@ ApplicationWindow {
         TabButton {
             //text: qsTr("Settings")
             icon.source: "images/gear.png"
+            icon.width: 28
+            icon.height: 28
+
             background: Rectangle {
                 color: tabBar.currentIndex == 2 ? "green": "#393A3B"
             }
@@ -178,6 +194,8 @@ ApplicationWindow {
         TabButton {
             //text: qsTr("Enhance")
             icon.source: "images/enhance.png"
+            icon.width: 28
+            icon.height: 28
             background: Rectangle {
                 color: tabBar.currentIndex == 3 ? "green": "#393A3B"
             }
@@ -186,6 +204,8 @@ ApplicationWindow {
         TabButton {
             //text: qsTr("Install")
             icon.source: "images/download.png"
+            icon.width: 28
+            icon.height: 28
             background: Rectangle {
                 color: tabBar.currentIndex == 4 ? "green": "#393A3B"
             }
@@ -195,6 +215,8 @@ ApplicationWindow {
         TabButton {
             //text: qsTr("About")
             icon.source: "images/info-square.png"
+            icon.width: 28
+            icon.height: 28
             background: Rectangle {
                 color: tabBar.currentIndex == 5 ? "green": "#393A3B"
             }
@@ -536,8 +558,16 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignCenter
             ColumnLayout{
                 Item{
-                    height: 20
+                    height: 10
                 }
+                CheckBox{
+                    id :saveOriginalCheckBox
+                    text: "Save original image"
+
+                    Layout.leftMargin: 10
+                    enabled: upscalerCheckBox.checked | gfpganCheckBox.checked
+                }
+
                 GroupBox{
                     id: upscalerGroup
                     Layout.preferredWidth: window.width - 20
@@ -561,7 +591,7 @@ ApplicationWindow {
                         RowLayout{
                             id : rowScaleFactor
                             Label{
-                                text : "Upscale factor :";
+                                text : "Scaling factor :";
                             }
                             RadioButton {
                                 id : radiobuttonScaleTwo
@@ -579,7 +609,7 @@ ApplicationWindow {
                             id: upscaleStrengthSlider
 
                             header.text: qsTr("Upscaling strength")
-                            description.visible: false
+                            description.text : "For natural looking results, we recommend using values between 0.5 to 0.8"
                             slider.from: 0
                             slider.to: 1
                             slider.value: 0.75
@@ -589,67 +619,82 @@ ApplicationWindow {
                         }
                     }
                 }
+                GroupBox{
+                    id: gfpganGroup
+                    Layout.preferredWidth: window.width - 20
+                    Layout.leftMargin: 10
+
+                    label: CheckBox {
+                        id: gfpganCheckBox
+                        checked: false
+                        text: qsTr("Face Restoration")
+                    }
+                    ColumnLayout{
+                    anchors.fill: parent
+                    enabled: gfpganCheckBox.checked
+
+                    Controls.AppSlider{
+                        id: gfpganStrengthSlider
+
+                        header.text: qsTr("GFPGAN strength")
+                        description.text : "Controls the strength of the face restoration,we recommend using values between 0.5 to 0.8"
+                        slider.from: 0
+                        slider.to: 1
+                        slider.value: 0.75
+                        Layout.fillWidth: true
+                        displayFloat: true
+                        decimalPointNumbers : 2
+                    }
+                   }
+                }
             }
         }
 
         Page {
 
             ColumnLayout{
-                Label{
-                    Layout.leftMargin: 10
-                    Layout.topMargin: 30
-                    text : "Download model"
 
+                Label{
+                    text : "Available models"
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 20
+                    Layout.topMargin: 30
                 }
 
-                /*CheckBox {
-                    id : minicondaCheck
-
-                    checkable: false
-                    checked: stableDiffusionBackend.envStatus.isCondaReady
-                    Layout.leftMargin: 10
-                    Layout.topMargin: 20
-                    text: qsTr("Miniconda")
-
-                }*/
                 Item{
                     Layout.fillWidth: true
                     height: 20
                 }
-                /*RowLayout{
-
-
-                    CheckBox {
-                        id : pythonCheck
-
-                        checkable: false
-
-                        checked: stableDiffusionBackend.envStatus.isPytonEnvReady
-                        Layout.leftMargin: 10
-                        text: qsTr("Environment")
-                    }
-                    Button{
-                        text : "Install"
-                        icon.source:  "images/download.png"
-                        onClicked:  {
-                            stableDiffusionBackend.installPythonEnv();
-                        }
-
-                    }
-                }*/
                 RowLayout{
                     CheckBox {
                         id : modelCheck
 
                         checkable: false
                         Layout.leftMargin: 10
-                        text: qsTr("Stable diffusion model")
+                        text: qsTr("Stable diffusion model v1.4 original")
                     }
                     Button{
                         text : "Download model"
                         icon.source:  "images/file-arrow-down.png"
                         onClicked:  {
                             stableDiffusionBackend.downloadModel();
+                        }
+
+                    }
+                }
+                RowLayout{
+                    CheckBox {
+                        id : gfpganModelCheck
+
+                        checkable: false
+                        Layout.leftMargin: 10
+                        text: qsTr("GFPGAN model (Optional) ")
+                    }
+                    Button{
+                        text : "Download model"
+                        icon.source:  "images/file-arrow-down.png"
+                        onClicked:  {
+                            stableDiffusionBackend.downloadGfpganModel();
                         }
 
                     }
@@ -714,7 +759,7 @@ ApplicationWindow {
     }
 
     onClosing: {
-        window.title = qsTr("Stopping please wait...");
+        window.title = qsTr("SDImageGenerator - Stopping please wait...");
         updateOptions();
         stableDiffusionBackend.saveSettings();
         stableDiffusionBackend.stopProcessing();

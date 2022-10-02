@@ -64,6 +64,19 @@ void InstallerProcess::installPipPackages()
 
 }
 
+void InstallerProcess::downloadGfpganModel()
+{
+    installerProc->clearArguments();
+    installerProc->addArgument(diffusionEnv->getCurlPath());
+    installerProc->addArgument("-L");
+    installerProc->addArgument(diffusionEnv->getGfpGanModelUrl());
+    installerProc->addArgument("-o");
+    installerProc->addArgument(diffusionEnv->getGfpGanModelPath());
+    qDebug()<<installerProc->arguments();
+    installerProc->start();
+    isDownloader = true;
+}
+
 void InstallerProcess::readProcessOutput(QByteArray line)
 {
     QString consoleLine(line);

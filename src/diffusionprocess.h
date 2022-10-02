@@ -72,6 +72,7 @@ private:
     void startDreaming();
     void setStatus(StableDiffusionStatus newStatus);
     void addDreamScriptArgs(DiffusionOptions *diffusionOptions);
+    void addSaveOriginalImageArg(bool saveImage);
 
 };
 

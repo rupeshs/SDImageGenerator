@@ -30,17 +30,16 @@ public:
     explicit DiffusionEnvironment(QObject *parent = nullptr);
 
     void getEnvironment();
+
     const QString &getCondaActivatePath() const;
     const QString &getStableDiffusionPath() const;
     const QString &getStableDiffusionScript() const;
-
     const QString &getStableDiffusionModelPath() const;
-    void setStableDiffusionModelPath(const QString &newStableDiffusionModelPath);
-
     const QString &getCurlPath() const;
     const QString &getStableDiffusionModelUrl() const;
-
     const QString &getDefaultOutDir() const;
+    const QString &getGfpGanModelPath() const;
+    const QString &getGfpGanModelUrl() const;
 
 signals:
 
@@ -54,12 +53,13 @@ private:
     QString curlPath;
     QString stableDiffusionModelUrl;
     QString defaultOutDir;
+    QString gfpGanModelPath;
+    QString gfpGanModelUrl;
 
     void setCondaActivatePath(const QString &newCondaActivatePath);
     void setPythonEnvPath(const QString &newPythonEnvPath);
     void setStableDiffusionPath(const QString &newStableDiffusionPath);
     void setEnvironment();
-
 
 };
 
