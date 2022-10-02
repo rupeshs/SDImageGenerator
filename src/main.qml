@@ -576,7 +576,7 @@ ApplicationWindow {
                     label: CheckBox {
                         id: upscalerCheckBox
                         checked: false
-                        text: qsTr("Upscaler")
+                        text: qsTr("Upscaler (Real-ESRGAN)")
                     }
                     ColumnLayout{
                         anchors.fill: parent
@@ -627,7 +627,7 @@ ApplicationWindow {
                     label: CheckBox {
                         id: gfpganCheckBox
                         checked: false
-                        text: qsTr("Face Restoration")
+                        text: qsTr("Face Restoration (GFPGAN)")
                     }
                     ColumnLayout{
                     anchors.fill: parent
@@ -636,7 +636,7 @@ ApplicationWindow {
                     Controls.AppSlider{
                         id: gfpganStrengthSlider
 
-                        header.text: qsTr("GFPGAN strength")
+                        header.text: qsTr("Face restoration strength")
                         description.text : "Controls the strength of the face restoration,we recommend using values between 0.5 to 0.8"
                         slider.from: 0
                         slider.to: 1
