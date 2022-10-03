@@ -37,6 +37,7 @@ static const double DEFAULT_UPSCALE_STRENGTH = 0.75;
 static const double  DEFAULT_FACE_RESTORATION_STRENGTH = 0.75;
 static const double  DEFAULT_IMG_TO_IMG_STRENGTH = 0.75;
 static const char* DEFAULT_INIT_IMAGE = "";
+static const double DEFAULT_VARIATION_AMOUNT = 0.2;
 
 #endif // DEFINES_H
 

@@ -6,6 +6,8 @@ import QtQuick.Layouts 1.3
 RowLayout{
     property alias folderPath :folderModel.folder
     property int currentIndex : 0
+    property alias currentImagePath :  mainImage.source
+
     anchors.centerIn: parent
 
     function displayImage(){

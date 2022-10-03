@@ -24,6 +24,7 @@ void Settings::load()
     diffusionSettings->setSeamless(settings->value("Main/seamless",DEFAULT_SEAMLESS).toBool());
     diffusionSettings->setFullPrecision(settings->value("Main/fullPrecision",DEFAULT_FULL_PRECISION).toBool());
     diffusionSettings->setSaveOriginalImage(settings->value("Main/saveOriginalImage",DEFAULT_SAVE_ORIGINAL_IMAGE).toBool());
+    diffusionSettings->setVariationAmount(settings->value("Main/variationAmount",DEFAULT_VARIATION_AMOUNT).toDouble());
 
     diffusionSettings->setUpscaler(settings->value("Upscaler/upscaler",DEFAULT_USE_UPSCALER).toBool());
     diffusionSettings->setUpscaleFactor(settings->value("Upscaler/upscaleFactor",DEFAULT_UPSCALE_FACTOR).toString());
@@ -54,6 +55,7 @@ void Settings::save()
     settings->setValue("seamless", diffusionSettings->seamless());
     settings->setValue("fullPrecision", diffusionSettings->fullPrecision());
     settings->setValue("saveOriginalImage", diffusionSettings->saveOriginalImage());
+    settings->setValue("variationAmount", diffusionSettings->variationAmount());
     settings->endGroup();
 
     settings->beginGroup("Upscaler");
@@ -98,5 +100,6 @@ void Settings::reset()
     diffusionSettings->setFitImage(DEFAULT_IMG_TO_IMG_FIT);
     diffusionSettings->setImageToImageStrength(DEFAULT_IMG_TO_IMG_STRENGTH);
     diffusionSettings->setInitImagePath(DEFAULT_INIT_IMAGE);
+    diffusionSettings->setVariationAmount(DEFAULT_VARIATION_AMOUNT);
 
 }

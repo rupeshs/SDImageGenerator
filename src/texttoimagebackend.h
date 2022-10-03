@@ -30,6 +30,7 @@
 #include <QUrl>
 #include <QTimer>
 #include "settings.h"
+#include <QFileInfo>
 
 #ifdef Q_OS_WIN
   #include <windows.h>
@@ -61,7 +62,7 @@ public:
     void setEnvStatus(DiffusionEnvironmentStatus *newEnvStatus);
 
 public slots:
-    void generateImage();
+    void generateImage(bool isVariation);
     void stopProcessing();
     void showErrorDlg(const QString &errorMesg);
     void saveSettings();
@@ -84,6 +85,7 @@ public slots:
     void handleModelStatus(bool isModelReady);
     void downloadGfpganModel();
     void setImageInput(QUrl url);
+    void generateVariations(QUrl imagePath);
 
 signals:
     void showMessageBox();
@@ -103,7 +105,7 @@ signals:
     void setupInstallerUi(bool isDownloader);
     void closeLoadingScreen();
     void setInputImagePath(QString);
-
+    void showDreamPage();
 
 private:
     DiffusionProcess *stableDiffusion;
@@ -129,6 +131,9 @@ private slots:
     void updateInstallerStatusMessage(const QString&);
     void updateDownloaderStatusMessage(const QString&);
     void installCompleted(int exitCode,bool isDownloader);
+    QString getSeedFromFileName(QUrl filePath) ;
+    bool isValidInitImage();
+
 
 };
 

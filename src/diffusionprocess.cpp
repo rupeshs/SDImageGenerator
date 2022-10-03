@@ -168,7 +168,7 @@ void DiffusionProcess::stopProcess()
     }
 }
 
-void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
+void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool isVariations)
 {
     //addArgument("--prompt");
     clearPromptArguments();
@@ -181,8 +181,6 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
     else {
         if (diffusionOptions->fitImage())
             addDimensionArgs(diffusionOptions->imageWidth(),diffusionOptions->imageHeight());
-    addPromptArguments("--init_mask");
-    addPromptArguments("C:/Users/Rupesh/Downloads/mask.png");
     }
     addPromptArguments("--cfg_scale");
     addPromptArguments(QString::number(diffusionOptions->scale()));
@@ -200,6 +198,10 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
     if (!diffusionOptions->seed().isEmpty()){
         addPromptArguments("--seed");
         addPromptArguments(diffusionOptions->seed());
+    }
+    if (isVariations) {
+        addPromptArguments("--variation");
+        addPromptArguments(QString::number(diffusionOptions->variationAmount()));
     }
 
     if (diffusionOptions->upscaler() || diffusionOptions->faceRestoration())

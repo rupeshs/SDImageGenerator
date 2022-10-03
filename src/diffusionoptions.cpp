@@ -235,3 +235,13 @@ void DiffusionOptions::setInitImagePath(const QString &newInitImagePath)
 {
     m_initImagePath = newInitImagePath;
 }
+
+qreal DiffusionOptions::variationAmount() const
+{
+    return m_variationAmount;
+}
+
+void DiffusionOptions::setVariationAmount(qreal newVariationAmount)
+{
+    m_variationAmount = newVariationAmount;
+}

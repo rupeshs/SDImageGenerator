@@ -52,14 +52,19 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
     pythonEnvInstaller = nullptr;
 }
 
-void TextToImageBackend::generateImage()
+void TextToImageBackend::generateImage(bool isVariation)
 {
 
     if (!Utils::checkPathExists(m_options->saveDir())) {
         showErrorDlg(tr("Please choose a output directory from settings tab."));
         return;
     }
-
+    if (m_options->imageToImage()) {
+        if(!isValidInitImage()) {
+           showErrorDlg(tr("Please choose a valid initial image"));
+           return;
+        }
+    }
     if (m_options->faceRestoration()) {
         if(!envValidator->validateGfpGanModel()) {
             showErrorDlg(tr("Please download GFPGAN model from downloads tab."));
@@ -77,7 +82,7 @@ void TextToImageBackend::generateImage()
     else
         updateStatusMessage(tr("Starting image generation..."));
 
-    stableDiffusion->generateImages(m_options);
+    stableDiffusion->generateImages(m_options,isVariation);
     qInfo()<<"Prompt : "<< m_options->prompt().trimmed();
     qInfo()<<"Scale : "<< m_options->scale();
     qInfo()<<"Image width :"<< m_options->imageWidth();
@@ -267,7 +272,17 @@ void TextToImageBackend::downloadGfpganModel()
 
 void TextToImageBackend::setImageInput(QUrl url)
 {
-  emit setInputImagePath(url.toLocalFile());
+    emit setInputImagePath(url.toLocalFile());
+}
+
+void TextToImageBackend::generateVariations(QUrl imagePath)
+{
+    QString seedNumber = getSeedFromFileName(imagePath);
+    qDebug()<<"Generate variations :"<<seedNumber;
+    m_options->setSeed(seedNumber);
+    generateImage(true);
+    emit showDreamPage();
+
 }
 
 DiffusionEnvironmentStatus *TextToImageBackend::envStatus() const
@@ -353,4 +368,22 @@ void TextToImageBackend::installCompleted(int exitCode,bool isDownloader)
             qDebug()<<"Environment is setup failed.";
         emit closeLoadingScreen();
     }
+}
+
+QString TextToImageBackend::getSeedFromFileName(QUrl imagePath)
+{
+    QString seedNum("");
+    QFileInfo  imageFile(imagePath.toLocalFile());
+    QString fileName = imageFile.fileName();
+    QStringList fileNameSplits = fileName.split(".");
+    qDebug()<<fileNameSplits;
+    if (fileNameSplits.length()>1)
+        seedNum = fileNameSplits[1];
+
+    return seedNum;
+}
+
+bool TextToImageBackend::isValidInitImage()
+{
+    return Utils::checkPathExists(m_options->initImagePath());
 }

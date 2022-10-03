@@ -45,6 +45,7 @@ class DiffusionOptions : public QObject
     Q_PROPERTY(bool fitImage READ fitImage WRITE setFitImage CONSTANT)
     Q_PROPERTY(qreal imageToImageStrength READ imageToImageStrength WRITE setImageToImageStrength CONSTANT)
     Q_PROPERTY(QString initImagePath READ initImagePath WRITE setInitImagePath CONSTANT)
+    Q_PROPERTY(qreal variationAmount READ variationAmount WRITE setVariationAmount CONSTANT)
     QML_ELEMENT
 
 public:
@@ -116,6 +117,9 @@ public:
     const QString &initImagePath() const;
     void setInitImagePath(const QString &newInitImagePath);
 
+    qreal variationAmount() const;
+    void setVariationAmount(qreal newVariationAmount);
+
 private:
     QString m_prompt;
     qreal m_scale;
@@ -139,6 +143,7 @@ private:
     bool m_fitImage;
     qreal m_imageToImageStrength;
     QString m_initImagePath;
+    qreal m_variationAmount;
 
 
 };

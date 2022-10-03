@@ -79,6 +79,7 @@ ApplicationWindow {
             imgStrength.slider.value = options.imageToImageStrength;
             fitImageCheckBox.checked = options.fitImage;
             initImagePathTextEdit.text = options.initImagePath;
+            variationAmountSlider.slider.value = options.variationAmount;
 
         }
 
@@ -93,6 +94,9 @@ ApplicationWindow {
             {
                 tabBar.currentIndex = 1;
             }
+        }
+        function onShowDreamPage(){
+            tabBar.currentIndex = 0;
         }
         function onEnvironmentNotReady() {
             tabBar.currentIndex = 4;
@@ -168,6 +172,7 @@ ApplicationWindow {
         stableDiffusionBackend.options.imageToImageStrength = imgStrength.slider.value.toFixed(2);
         stableDiffusionBackend.options.fitImage = fitImageCheckBox.checked;
         stableDiffusionBackend.options.initImagePath = initImagePathTextEdit.text;
+        stableDiffusionBackend.options.variationAmount = variationAmountSlider.slider.value.toFixed(1) ;
     }
     TabBar {
         id: tabBar
@@ -252,7 +257,7 @@ ApplicationWindow {
                 }
                 ColumnLayout{
                     Item{
-                        height: 70
+                        height: 50
                     }
                     Label{
                         text:qsTr("Prompt")
@@ -260,7 +265,7 @@ ApplicationWindow {
 
                     Item{
                         width: 550
-                        height:100
+                        height:140
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignHCenter
 
@@ -292,7 +297,7 @@ ApplicationWindow {
                             onClicked: {
                                 updateOptions();
                                 startTime = new Date().getTime();
-                                stableDiffusionBackend.generateImage();
+                                stableDiffusionBackend.generateImage(false);
                             }
                         }
                         Button{
@@ -334,7 +339,6 @@ ApplicationWindow {
                     GroupBox{
                         id: imgimgGroup
                         Layout.preferredWidth: 550
-                        Layout.leftMargin: 10
 
                         label: CheckBox {
                             id: imgtoimgCheckBox
@@ -362,6 +366,10 @@ ApplicationWindow {
                           }
                           RowLayout{
                               Layout.fillWidth: true
+                              Label{
+                                  text : qsTr("Initial image :")
+                              }
+
                               Controls.RichTextEdit{
                                   id: initImagePathTextEdit
                                   Layout.fillWidth: true
@@ -403,10 +411,11 @@ ApplicationWindow {
             id: paneImages
 
             Controls.FolderImageViewer{
+                id: imageViewer
                 folderPath: stableDiffusionBackend.samplesUrl
             }
 
-
+            ColumnLayout{
             Button {
                 width: 48
                 height: 48
@@ -415,6 +424,19 @@ ApplicationWindow {
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Open output folder")
                 onClicked: stableDiffusionBackend.openOutputFolder();
+            }
+            Button {
+                width: 48
+                height: 48
+                Layout.alignment:  Qt.AlignBottom
+                text : "V"
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Generate variations of this image")
+                onClicked: {
+                    updateOptions();
+                    stableDiffusionBackend.generateVariations(imageViewer.currentImagePath);
+                }
+            }
             }
         }
 
@@ -625,6 +647,19 @@ ApplicationWindow {
                         slider.value: 0.75
                         displayFloat: true
                         decimalPointNumbers: 2
+                        Layout.fillWidth:true
+
+                    }
+
+                   Controls.AppSlider{
+                        id: variationAmountSlider
+
+                        header.text: qsTr("Variation amount")
+                        description.text: qsTr("The amount of variation between image variations")
+                        slider.from: 0
+                        slider.to: 1.0
+                        slider.value: 0.2
+                        displayFloat: true
                         Layout.fillWidth:true
 
                     }

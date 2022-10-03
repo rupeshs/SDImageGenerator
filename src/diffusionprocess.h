@@ -41,7 +41,7 @@ public:
     void clearArguments(){arguments.clear();}
     void startProcess();
     void stopProcess();
-    void generateImages(DiffusionOptions *diffusionOptions);
+    void generateImages(DiffusionOptions *diffusionOptions,bool isVariations);
 
     const QString &getPromptCommand() const;
     StableDiffusionStatus getStatus() const;
