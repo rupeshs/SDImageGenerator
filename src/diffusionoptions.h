@@ -41,6 +41,10 @@ class DiffusionOptions : public QObject
     Q_PROPERTY(bool faceRestoration READ faceRestoration WRITE setFaceRestoration CONSTANT)
     Q_PROPERTY(qreal faceRestorationStrength READ faceRestorationStrength WRITE setFaceRestorationStrength CONSTANT)
     Q_PROPERTY(bool saveOriginalImage READ saveOriginalImage WRITE setSaveOriginalImage CONSTANT)
+    Q_PROPERTY(bool imageToImage READ imageToImage WRITE setImageToImage CONSTANT)
+    Q_PROPERTY(bool fitImage READ fitImage WRITE setFitImage CONSTANT)
+    Q_PROPERTY(qreal imageToImageStrength READ imageToImageStrength WRITE setImageToImageStrength CONSTANT)
+    Q_PROPERTY(QString initImagePath READ initImagePath WRITE setInitImagePath CONSTANT)
     QML_ELEMENT
 
 public:
@@ -100,6 +104,18 @@ public:
     bool saveOriginalImage() const;
     void setSaveOriginalImage(bool newSaveOriginalImage);
 
+    bool imageToImage() const;
+    void setImageToImage(bool newImageToImage);
+
+    bool fitImage() const;
+    void setFitImage(bool newFitImage);
+
+    qreal imageToImageStrength() const;
+    void setImageToImageStrength(qreal newImageToImageStrength);
+
+    const QString &initImagePath() const;
+    void setInitImagePath(const QString &newInitImagePath);
+
 private:
     QString m_prompt;
     qreal m_scale;
@@ -119,6 +135,11 @@ private:
     bool m_faceRestoration;
     qreal m_faceRestorationStrength;
     bool m_saveOriginalImage;
+    bool m_imageToImage;
+    bool m_fitImage;
+    qreal m_imageToImageStrength;
+    QString m_initImagePath;
+
 
 };
 

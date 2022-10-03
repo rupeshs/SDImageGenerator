@@ -195,3 +195,43 @@ void DiffusionOptions::setSaveOriginalImage(bool newSaveOriginalImage)
 {
     m_saveOriginalImage = newSaveOriginalImage;
 }
+
+bool DiffusionOptions::imageToImage() const
+{
+    return m_imageToImage;
+}
+
+void DiffusionOptions::setImageToImage(bool newImageToImage)
+{
+    m_imageToImage = newImageToImage;
+}
+
+bool DiffusionOptions::fitImage() const
+{
+    return m_fitImage;
+}
+
+void DiffusionOptions::setFitImage(bool newFitImage)
+{
+    m_fitImage = newFitImage;
+}
+
+qreal DiffusionOptions::imageToImageStrength() const
+{
+    return m_imageToImageStrength;
+}
+
+void DiffusionOptions::setImageToImageStrength(qreal newImageToImageStrength)
+{
+    m_imageToImageStrength = newImageToImageStrength;
+}
+
+const QString &DiffusionOptions::initImagePath() const
+{
+    return m_initImagePath;
+}
+
+void DiffusionOptions::setInitImagePath(const QString &newInitImagePath)
+{
+    m_initImagePath = newInitImagePath;
+}

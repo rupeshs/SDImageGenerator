@@ -60,6 +60,7 @@ ApplicationWindow {
             gridCheckBox.checked = options.grid;
             seamlessCheckBox.checked = options.seamless;
             fullPrcisionCheckBox.checked = options.fullPrecision;
+
             upscalerCheckBox.checked = options.upscaler;
             upscaleStrengthSlider.slider.value = options.upscaleStrength;
             if (options.upscaleFactor === "4x")
@@ -74,10 +75,18 @@ ApplicationWindow {
             saveOriginalCheckBox.checked = options.saveOriginalImage;
             gfpganModelCheck.checked = envStatus.isGfpGanModelReady;
 
+            imgtoimgCheckBox.checked = options.imageToImage;
+            imgStrength.slider.value = options.imageToImageStrength;
+            fitImageCheckBox.checked = options.fitImage;
+            initImagePathTextEdit.text = options.initImagePath;
+
         }
 
         function onSetOutputDirectory(directory){
-            saveFolder.text = directory
+            saveFolder.text = directory;
+        }
+        function onSetInputImagePath(file_path){
+            initImagePathTextEdit.text = file_path;
         }
         function onIsProcessingChanged() {
             if (!stableDiffusionBackend.isProcessing)
@@ -155,6 +164,10 @@ ApplicationWindow {
         stableDiffusionBackend.options.faceRestoration = gfpganCheckBox.checked;
         stableDiffusionBackend.options.faceRestorationStrength = gfpganStrengthSlider.slider.value.toFixed(2);
         stableDiffusionBackend.options.saveOriginalImage = saveOriginalCheckBox.checked;
+        stableDiffusionBackend.options.imageToImage= imgtoimgCheckBox.checked;
+        stableDiffusionBackend.options.imageToImageStrength = imgStrength.slider.value.toFixed(2);
+        stableDiffusionBackend.options.fitImage = fitImageCheckBox.checked;
+        stableDiffusionBackend.options.initImagePath = initImagePathTextEdit.text;
     }
     TabBar {
         id: tabBar
@@ -239,7 +252,7 @@ ApplicationWindow {
                 }
                 ColumnLayout{
                     Item{
-                        height:140
+                        height: 70
                     }
                     Label{
                         text:qsTr("Prompt")
@@ -247,7 +260,7 @@ ApplicationWindow {
 
                     Item{
                         width: 550
-                        height:150
+                        height:100
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignHCenter
 
@@ -294,8 +307,9 @@ ApplicationWindow {
                                 stableDiffusionBackend.openLogs();
                             }
                         }
+
                         Item{
-                            Layout.fillWidth: true
+                            Layout.fillWidth: true  
                         }
                         BusyIndicator {
                             id: busyIndicator
@@ -305,8 +319,8 @@ ApplicationWindow {
                         }
 
                         Label {
-
                             id:  elapsedTimeLabel
+
                             Layout.alignment: Qt.AlignRight
                             text: "00:00"
                             color: "gray"
@@ -314,6 +328,53 @@ ApplicationWindow {
                             Layout.bottomMargin: 5
                         }
                     }
+                    Item{
+                    height: 20
+                    }
+                    GroupBox{
+                        id: imgimgGroup
+                        Layout.preferredWidth: 550
+                        Layout.leftMargin: 10
+
+                        label: CheckBox {
+                            id: imgtoimgCheckBox
+                            checked: false
+                            text: qsTr("Image to Image")
+
+
+                        }
+                        ColumnLayout{
+                          enabled: imgtoimgCheckBox.checked
+                          anchors.fill: parent
+
+                          FileDialog {
+                              id: imgFileDialog
+                              title: "Please choose a image"
+
+                              nameFilters: [ "Image files (*.jpg *.png *.jpeg)", "All files (*)" ]
+                              onAccepted: {
+                                  console.log("You chose: ",imgFileDialog.file)
+                                  stableDiffusionBackend.setImageInput(imgFileDialog.file);
+                                  imgFileDialog.close();
+
+                              }
+
+                          }
+                          RowLayout{
+                              Layout.fillWidth: true
+                              Controls.RichTextEdit{
+                                  id: initImagePathTextEdit
+                                  Layout.fillWidth: true
+                              }
+                              ToolButton{
+                                  icon.source: "images/folder2-open.png"
+                                  onClicked: imgFileDialog.open()
+                              }
+                          }
+
+                       }
+                    }
+
                 }
             }
             Timer {
@@ -402,6 +463,8 @@ ApplicationWindow {
                                 'k_heun',
                                 'k_lms',
                                 'plms']
+                            enabled: !imgtoimgCheckBox.checked
+
                         }
                     }
 
@@ -412,7 +475,7 @@ ApplicationWindow {
                         description.text: qsTr("Higher values keep your image closer to your prompt.")
                         slider {
 
-                            from: 1
+                            from: 1.1
                             to: 20
                             value: 7.5
                         }
@@ -507,30 +570,24 @@ ApplicationWindow {
 
                         }
                     }
-                    Controls.AppLabel{
-                        labelText:qsTr("Grid")
-                        labelInfo: qsTr("Turn on grid mode to return a single image combining all the images")
 
-                    }
                     CheckBox{
                       id : gridCheckBox
 
                       text: "Grid"
                     }
-                    Controls.AppLabel{
-                        labelText:qsTr("Seamless Tiling")
-                        labelInfo: qsTr("Activate seamless tiling for interesting effects")
-
+                    Controls.AppInfoLabel{
+                        textInfo: qsTr("Turn on grid mode to return a single image combining all the images")
                     }
+
                     CheckBox{
                       id : seamlessCheckBox
 
                       text: "Seamless tiling"
                     }
-                    Controls.AppLabel{
-                        labelText:qsTr("Full precision")
-                        labelInfo: qsTr("Run in slower full-precision mode.Needed for some older video cards.")
 
+                    Controls.AppInfoLabel{
+                        textInfo: qsTr("Activate seamless tiling for interesting effects")
                     }
                     CheckBox{
                       id : fullPrcisionCheckBox
@@ -544,6 +601,32 @@ ApplicationWindow {
                           }
                           initApp = false;
                       }
+                    }
+                    Controls.AppInfoLabel{
+                        textInfo: qsTr("Run in slower full-precision mode.Needed for some older video cards.")
+                    }
+
+                    CheckBox{
+                        id: fitImageCheckBox
+                        text: qsTr("Fit (Image to Image)")
+                        checked:false
+                    }
+                    Controls.AppInfoLabel{
+                        textInfo: qsTr("Scale the image to fit into the specified width and height")
+                    }
+
+                   Controls.AppSlider{
+                        id: imgStrength
+
+                        header.text: qsTr("Image to Image Strength")
+                        description.text: qsTr("Controls how much the original will be modified")
+                        slider.from: 0
+                        slider.to: 0.99
+                        slider.value: 0.75
+                        displayFloat: true
+                        decimalPointNumbers: 2
+                        Layout.fillWidth:true
+
                     }
 
                     Button{

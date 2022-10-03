@@ -73,6 +73,7 @@ private:
     void setStatus(StableDiffusionStatus newStatus);
     void addDreamScriptArgs(DiffusionOptions *diffusionOptions);
     void addSaveOriginalImageArg(bool saveImage);
+    void addDimensionArgs(qreal width,qreal height);
 
 };
 

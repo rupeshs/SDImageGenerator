@@ -9,5 +9,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>controls/FolderImageViewer.qml</file>
         <file>controls/CircularProgressBar.qml</file>
+        <file>controls/AppInfoLabel.qml</file>
     </qresource>
 </RCC>

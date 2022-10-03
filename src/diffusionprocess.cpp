@@ -127,6 +127,14 @@ void DiffusionProcess::addSaveOriginalImageArg(bool saveImage)
         addPromptArguments("--save_original");
 }
 
+void DiffusionProcess::addDimensionArgs(qreal width,qreal height)
+{
+    addPromptArguments("--width");
+    addPromptArguments(QString::number(width));
+    addPromptArguments("--height");
+    addPromptArguments(QString::number(height));
+}
+
 void DiffusionProcess::startDreaming()
 {
     if (dreamProcess->isRunning())
@@ -165,14 +173,19 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
     //addArgument("--prompt");
     clearPromptArguments();
     addPromptArguments(diffusionOptions->prompt().trimmed());
+    if (!diffusionOptions->imageToImage()) {
     addPromptArguments("--sampler");
     addPromptArguments(diffusionOptions->sampler().trimmed());
+    addDimensionArgs(diffusionOptions->imageWidth(),diffusionOptions->imageHeight());
+    }
+    else {
+        if (diffusionOptions->fitImage())
+            addDimensionArgs(diffusionOptions->imageWidth(),diffusionOptions->imageHeight());
+    addPromptArguments("--init_mask");
+    addPromptArguments("C:/Users/Rupesh/Downloads/mask.png");
+    }
     addPromptArguments("--cfg_scale");
     addPromptArguments(QString::number(diffusionOptions->scale()));
-    addPromptArguments("--width");
-    addPromptArguments(QString::number(diffusionOptions->imageWidth()));
-    addPromptArguments("--height");
-    addPromptArguments(QString::number(diffusionOptions->imageHeight()));
     addPromptArguments("--iterations");
     addPromptArguments(QString::number(diffusionOptions->numberOfImages()));
     addPromptArguments("--steps");
@@ -203,6 +216,15 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions)
     if (diffusionOptions->faceRestoration()) {
         addPromptArguments("--gfpgan_strength");
         addPromptArguments(QString::number(diffusionOptions->faceRestorationStrength()));
+    }
+
+    if (diffusionOptions->imageToImage()) {
+        addPromptArguments("--init_img");
+        addPromptArguments(diffusionOptions->initImagePath());
+        if (diffusionOptions->fitImage())
+            addPromptArguments("--fit");
+        addPromptArguments("--strength");
+        addPromptArguments(QString::number(diffusionOptions->imageToImageStrength()));
     }
 
     addDreamScriptArgs(diffusionOptions);

@@ -265,6 +265,11 @@ void TextToImageBackend::downloadGfpganModel()
     modelDownloader->downloadGfpganModel();
 }
 
+void TextToImageBackend::setImageInput(QUrl url)
+{
+  emit setInputImagePath(url.toLocalFile());
+}
+
 DiffusionEnvironmentStatus *TextToImageBackend::envStatus() const
 {
     return m_envStatus;
@@ -283,11 +288,6 @@ bool TextToImageBackend::getIsProcessing() const
 void TextToImageBackend::setIsProcessing(bool newIsProcessing)
 {
     isProcessing = newIsProcessing;
-}
-
-void TextToImageBackend::initBackend()
-{
-    //verifyEnvironment();
 }
 
 void TextToImageBackend::updateStatusMessage(const QString &message)

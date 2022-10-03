@@ -30,9 +30,13 @@ static const bool  DEFAULT_FULL_PRECISION = false;
 static const bool  DEFAULT_USE_UPSCALER = false;
 static const bool  DEFAULT_USE_FACE_RESTORATION = false;
 static const bool  DEFAULT_SAVE_ORIGINAL_IMAGE = false;
+static const bool  DEFAULT_USE_IMG_TO_IMG = false;
+static const bool  DEFAULT_IMG_TO_IMG_FIT = false;
 static const char* DEFAULT_UPSCALE_FACTOR = "2x";
-static const double DEFAULT_UPSCALE_STREGTH = 0.75;
+static const double DEFAULT_UPSCALE_STRENGTH = 0.75;
 static const double  DEFAULT_FACE_RESTORATION_STRENGTH = 0.75;
+static const double  DEFAULT_IMG_TO_IMG_STRENGTH = 0.75;
+static const char* DEFAULT_INIT_IMAGE = "";
 
 #endif // DEFINES_H
 

@@ -14,6 +14,7 @@ release/main_qml.o
 release/controls_AppSlider_qml.o
 release/controls_CircularProgressBar_qml.o
 release/controls_AppLabel_qml.o
+release/controls_AppInfoLabel_qml.o
 release/controls_RichTextEdit_qml.o
 release/controls_ImageViewer_qml.o
 release/controls_AppTextArea_qml.o

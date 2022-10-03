@@ -83,6 +83,7 @@ public slots:
     void handlePackagesStatus(bool isPackagesReady);
     void handleModelStatus(bool isModelReady);
     void downloadGfpganModel();
+    void setImageInput(QUrl url);
 
 signals:
     void showMessageBox();
@@ -101,6 +102,7 @@ signals:
     void downloadPercentageChanged();
     void setupInstallerUi(bool isDownloader);
     void closeLoadingScreen();
+    void setInputImagePath(QString);
 
 
 private:
@@ -121,8 +123,6 @@ private:
     QString curOutputFolder;
     QString deafultAssetsPath;
     QString installerStatusMsg;
-
-    void initBackend();
 
 private slots:
     void updateStatusMessage(const QString&);

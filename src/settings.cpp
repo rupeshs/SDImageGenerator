@@ -23,13 +23,19 @@ void Settings::load()
     diffusionSettings->setGrid(settings->value("Main/grid",DEFAULT_GRID).toBool());
     diffusionSettings->setSeamless(settings->value("Main/seamless",DEFAULT_SEAMLESS).toBool());
     diffusionSettings->setFullPrecision(settings->value("Main/fullPrecision",DEFAULT_FULL_PRECISION).toBool());
-    diffusionSettings->setUpscaler(settings->value("Main/upscaler",DEFAULT_USE_UPSCALER).toBool());
-    diffusionSettings->setUpscaleFactor(settings->value("Main/upscaleFactor",DEFAULT_UPSCALE_FACTOR).toString());
-    diffusionSettings->setUpscaleStrength(settings->value("Main/upscaleStrength",DEFAULT_UPSCALE_STREGTH).toDouble());
-    diffusionSettings->setFaceRestoration(settings->value("Main/faceRestoration",DEFAULT_USE_FACE_RESTORATION).toBool());
-    diffusionSettings->setFaceRestorationStrength(settings->value("Main/faceRestorationStrength",DEFAULT_FACE_RESTORATION_STRENGTH).toDouble());
     diffusionSettings->setSaveOriginalImage(settings->value("Main/saveOriginalImage",DEFAULT_SAVE_ORIGINAL_IMAGE).toBool());
 
+    diffusionSettings->setUpscaler(settings->value("Upscaler/upscaler",DEFAULT_USE_UPSCALER).toBool());
+    diffusionSettings->setUpscaleFactor(settings->value("Upscaler/upscaleFactor",DEFAULT_UPSCALE_FACTOR).toString());
+    diffusionSettings->setUpscaleStrength(settings->value("Upscaler/upscaleStrength",DEFAULT_UPSCALE_STRENGTH).toDouble());
+
+    diffusionSettings->setFaceRestoration(settings->value("FaceRestoration/faceRestoration",DEFAULT_USE_FACE_RESTORATION).toBool());
+    diffusionSettings->setFaceRestorationStrength(settings->value("FaceRestoration/faceRestorationStrength",DEFAULT_FACE_RESTORATION_STRENGTH).toDouble());
+
+    diffusionSettings->setImageToImage(settings->value("ImageToImage/imageToImage",DEFAULT_USE_IMG_TO_IMG).toBool());
+    diffusionSettings->setFitImage(settings->value("ImageToImage/fitImage",DEFAULT_IMG_TO_IMG_FIT).toBool());
+    diffusionSettings->setImageToImageStrength(settings->value("ImageToImage/imageToImageStrength",DEFAULT_IMG_TO_IMG_STRENGTH).toDouble());
+    diffusionSettings->setInitImagePath(settings->value("ImageToImage/initImage",DEFAULT_INIT_IMAGE).toString());
 }
 
 void Settings::save()
@@ -47,12 +53,25 @@ void Settings::save()
     settings->setValue("grid", diffusionSettings->grid());
     settings->setValue("seamless", diffusionSettings->seamless());
     settings->setValue("fullPrecision", diffusionSettings->fullPrecision());
+    settings->setValue("saveOriginalImage", diffusionSettings->saveOriginalImage());
+    settings->endGroup();
+
+    settings->beginGroup("Upscaler");
     settings->setValue("upscaler", diffusionSettings->upscaler());
     settings->setValue("upscaleFactor", diffusionSettings->upscaleFactor());
     settings->setValue("upscaleStrength", diffusionSettings->upscaleStrength());
+    settings->endGroup();
+
+    settings->beginGroup("FaceRestoration");
     settings->setValue("faceRestoration", diffusionSettings->faceRestoration());
     settings->setValue("faceRestorationStrength", diffusionSettings->faceRestorationStrength());
-    settings->setValue("saveOriginalImage", diffusionSettings->saveOriginalImage());
+    settings->endGroup();
+
+    settings->beginGroup("ImageToImage");
+    settings->setValue("imageToImage", diffusionSettings->imageToImage());
+    settings->setValue("fitImage", diffusionSettings->fitImage());
+    settings->setValue("imageToImageStrength", diffusionSettings->imageToImageStrength());
+    settings->setValue("initImage", diffusionSettings->initImagePath());
     settings->endGroup();
 }
 
@@ -71,9 +90,13 @@ void Settings::reset()
     diffusionSettings->setFullPrecision(DEFAULT_FULL_PRECISION);
     diffusionSettings->setUpscaler(DEFAULT_USE_UPSCALER);
     diffusionSettings->setUpscaleFactor(DEFAULT_UPSCALE_FACTOR);
-    diffusionSettings->setUpscaleStrength(DEFAULT_UPSCALE_STREGTH);
+    diffusionSettings->setUpscaleStrength(DEFAULT_UPSCALE_STRENGTH);
     diffusionSettings->setFaceRestoration(DEFAULT_USE_FACE_RESTORATION);
     diffusionSettings->setFaceRestorationStrength(DEFAULT_FACE_RESTORATION_STRENGTH);
     diffusionSettings->setSaveOriginalImage(DEFAULT_SAVE_ORIGINAL_IMAGE);
+    diffusionSettings->setImageToImage(DEFAULT_USE_IMG_TO_IMG);
+    diffusionSettings->setFitImage(DEFAULT_IMG_TO_IMG_FIT);
+    diffusionSettings->setImageToImageStrength(DEFAULT_IMG_TO_IMG_STRENGTH);
+    diffusionSettings->setInitImagePath(DEFAULT_INIT_IMAGE);
 
 }
