@@ -78,6 +78,11 @@ const QString &DiffusionEnvironment::getGfpGanModelUrl() const
     return gfpGanModelUrl;
 }
 
+const QString &DiffusionEnvironment::getLibsTestScriptPath() const
+{
+    return libsTestScriptPath;
+}
+
 void DiffusionEnvironment::setCondaActivatePath(const QString &newCondaActivatePath)
 {
     condaActivatePath = newCondaActivatePath;
@@ -105,4 +110,5 @@ void DiffusionEnvironment::setEnvironment()
     QString gfpGanPath = Utils::pathAppend(stableDiffusionPath,QString(GFP_GAN_PATH));
     gfpGanModelPath = Utils::pathAppend(gfpGanPath,QString(GFP_GAN_MODEL_1_3));
     gfpGanModelUrl = GFP_GAN_MODEL_1_3_URL;
+    libsTestScriptPath = Utils::pathAppend(stableDiffusionPath,QString(LIBS_TEST_SCRIPT));
 }

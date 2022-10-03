@@ -232,6 +232,7 @@ void TextToImageBackend::environmentCurrentStatus(bool isPackagesReady, bool isS
     m_envStatus->setIsPythonEnvReady(isPackagesReady);
     m_envStatus->setIsStableDiffusionModelReady(isStableDiffusionModelReady);
     m_envStatus->setIsGfpGanModelReady(envValidator->validateGfpGanModel());
+    emit updateStatusMessage(envValidator->getDeviceInfo());
     emit initControls(m_options,m_envStatus);
 }
 

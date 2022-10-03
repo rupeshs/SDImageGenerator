@@ -43,8 +43,7 @@ ApplicationWindow {
         target: stableDiffusionBackend
 
         function onShowMessageBox() {
-            console.log("Show dialogue");
-            msgDialog.visible = true;
+            msgDialog.visible = true; 
         }
 
         function onInitControls(options,envStatus) {

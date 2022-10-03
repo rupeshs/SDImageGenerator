@@ -22,6 +22,8 @@ DiffusionEnvValidator::DiffusionEnvValidator(QObject *parent,DiffusionEnvironmen
     diffusionEnv = diffEnv;
     pipValidator = new PythonEnvValidator(parent,diffEnv);
     connect(pipValidator,SIGNAL(packageValidationCompleted(int,bool)),this,SLOT(packageValidationCompleted(int,bool)));
+    connect(pipValidator,SIGNAL(gotDeviceInfo(QString)),this,SLOT(gotDeviceInfo(QString)));
+
 }
 
 void DiffusionEnvValidator::ValidatePythonPackages()
@@ -58,10 +60,20 @@ bool DiffusionEnvValidator::validateStableDiffusionModel()
 
 bool DiffusionEnvValidator::validateGfpGanModel()
 {
-   return validateGfpganModelPath() && validateGfpganModelFileSize();
+    return validateGfpganModelPath() && validateGfpganModelFileSize();
+}
+
+void DiffusionEnvValidator::gotDeviceInfo(const QString &devInfo)
+{
+  deviceInfo = devInfo;
 }
 
 void DiffusionEnvValidator::packageValidationCompleted(int , bool isPackagesReady)
 {
     emit environmentCurrentStatus(isPackagesReady, validateStableDiffusionModel());
+}
+
+const QString &DiffusionEnvValidator::getDeviceInfo() const
+{
+    return deviceInfo;
 }

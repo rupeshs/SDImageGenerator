@@ -33,8 +33,12 @@ public:
     bool validateStableDiffusionModel();
     bool validateGfpGanModel();
 
+
+    const QString &getDeviceInfo() const;
+
 public slots:
     void packageValidationCompleted(int,bool);
+    void gotDeviceInfo(const QString &devInfo);
 
 signals:
     void environmentCurrentStatus(bool isPythonReady, bool isModelReady);
@@ -42,6 +46,7 @@ signals:
 private:
     DiffusionEnvironment *diffusionEnv;
     PythonEnvValidator *pipValidator;
+    QString deviceInfo;
 
     bool validateModelPath();
     bool validateModelFileSize();

@@ -17,6 +17,7 @@ static const char* GFP_GAN_PATH = "src/gfpgan";
 static const char* GFP_GAN_MODEL_1_3 = "experiments/pretrained_models/GFPGANv1.3.pth";
 static const char* GFP_GAN_MODEL_1_3_URL = "https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth";
 static const qint64 GFP_GAN_MODEL_1_3_FILE_SIZE = 348632874;
+static const char* LIBS_TEST_SCRIPT = "scripts/libstest.py";
 static const double DEFAULT_SCALE = 7.5;
 static const double DEFAULT_IMAGE_WIDTH = 512;
 static const double DEFAULT_IMAGE_HEIGHT = 512;

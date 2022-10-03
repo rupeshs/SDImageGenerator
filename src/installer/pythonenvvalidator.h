@@ -10,6 +10,7 @@
 
 static QRegExp rxPackageLong("(\\w+-\\w+)");
 static QRegExp rxPackage("(\\w+)");
+static QRegExp rxDeviceInfo("DEVICE,(.*)");
 
 class PythonEnvValidator : public QObject
 {
@@ -20,6 +21,7 @@ public:
 
 signals:
     void packageValidationCompleted(int exitCode,bool isPackagesReady);
+    void gotDeviceInfo(const QString &deviceInfo);
 
 public slots:
     void readProcessOutput(QByteArray);
@@ -31,6 +33,7 @@ private:
      DiffusionEnvironment *diffusionEnv;
      QStringList packages ;
      QStringList pipListOutput;
+     bool hasImportError;
 
      bool validate();
 

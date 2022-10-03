@@ -40,6 +40,7 @@ public:
     const QString &getDefaultOutDir() const;
     const QString &getGfpGanModelPath() const;
     const QString &getGfpGanModelUrl() const;
+    const QString &getLibsTestScriptPath() const;
 
 signals:
 
@@ -55,6 +56,7 @@ private:
     QString defaultOutDir;
     QString gfpGanModelPath;
     QString gfpGanModelUrl;
+    QString libsTestScriptPath;
 
     void setCondaActivatePath(const QString &newCondaActivatePath);
     void setPythonEnvPath(const QString &newPythonEnvPath);

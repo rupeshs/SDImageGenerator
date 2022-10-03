@@ -12,10 +12,14 @@ PythonEnvValidator::PythonEnvValidator(QObject *parent,DiffusionEnvironment *dif
     packages.append("gfpgan");
     packages.append("taming-transformers");
     packages.append("latent-diffusion");
+    pipProcess->setWorkingDirectory(diffusionEnv->getStableDiffusionPath());
+    hasImportError = false;
+
 }
 
 void PythonEnvValidator::validatePackages()
 {
+
     pipProcess->clearArguments();
     pipProcess->addArgument(diffusionEnv->getCondaActivatePath());
     pipProcess->addArgument("&&");
@@ -23,10 +27,9 @@ void PythonEnvValidator::validatePackages()
     pipProcess->addArgument("activate");
     pipProcess->addArgument("sdimgenv");
     pipProcess->addArgument("&&");
-    pipProcess->addArgument("pip");
-    pipProcess->addArgument("list");
+    pipProcess->addArgument("python");
+    pipProcess->addArgument(diffusionEnv->getLibsTestScriptPath());
 
-    pipListOutput.clear();
     pipProcess->start();
 
 }
@@ -34,20 +37,22 @@ void PythonEnvValidator::validatePackages()
 void PythonEnvValidator::readProcessOutput(QByteArray line)
 {
     QString consoleLine(line);
-    if(rxPackage.indexIn(consoleLine)>-1){
-       QString packageName = rxPackage.cap(1);
-       pipListOutput.append(packageName);   
+    qDebug()<<consoleLine;
+
+    if (consoleLine.contains("ImportError"))
+        hasImportError = true;
+
+    if(rxDeviceInfo.indexIn(consoleLine)>-1){
+       QString device = rxDeviceInfo.cap(1);
+       emit gotDeviceInfo(device);
     }
-    if(rxPackageLong.indexIn(consoleLine)>-1){
-       QString packageName = rxPackageLong.cap(1);
-       pipListOutput.append(packageName);
-    }
+
 }
 
 void PythonEnvValidator::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     qDebug() << "PythonEnvValidator: exitCode:" << exitCode << "exitStatus:" << exitStatus;
-    bool packagesReady =  validate();
+    bool packagesReady = !hasImportError;
     emit packageValidationCompleted(exitCode, packagesReady);
 
 }
