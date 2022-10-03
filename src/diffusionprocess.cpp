@@ -28,7 +28,6 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
     qDebug()<<"CondaActivatePath"<<diffusionEnv->getCondaActivatePath();
     qDebug()<<"StableDiffusionPath"<<diffusionEnv->getStableDiffusionPath();
     dreamProcess->setWorkingDirectory(diffusionEnv->getStableDiffusionPath());
-    qDebug()<<"Directory"<<dreamProcess->workingDirectory();
 
     addArgument(diffusionEnv->getCondaActivatePath());
     addArgument("&&");
@@ -222,7 +221,10 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool is
 
     if (diffusionOptions->imageToImage()) {
         addPromptArguments("--init_img");
-        addPromptArguments(diffusionOptions->initImagePath());
+        QString initImagePath = diffusionOptions->initImagePath();
+        initImagePath.append("\"");
+        initImagePath.prepend("\"");
+        addPromptArguments(initImagePath);
         if (diffusionOptions->fitImage())
             addPromptArguments("--fit");
         addPromptArguments("--strength");

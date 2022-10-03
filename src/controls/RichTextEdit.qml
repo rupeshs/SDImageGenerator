@@ -9,7 +9,7 @@ TextField{
     property int curPos
     selectByMouse: true
     selectedTextColor: "#ffffff"
-    color: "#ffffff"
+    color: textInput.enabled ? "#ffffff": "gray"
     placeholderTextColor : "#8c8d8f"
 
     MouseArea {

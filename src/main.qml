@@ -357,10 +357,8 @@ ApplicationWindow {
 
                               nameFilters: [ "Image files (*.jpg *.png *.jpeg)", "All files (*)" ]
                               onAccepted: {
-                                  console.log("You chose: ",imgFileDialog.file)
                                   stableDiffusionBackend.setImageInput(imgFileDialog.file);
                                   imgFileDialog.close();
-
                               }
 
                           }
@@ -417,8 +415,8 @@ ApplicationWindow {
 
             ColumnLayout{
             Button {
-                width: 48
-                height: 48
+                width: 64
+                height: 64
                 Layout.alignment:  Qt.AlignBottom
                 icon.source: "images/folder2-open.png"
                 ToolTip.visible: hovered
