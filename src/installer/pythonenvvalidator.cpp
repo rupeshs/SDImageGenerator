@@ -37,8 +37,6 @@ void PythonEnvValidator::validatePackages()
 void PythonEnvValidator::readProcessOutput(QByteArray line)
 {
     QString consoleLine(line);
-    qDebug()<<consoleLine;
-
     if (consoleLine.contains("ImportError"))
         hasImportError = true;
 

@@ -13,3 +13,10 @@ SDImageGeneator is a text-to-image generation AI app for Windows/Linux. It is st
 - Recent Nvidia GPU, preferably RTX ( 4 GB or more VRAM memory)
 - 12 GB RAM (16+ recommended)
 - ~11 GB disk space after installation (on SSD for best performance)
+
+## Development Dependencies 
+- Qt 5.15.2
+
+## Coding Style
+If you want to contribute please follow the coding style
+- [Qt Coding Style](https://wiki.qt.io/Qt_Coding_Style)

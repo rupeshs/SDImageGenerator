@@ -17,16 +17,18 @@
 #ifndef DIFFUSIONPROCESS_H
 #define DIFFUSIONPROCESS_H
 
-#include <QObject>
-#include <QDir>
 #include "diffusionenvironment.h"
 #include "diffusionoptions.h"
 #include "myprocess.h"
 #include "utils.h"
+#include <QDebug>
+#include <QDir>
+#include <QObject>
 #include <QRegExp>
 
 static QRegExp rxOutputFolder("Writing files to directory: \"(.*)\"");
 enum class StableDiffusionStatus { NotStarted, Starting, Ready, Processing };
+
 
 class DiffusionProcess: public QObject
 {
@@ -47,6 +49,8 @@ public:
     StableDiffusionStatus getStatus() const;
 
     const QUrl &getSamplesPath() const;
+
+    bool isDreamRunning();
 
 public slots:
     void readProcessOutput(QByteArray);

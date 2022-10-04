@@ -42,7 +42,6 @@ HEADERS += \
     diffusionenvvalidator.h \
     diffusionoptions.h \
     diffusionprocess.h \
-    errors.h \
     installer/installerprocess.h \
     installer/pythonenvvalidator.h \
     myprocess.h \

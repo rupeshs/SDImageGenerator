@@ -46,13 +46,12 @@ RowLayout{
         font.bold: true
         onClicked: {
             const endIndex = folderModel.count - 1;
-            if (currentIndex <= endIndex){
+            if (currentIndex <= endIndex) {
                 currentIndex += 1 ;
                 displayImage();
                 if (currentIndex == endIndex)
                     nextButton.enabled = false;
-            }
-            else {
+            } else {
                 currentIndex = endIndex;
             }
             previousButton.enabled = true;
@@ -77,8 +76,7 @@ RowLayout{
                     displayImage();
                     previousButton.enabled = false;
                     nextButton.enabled = true;
-                }
-                else{
+                } else {
                     previousButton.enabled = false;
                     nextButton.enabled = false;
                 }

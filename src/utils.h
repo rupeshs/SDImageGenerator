@@ -17,10 +17,12 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <QString>
+#include <QDesktopServices>
 #include <QDir>
 #include <QFileInfo>
+#include <QString>
 #include <QUrl>
+
 
 class Utils
 {
@@ -30,6 +32,7 @@ public:
     static void ensurePath(const QString& path);
     static QUrl localPathToUrl(const QString& path);
     static QString getLogMessage(const QString& type,const QString& functionName,int line,const QString& msg);
+    static void openLocalFolderPath(const QString& path);
 
 private:
     Utils();

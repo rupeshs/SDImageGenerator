@@ -76,7 +76,7 @@ private:
 	QByteArray remaining_output;
 
 	QTemporaryFile temp_file;
-	QTimer timer;
+    QTimer timer;
 };
 
 #endif

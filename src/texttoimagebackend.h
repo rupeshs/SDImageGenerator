@@ -17,24 +17,24 @@
 #ifndef TEXTTOIMAGEBACKEND_H
 #define TEXTTOIMAGEBACKEND_H
 
-#include <QObject>
-#include <QSettings>
-#include "diffusionprocess.h"
 #include "diffusionenvironment.h"
+#include "diffusionenvironmentstatus.h"
 #include "diffusionenvvalidator.h"
 #include "diffusionoptions.h"
-#include "diffusionenvironmentstatus.h"
+#include "diffusionprocess.h"
+#include "settings.h"
 #include "installer/installerprocess.h"
 #include <QDebug>
+#include <QFileInfo>
+#include <QMessageBox>
+#include <QObject>
 #include <qqml.h>
 #include <QUrl>
-#include <QTimer>
-#include "settings.h"
-#include <QFileInfo>
 
 #ifdef Q_OS_WIN
   #include <windows.h>
 #endif
+
 
 class TextToImageBackend : public QObject,public QQmlParserStatus
 {

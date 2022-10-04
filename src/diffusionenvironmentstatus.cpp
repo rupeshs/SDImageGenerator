@@ -16,6 +16,7 @@
 
 #include "diffusionenvironmentstatus.h"
 
+
 bool DiffusionEnvironmentStatus::isPythonEnvReady() const
 {
     return m_isPythonEnvReady;

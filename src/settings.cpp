@@ -1,5 +1,6 @@
 #include "settings.h"
 
+
 Settings::Settings(QObject *parent,DiffusionOptions *diffOptions, DiffusionEnvironment *diffEnv)
     : QObject{parent}
 {

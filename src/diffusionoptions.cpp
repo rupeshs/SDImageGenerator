@@ -16,6 +16,7 @@
 
 #include "diffusionoptions.h"
 
+
 const QString &DiffusionOptions::prompt() const
 {
     return m_prompt;

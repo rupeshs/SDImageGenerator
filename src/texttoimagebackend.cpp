@@ -15,11 +15,7 @@
 */
 
 #include "texttoimagebackend.h"
-#include <QDebug>
-#include <QGuiApplication>
-#include <QDesktopServices>
-#include <QMessageBox>
-#include <QTimer>
+
 
 TextToImageBackend::TextToImageBackend(QObject *parent)
     : QObject{parent}
@@ -54,17 +50,25 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
 
 void TextToImageBackend::generateImage(bool isVariation)
 {
+    if(isVariation) {
+        if (!stableDiffusion->isDreamRunning()){
+          showErrorDlg(tr("To generate variations,please generate images first."));
+          return;
+        }
+    }
 
     if (!Utils::checkPathExists(m_options->saveDir())) {
         showErrorDlg(tr("Please choose a output directory from settings tab."));
         return;
     }
+
     if (m_options->imageToImage()) {
         if(!isValidInitImage()) {
            showErrorDlg(tr("Please choose a valid initial image"));
            return;
         }
     }
+
     if (m_options->faceRestoration()) {
         if(!envValidator->validateGfpGanModel()) {
             showErrorDlg(tr("Please download GFPGAN model from downloads tab."));
@@ -138,7 +142,11 @@ void TextToImageBackend::stableDiffusionFinished()
 
 void TextToImageBackend::openOutputFolder()
 {
-    QDesktopServices::openUrl(samplesPath);
+    if (samplesPath.toString().contains("default")) {
+        Utils::openLocalFolderPath(m_options->saveDir());
+        return;
+    }
+    Utils::openLocalFolderPath(samplesPath.toString());
 }
 
 void TextToImageBackend::setOutputFolder(QUrl url)
@@ -168,7 +176,7 @@ void TextToImageBackend::updateCompleted()
 
 void TextToImageBackend::openLogs()
 {
-    QDesktopServices::openUrl(Utils::pathAppend(qApp->applicationDirPath(),LOG_FILE_NAME));
+    Utils::openLocalFolderPath(Utils::pathAppend(qApp->applicationDirPath(),LOG_FILE_NAME));
 }
 
 void TextToImageBackend::downloadModel()
@@ -232,7 +240,8 @@ void TextToImageBackend::environmentCurrentStatus(bool isPackagesReady, bool isS
     m_envStatus->setIsPythonEnvReady(isPackagesReady);
     m_envStatus->setIsStableDiffusionModelReady(isStableDiffusionModelReady);
     m_envStatus->setIsGfpGanModelReady(envValidator->validateGfpGanModel());
-    emit updateStatusMessage(envValidator->getDeviceInfo());
+    qDebug()<<"Device : " << envValidator->getDeviceInfo();
+    updateStatusMessage(envValidator->getDeviceInfo());
     emit initControls(m_options,m_envStatus);
 }
 
@@ -241,8 +250,7 @@ void TextToImageBackend::handlePackagesStatus(bool isPackagesReady)
     if (!isPackagesReady) {
         qDebug()<<"Environment is not ready,setting it up...";
         installPythonEnv();
-    }
-    else{
+    } else {
         qDebug()<<"Environment check : OK";
         emit closeLoadingScreen();
     }
@@ -363,7 +371,7 @@ void TextToImageBackend::installCompleted(int exitCode,bool isDownloader)
             emit downloaderStatusChanged(msg,0.0);
         }
     } else {
-        if ( exitCode == 0 )
+        if (exitCode == 0)
             qDebug()<<"Environment is ready.";
         else
             qDebug()<<"Environment is setup failed.";

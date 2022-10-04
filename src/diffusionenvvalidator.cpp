@@ -16,6 +16,7 @@
 
 #include "diffusionenvvalidator.h"
 
+
 DiffusionEnvValidator::DiffusionEnvValidator(QObject *parent,DiffusionEnvironment *diffEnv)
     : QObject{parent}
 {
@@ -23,7 +24,6 @@ DiffusionEnvValidator::DiffusionEnvValidator(QObject *parent,DiffusionEnvironmen
     pipValidator = new PythonEnvValidator(parent,diffEnv);
     connect(pipValidator,SIGNAL(packageValidationCompleted(int,bool)),this,SLOT(packageValidationCompleted(int,bool)));
     connect(pipValidator,SIGNAL(gotDeviceInfo(QString)),this,SLOT(gotDeviceInfo(QString)));
-
 }
 
 void DiffusionEnvValidator::ValidatePythonPackages()
@@ -65,7 +65,7 @@ bool DiffusionEnvValidator::validateGfpGanModel()
 
 void DiffusionEnvValidator::gotDeviceInfo(const QString &devInfo)
 {
-  deviceInfo = devInfo;
+    deviceInfo = devInfo;
 }
 
 void DiffusionEnvValidator::packageValidationCompleted(int , bool isPackagesReady)

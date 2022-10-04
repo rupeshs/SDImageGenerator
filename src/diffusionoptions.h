@@ -20,6 +20,7 @@
 #include <QObject>
 #include <qqml.h>
 
+
 class DiffusionOptions : public QObject
 {
     Q_OBJECT

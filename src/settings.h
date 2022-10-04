@@ -1,12 +1,13 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <QObject>
-#include <QSettings>
-#include <QGuiApplication>
 #include "defines.h"
 #include "diffusionoptions.h"
 #include "diffusionenvironment.h"
+#include <QObject>
+#include <QGuiApplication>
+#include <QSettings>
+
 
 class Settings : public QObject
 {

@@ -15,7 +15,7 @@
 */
 
 #include "diffusionprocess.h"
-#include <QDebug>
+
 
 DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusionEnv)
     : QObject{parent}
@@ -50,7 +50,7 @@ void DiffusionProcess::readProcessOutput(QByteArray line)
         emit gotConsoleLog(line);
 
     if (consoleLine.contains("conda.bat"))
-       emit gotConsoleLog(QString("Initializing,please wait..."));
+       emit gotConsoleLog(QString("Initializing model,please wait..."));
 
     if(rxOutputFolder.indexIn(consoleLine)>-1){
        QString outFolderPath = rxOutputFolder.cap(1);
@@ -96,6 +96,11 @@ void DiffusionProcess::writeCommand(const QString &command)
 const QUrl &DiffusionProcess::getSamplesPath() const
 {
     return samplesPath;
+}
+
+bool DiffusionProcess::isDreamRunning()
+{
+   return dreamProcess->isRunning();
 }
 
 StableDiffusionStatus DiffusionProcess::getStatus() const
@@ -173,11 +178,10 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool is
     clearPromptArguments();
     addPromptArguments(diffusionOptions->prompt().trimmed());
     if (!diffusionOptions->imageToImage()) {
-    addPromptArguments("--sampler");
-    addPromptArguments(diffusionOptions->sampler().trimmed());
-    addDimensionArgs(diffusionOptions->imageWidth(),diffusionOptions->imageHeight());
-    }
-    else {
+        addPromptArguments("--sampler");
+        addPromptArguments(diffusionOptions->sampler().trimmed());
+        addDimensionArgs(diffusionOptions->imageWidth(),diffusionOptions->imageHeight());
+    } else {
         if (diffusionOptions->fitImage())
             addDimensionArgs(diffusionOptions->imageWidth(),diffusionOptions->imageHeight());
     }

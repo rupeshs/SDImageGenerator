@@ -50,11 +50,11 @@ void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const 
    }
 
    QFile outFile(Utils::pathAppend(qApp->applicationDirPath(),LOG_FILE_NAME));
-   if(bInit){
-    outFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
-    bInit = false;
+   if (bInit) {
+       outFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
+       bInit = false;
    } else {
-     outFile.open(QIODevice::WriteOnly | QIODevice::Append);
+       outFile.open(QIODevice::WriteOnly | QIODevice::Append);
    }
 
    QTextStream textStream(&outFile);

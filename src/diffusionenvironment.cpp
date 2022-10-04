@@ -15,10 +15,6 @@
 */
 
 #include "diffusionenvironment.h"
-#include <QCoreApplication>
-#include <QDebug>
-#include <QDir>
-#include <QGuiApplication>
 
 
 DiffusionEnvironment::DiffusionEnvironment(QObject *parent)
@@ -29,8 +25,7 @@ DiffusionEnvironment::DiffusionEnvironment(QObject *parent)
 
 void DiffusionEnvironment::getEnvironment()
 {
-   setEnvironment();
-
+    setEnvironment();
 }
 
 const QString &DiffusionEnvironment::getCondaActivatePath() const

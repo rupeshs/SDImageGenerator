@@ -17,11 +17,13 @@
 #ifndef DIFFUSIONENVIRONMENT_H
 #define DIFFUSIONENVIRONMENT_H
 
-#include <QObject>
-#include <QFile>
-#include <QTextStream>
 #include "defines.h"
 #include "utils.h"
+#include <QFile>
+#include <QObject>
+#include <QTextStream>
+#include <QGuiApplication>
+
 
 class DiffusionEnvironment : public QObject
 {

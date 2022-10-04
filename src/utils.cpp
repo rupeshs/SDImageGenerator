@@ -25,9 +25,9 @@ Utils::Utils()
 bool Utils::checkPathExists(const QString& path)
 {
     QFileInfo checkFile(path);
-    if (checkFile.isDir())
+    if (checkFile.isDir()) {
         return QDir(path).exists();
-    else if (checkFile.isFile()) {
+    } else if (checkFile.isFile()) {
         return QFile::exists(path);
     }
     return false;
@@ -42,7 +42,6 @@ void Utils::ensurePath(const QString& path)
 {
     if(!QDir(path).exists())
         QDir(path).mkdir(path);
-
 }
 
 QUrl Utils::localPathToUrl(const QString &path)
@@ -59,5 +58,10 @@ QString Utils::getLogMessage(const QString& type,const QString& functionName,int
 #else
        log = QString(" %1").arg(msg);
 #endif
-   return log;
+       return log;
+}
+
+void Utils::openLocalFolderPath(const QString &path)
+{
+  QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }

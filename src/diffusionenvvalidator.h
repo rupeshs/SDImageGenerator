@@ -17,11 +17,11 @@
 #ifndef DIFFUSIONENVVALIDATOR_H
 #define DIFFUSIONENVVALIDATOR_H
 
-#include <QObject>
 #include "diffusionenvironment.h"
-#include "errors.h"
 #include "utils.h"
 #include "installer/pythonenvvalidator.h"
+#include <QObject>
+
 
 class DiffusionEnvValidator : public QObject
 {
