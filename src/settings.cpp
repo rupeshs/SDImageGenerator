@@ -51,7 +51,8 @@ void Settings::save()
     settings->setValue("ddimSteps", diffusionSettings->ddimSteps());
     settings->setValue("sampler", diffusionSettings->sampler());
     settings->setValue("seed", diffusionSettings->seed());
-    settings->setValue("saveDir", diffusionSettings->saveDir());
+    if (!diffusionSettings->saveDir().isEmpty())
+        settings->setValue("saveDir", diffusionSettings->saveDir());
     settings->setValue("grid", diffusionSettings->grid());
     settings->setValue("seamless", diffusionSettings->seamless());
     settings->setValue("fullPrecision", diffusionSettings->fullPrecision());

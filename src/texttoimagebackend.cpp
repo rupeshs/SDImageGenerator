@@ -52,7 +52,7 @@ void TextToImageBackend::generateImage(bool isVariation)
 {
     if(isVariation) {
         if (!stableDiffusion->isDreamRunning()){
-          showErrorDlg(tr("To generate variations,please generate images first."));
+          showErrorDlg(tr("To generate image variations,please generate images first."));
           return;
         }
     }
@@ -82,7 +82,7 @@ void TextToImageBackend::generateImage(bool isVariation)
     }
 
     if (stableDiffusion->getStatus() == StableDiffusionStatus::NotStarted)
-        updateStatusMessage(tr("Initializing,please wait..."));
+        updateStatusMessage(tr("Loading model,please wait..."));
     else
         updateStatusMessage(tr("Starting image generation..."));
 
@@ -236,7 +236,6 @@ void TextToImageBackend::environmentCurrentStatus(bool isPackagesReady, bool isS
 {
     handlePackagesStatus(isPackagesReady);
     handleModelStatus(isStableDiffusionModelReady);
-
     m_envStatus->setIsPythonEnvReady(isPackagesReady);
     m_envStatus->setIsStableDiffusionModelReady(isStableDiffusionModelReady);
     m_envStatus->setIsGfpGanModelReady(envValidator->validateGfpGanModel());
@@ -250,6 +249,7 @@ void TextToImageBackend::handlePackagesStatus(bool isPackagesReady)
     if (!isPackagesReady) {
         qDebug()<<"Environment is not ready,setting it up...";
         installPythonEnv();
+        emit installerStatusChanged("Setting up,please wait...",0.0);
     } else {
         qDebug()<<"Environment check : OK";
         emit closeLoadingScreen();

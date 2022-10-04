@@ -50,7 +50,7 @@ void DiffusionProcess::readProcessOutput(QByteArray line)
         emit gotConsoleLog(line);
 
     if (consoleLine.contains("conda.bat"))
-       emit gotConsoleLog(QString("Initializing model,please wait..."));
+       emit gotConsoleLog(QString("Loading model,please wait..."));
 
     if(rxOutputFolder.indexIn(consoleLine)>-1){
        QString outFolderPath = rxOutputFolder.cap(1);

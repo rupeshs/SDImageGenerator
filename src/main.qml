@@ -73,12 +73,15 @@ ApplicationWindow {
             gfpganStrengthSlider.slider.value = options.faceRestorationStrength;
             saveOriginalCheckBox.checked = options.saveOriginalImage;
             gfpganModelCheck.checked = envStatus.isGfpGanModelReady;
+            gfpganModelCheck.checkable = false;
 
             imgtoimgCheckBox.checked = options.imageToImage;
             imgStrength.slider.value = options.imageToImageStrength;
             fitImageCheckBox.checked = options.fitImage;
             initImagePathTextEdit.text = options.initImagePath;
             variationAmountSlider.slider.value = options.variationAmount;
+            initApp = false;
+            dreamPage.enabled = true;
 
         }
 
@@ -120,7 +123,7 @@ ApplicationWindow {
             } else {
                 installerDownloadPbar.visible = false;
                 installerStatusLabel.font.pointSize = 12;
-                downloadDialog.title = qsTr("SDImageGenerator - Loading...");
+                downloadDialog.title = qsTr("SDImageGenerator - Please wait");
                 downloadDialog.visible = true ;
             }
 
@@ -250,6 +253,8 @@ ApplicationWindow {
         currentIndex: 0
         anchors.topMargin: tabBar.height
         Page{
+            id : dreamPage
+            enabled : false
             RowLayout{
                 Item{
                     width:20
@@ -364,7 +369,7 @@ ApplicationWindow {
                           RowLayout{
                               Layout.fillWidth: true
                               Label{
-                                  text : qsTr("Initial image :")
+                                  text : qsTr("Initialization image :")
                               }
 
                               Controls.RichTextEdit{
@@ -397,6 +402,7 @@ ApplicationWindow {
                     width : 5
                 }
                 Label {
+                    id: statusMsgLabel
                     text: stableDiffusionBackend.diffusionStatusMessage
                     font.pointSize: 10
                     Layout.bottomMargin: 15
@@ -412,11 +418,12 @@ ApplicationWindow {
                 folderPath: stableDiffusionBackend.samplesUrl
             }
 
-            ColumnLayout{
+            ColumnLayout{   
             Button {
-                width: 64
-                height: 64
-                Layout.alignment:  Qt.AlignBottom
+                width: 48
+                height: 48
+                Layout.leftMargin: 10
+                Layout.topMargin: 10
                 icon.source: "images/folder2-open.png"
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Open output folder")
@@ -425,8 +432,8 @@ ApplicationWindow {
             Button {
                 width: 48
                 height: 48
-                Layout.alignment:  Qt.AlignBottom
-                text : "V"
+                icon.source: "images/Letter_v.png"
+                Layout.leftMargin: 10
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Generate variations of this image")
                 onClicked: {
@@ -618,8 +625,12 @@ ApplicationWindow {
                               msgDialog.text = "Please restart the app to apply the setting.";
                               msgDialog.visible = true;
                           }
-                          initApp = false;
+
+                      } 
+                      onCheckStateChanged:  {
+                          console.log("state changed");
                       }
+
                     }
                     Controls.AppInfoLabel{
                         textInfo: qsTr("Run in slower full-precision mode.Needed for some older video cards.")
@@ -652,7 +663,7 @@ ApplicationWindow {
                         id: variationAmountSlider
 
                         header.text: qsTr("Variation amount")
-                        description.text: qsTr("The amount of variation between image variations")
+                        description.text: qsTr("The amount of variation between image variation outputs")
                         slider.from: 0
                         slider.to: 1.0
                         slider.value: 0.2
@@ -789,8 +800,10 @@ ApplicationWindow {
                         text: qsTr("Stable diffusion model v1.4 original")
                     }
                     Button{
+                        id : downloadSdModelButton
                         text : "Download model"
                         icon.source:  "images/file-arrow-down.png"
+                        enabled : !modelCheck.checked
                         onClicked:  {
                             stableDiffusionBackend.downloadModel();
                         }
@@ -806,6 +819,9 @@ ApplicationWindow {
                         text: qsTr("GFPGAN model (Optional) ")
                     }
                     Button{
+                        id: downloadGfpGanModelButton
+
+                        enabled : !gfpganModelCheck.checked
                         text : "Download model"
                         icon.source:  "images/file-arrow-down.png"
                         onClicked:  {
@@ -821,8 +837,15 @@ ApplicationWindow {
         Page {
             ColumnLayout{
                 anchors.centerIn: parent
+                Image{
+                    source : "images/SdImageGenerator-logo.png"
+                    sourceSize.width: 64
+                    sourceSize.height: 64
+                    Layout.alignment: Qt.AlignHCenter
+                }
+
                 Text{
-                    text : qsTr("SDImageGenerator v0.1.5 Beta")
+                    text : qsTr("SDImageGenerator v1.0.0")
                     color : "white"
                     font.pointSize: 14
                     Layout.alignment: Qt.AlignHCenter
@@ -878,7 +901,6 @@ ApplicationWindow {
         updateOptions();
         stableDiffusionBackend.saveSettings();
         stableDiffusionBackend.stopProcessing();
-
     }
 
     ApplicationWindow  {
@@ -925,7 +947,7 @@ ApplicationWindow {
 
             Label{
                 id: installerStatusLabel
-                text: "Please wait..."
+                text: "Initializing..."
                 Layout.alignment: Qt.AlignBottom
                 color: "white"
             }

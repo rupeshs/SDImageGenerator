@@ -12,5 +12,7 @@
         <file>images/download.png</file>
         <file>images/enhance.png</file>
         <file>images/info-square.png</file>
+        <file>images/Letter_v.png</file>
+        <file>images/SdImageGenerator-logo.png</file>
     </qresource>
 </RCC>

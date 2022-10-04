@@ -243,8 +243,10 @@ release/qrc_sdimagegenerator.cpp: sdimagegenerator.qrc \
 		images/download.png \
 		images/folder2-open.png \
 		images/images.png \
+		images/SdImageGenerator-logo.png \
 		images/next.png \
 		images/moon-stars-fill.png \
+		images/Letter_v.png \
 		images/info-square.png \
 		images/previous.png \
 		images/file-text.png \
