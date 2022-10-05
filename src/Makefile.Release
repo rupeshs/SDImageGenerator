@@ -2054,9 +2054,10 @@ release/pythonenvvalidator.o: installer/pythonenvvalidator.cpp installer/pythone
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QRegExp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\pythonenvvalidator.o installer\pythonenvvalidator.cpp
 
-release/main.o: main.cpp ../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QGuiApplication \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qguiapplication.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qtguiglobal.h \
+release/main.o: main.cpp texttoimagebackend.h \
+		diffusionenvironment.h \
+		defines.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QtGlobal \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qglobal.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qconfig-bootstrapped.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qconfig.h \
@@ -2078,8 +2079,11 @@ release/main.o: main.cpp ../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QGuiApp
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmutex.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qnumeric.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qversiontagging.h \
+		utils.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QDesktopServices \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qdesktopservices.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qtguiglobal.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qtgui-config.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcoreapplication.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qstring.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qchar.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbytearray.h \
@@ -2090,9 +2094,8 @@ release/main.o: main.cpp ../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QGuiApp
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qstringalgorithms.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qstringview.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qstringbuilder.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobject.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobjectdefs.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qstandardpaths.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qstringlist.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qlist.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qalgorithms.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qiterator.h \
@@ -2102,104 +2105,63 @@ release/main.o: main.cpp ../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QGuiApp
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontainertools_impl.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qpoint.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qbytearraylist.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qstringlist.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qregexp.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qstringmatcher.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobjectdefs.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDir \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobject.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcoreevent.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qscopedpointer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmetatype.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qeventloop.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qwindowdefs.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qwindowdefs_win.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qinputmethod.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qhash.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QString \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFile \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QObject \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTextStream \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qlocale.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qvariant.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmap.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdebug.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qhash.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qset.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QGuiApplication \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qguiapplication.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qcoreapplication.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qeventloop.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qwindowdefs.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qwindowdefs_win.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qinputmethod.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsize.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmargins.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/QApplication \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qapplication.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qtwidgets-config.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qcursor.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qdesktopwidget.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qwidget.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpaintdevice.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qrect.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpalette.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qcolor.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qrgb.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qrgba64.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qbrush.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qmatrix.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpolygon.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qregion.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdatastream.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qline.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qtransform.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qimage.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpixelformat.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpixmap.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qfont.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qfontmetrics.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qfontinfo.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qsizepolicy.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qkeysequence.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qevent.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurl.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfile.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qvector2d.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/QQmlApplicationEngine \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlapplicationengine.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlengine.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qjsengine.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qjsvalue.h \
+		diffusionenvironmentstatus.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqml.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlprivate.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qtqmlglobal.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qtqml-config.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtNetwork/qtnetworkglobal.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtNetwork/qtnetwork-config.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmldebug.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqml.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlprivate.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlparserstatus.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmllist.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlpropertyvaluesource.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qpointer.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qmetaobject.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlerror.h \
-		texttoimagebackend.h \
-		diffusionenvironment.h \
-		defines.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QtGlobal \
-		utils.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QDesktopServices \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qdesktopservices.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qstandardpaths.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDir \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdir.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFileInfo \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QString \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QUrl \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QFile \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QObject \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QTextStream \
-		diffusionenvironmentstatus.h \
 		diffusionenvvalidator.h \
 		installer/pythonenvvalidator.h \
 		myprocess.h \
@@ -2221,12 +2183,44 @@ release/main.o: main.cpp ../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QGuiApp
 		installer/installerprocess.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/QMessageBox \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qmessagebox.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qtwidgets-config.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qdialog.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQuickControls2/QQuickStyle \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQuickControls2/qquickstyle.h \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtQuickControls2/qtquickcontrols2global.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qwidget.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpaintdevice.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qrect.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpalette.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qcolor.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qrgb.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qrgba64.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qbrush.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qmatrix.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpolygon.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qregion.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdatastream.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qline.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qtransform.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qimage.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpixelformat.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qpixmap.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qfont.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qfontmetrics.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qfontinfo.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qsizepolicy.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qcursor.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qkeysequence.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qevent.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qvector2d.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDateTime \
-		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdatetime.h
+		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdatetime.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/QQmlApplicationEngine \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlapplicationengine.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlengine.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qjsengine.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qjsvalue.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmldebug.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/qqmlerror.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o main.cpp
 
 release/myprocess.o: myprocess.cpp myprocess.h \
