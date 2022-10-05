@@ -227,7 +227,13 @@ void TextToImageBackend::cudaMemoryError()
 {
     QMessageBox msgBox;
     msgBox.setIcon(QMessageBox::Critical);
-    msgBox.setText(tr("CUDA memory error: Failed to generate image,please reduce image size."));
+    if (m_options->imageToImage() && !m_options->fitImage())
+        msgBox.setText(tr("CUDA memory error: Please reduce initialization image size or enable fit image in settings"));
+    else if (m_options->imageToImage() && m_options->fitImage())
+         msgBox.setText(tr("CUDA memory error: Please reduce image size in settings"));
+    else
+        msgBox.setText(tr("CUDA memory error: Failed to generate image,please reduce image size."));
+
     msgBox.exec();
 
 }

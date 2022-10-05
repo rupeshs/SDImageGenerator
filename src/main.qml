@@ -123,7 +123,7 @@ ApplicationWindow {
             } else {
                 installerDownloadPbar.visible = false;
                 installerStatusLabel.font.pointSize = 12;
-                downloadDialog.title = qsTr("SDImageGenerator - Please wait");
+                downloadDialog.title = qsTr("SDImageGenerator - Please wait...");
                 downloadDialog.visible = true ;
             }
 
@@ -206,6 +206,7 @@ ApplicationWindow {
             icon.source: "images/gear.png"
             icon.width: 28
             icon.height: 28
+            enabled: !stableDiffusionBackend.isProcessing
 
             background: Rectangle {
                 color: tabBar.currentIndex == 2 ? "green": "#393A3B"
@@ -216,6 +217,7 @@ ApplicationWindow {
             icon.source: "images/enhance.png"
             icon.width: 28
             icon.height: 28
+            enabled: !stableDiffusionBackend.isProcessing
             background: Rectangle {
                 color: tabBar.currentIndex == 3 ? "green": "#393A3B"
             }
@@ -226,6 +228,7 @@ ApplicationWindow {
             icon.source: "images/download.png"
             icon.width: 28
             icon.height: 28
+            enabled: !stableDiffusionBackend.isProcessing
             background: Rectangle {
                 color: tabBar.currentIndex == 4 ? "green": "#393A3B"
             }
@@ -837,10 +840,11 @@ ApplicationWindow {
         Page {
             ColumnLayout{
                 anchors.centerIn: parent
+
                 Image{
                     source : "images/SdImageGenerator-logo.png"
-                    sourceSize.width: 64
-                    sourceSize.height: 64
+                    sourceSize.width: 80
+                    sourceSize.height: 80
                     Layout.alignment: Qt.AlignHCenter
                 }
 
@@ -859,7 +863,7 @@ ApplicationWindow {
 
                 }
                 Text{
-                    text : qsTr("SDImageGenerator is a stable diffusion frontend")
+                    text : qsTr("Stable diffusion frontend for Windows/Linux")
                     color : "grey"
                     font.pointSize: 12
                     Layout.alignment: Qt.AlignHCenter
@@ -872,9 +876,45 @@ ApplicationWindow {
                     font.pointSize: 12
                     Layout.alignment: Qt.AlignHCenter
                 }
+                Text{
+                    text : qsTr("Based on © 2022 Lincoln D. Stein's stable diffusion <a href='https://github.com/invoke-ai/InvokeAI'>fork</a>")
+                    color : "grey"
+                    linkColor: "lightblue"
+                    font.pointSize: 12
+                    Layout.alignment: Qt.AlignHCenter
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
+                Text{
+                    text : qsTr("Real-ESRGAN is licensed under BSD 3-Clause")
+                    color : "grey"
+                    font.pointSize: 12
+                    Layout.alignment: Qt.AlignHCenter
+
+                }
+                Text{
+                    text : qsTr("GFPGAN is licensed under the Apache License Version 2.0")
+                    color : "grey"
+                    font.pointSize: 12
+                    Layout.alignment: Qt.AlignHCenter
+
+                }
+                Text{
+                    text : qsTr("Taming transformers is licensed under the MIT license")
+                    color : "grey"
+                    font.pointSize: 12
+                    Layout.alignment: Qt.AlignHCenter
+
+                }
+                Text{
+                    text : qsTr("CLIP is licensed under the MIT license")
+                    color : "grey"
+                    font.pointSize: 12
+                    Layout.alignment: Qt.AlignHCenter
+
+                }
 
                 Text {
-                    text: "Using stable diffusion model: <a href='https://github.com/rupeshs/stablediffusion-mod/blob/main/Stable_Diffusion_v1_Model_Card.md'>Model card</a>"
+                    text: "Using stable diffusion model v1.4: <a href='https://github.com/rupeshs/stablediffusion-mod/blob/main/Stable_Diffusion_v1_Model_Card.md'>Model card</a>"
                     color : "grey"
                     linkColor: "lightblue"
                     font.pointSize: 12
@@ -889,6 +929,7 @@ ApplicationWindow {
                     Layout.alignment: Qt.AlignHCenter
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
+
 
             }
 
