@@ -181,69 +181,58 @@ ApplicationWindow {
         width: parent.width
 
         TabButton {
-            //text: qsTr("Text to Image")
             icon.source: "images/moon-stars-fill.png"
             icon.width: 28
             icon.height: 28
             background: Rectangle {
-                //#26a8ff
-                color: tabBar.currentIndex == 0 ? "green": "#393A3B"
+                color: tabBar.currentIndex == 0 ? "#1d85cf": "#393A3B"
             }
 
         }
         TabButton {
-           // text: qsTr("Images")
             icon.source: "images/images.png"
             icon.width: 28
             icon.height: 28
             background: Rectangle {
-                color: tabBar.currentIndex == 1 ? "green": "#393A3B"
+                color: tabBar.currentIndex == 1 ? "#1d85cf": "#393A3B"
             }
 
         }
         TabButton {
-            //text: qsTr("Settings")
             icon.source: "images/gear.png"
             icon.width: 28
             icon.height: 28
             enabled: !stableDiffusionBackend.isProcessing
 
             background: Rectangle {
-                color: tabBar.currentIndex == 2 ? "green": "#393A3B"
+                color: tabBar.currentIndex == 2 ? "#1d85cf": "#393A3B"
             }
         }
         TabButton {
-            //text: qsTr("Enhance")
             icon.source: "images/enhance.png"
             icon.width: 28
             icon.height: 28
             enabled: !stableDiffusionBackend.isProcessing
             background: Rectangle {
-                color: tabBar.currentIndex == 3 ? "green": "#393A3B"
+                color: tabBar.currentIndex == 3 ? "#1d85cf": "#393A3B"
             }
-
         }
         TabButton {
-            //text: qsTr("Install")
             icon.source: "images/download.png"
             icon.width: 28
             icon.height: 28
             enabled: !stableDiffusionBackend.isProcessing
             background: Rectangle {
-                color: tabBar.currentIndex == 4 ? "green": "#393A3B"
+                color: tabBar.currentIndex == 4 ? "#1d85cf": "#393A3B"
             }
         }
-
-
         TabButton {
-            //text: qsTr("About")
             icon.source: "images/info-square.png"
             icon.width: 28
             icon.height: 28
             background: Rectangle {
-                color: tabBar.currentIndex == 5 ? "green": "#393A3B"
+                color: tabBar.currentIndex == 5 ? "#1d85cf": "#393A3B"
             }
-
         }
         onCurrentIndexChanged: {
             layout.currentIndex = tabBar.currentIndex
@@ -276,7 +265,6 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignHCenter
 
-
                         ScrollView {
                             id: view
                             anchors.fill: parent
@@ -307,15 +295,13 @@ ApplicationWindow {
                                 stableDiffusionBackend.generateImage(false);
                             }
                         }
+
                         Button{
                             Layout.alignment: Qt.AlignRight
                             text: "Logs"
                             icon.color: "white"
                             icon.source: "images/file-text.png"
-
-
                             onClicked: {
-
                                 stableDiffusionBackend.openLogs();
                             }
                         }
@@ -387,7 +373,6 @@ ApplicationWindow {
 
                        }
                     }
-
                 }
             }
             Timer {
@@ -396,7 +381,6 @@ ApplicationWindow {
                 running: stableDiffusionBackend.isProcessing;
                 repeat: true
                 onTriggered: {
-                    //elapsedTimeLabel.
                     elapsedTimeLabel.text = getElapsedTime();
                 }
             }
@@ -437,6 +421,7 @@ ApplicationWindow {
                 height: 48
                 icon.source: "images/Letter_v.png"
                 Layout.leftMargin: 10
+                enabled: ! stableDiffusionBackend.isProcessing
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Generate variations of this image")
                 onClicked: {
@@ -449,8 +434,6 @@ ApplicationWindow {
 
         ScrollView
         {
-            //width: window.width
-            //height: window.height
             clip: true
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -773,7 +756,7 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         displayFloat: true
                         decimalPointNumbers : 2
-                    }
+                     }
                    }
                 }
             }
@@ -929,11 +912,7 @@ ApplicationWindow {
                     Layout.alignment: Qt.AlignHCenter
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
-
-
             }
-
-
         }
     }
 
@@ -948,7 +927,6 @@ ApplicationWindow {
         id: downloadDialog
 
         property bool isDownloader
-
         width: 550
         height: 200
         color: "#2e2e2e"
