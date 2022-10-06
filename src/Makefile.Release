@@ -2212,6 +2212,9 @@ release/main.o: main.cpp texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qevent.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qvector2d.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/QApplication \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qapplication.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qdesktopwidget.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QDateTime \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qdatetime.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtQml/QQmlApplicationEngine \

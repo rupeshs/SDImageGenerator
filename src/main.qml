@@ -832,7 +832,7 @@ ApplicationWindow {
                 }
 
                 Text{
-                    text : qsTr("SDImageGenerator v1.0.0")
+                    text : qsTr("SDImageGenerator v1.0.5")
                     color : "white"
                     font.pointSize: 14
                     Layout.alignment: Qt.AlignHCenter
