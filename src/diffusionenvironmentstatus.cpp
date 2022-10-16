@@ -46,3 +46,13 @@ void DiffusionEnvironmentStatus::setIsGfpGanModelReady(bool newIsGfpGanModelRead
 {
     m_isGfpGanModelReady = newIsGfpGanModelReady;
 }
+
+bool DiffusionEnvironmentStatus::isCodeFormerModelReady() const
+{
+    return m_isCodeFormerModelReady;
+}
+
+void DiffusionEnvironmentStatus::setIsCodeFormerModelReady(bool newIsCodeFormerModelReady)
+{
+    m_isCodeFormerModelReady = newIsCodeFormerModelReady;
+}

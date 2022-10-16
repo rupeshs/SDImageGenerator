@@ -50,7 +50,18 @@ bool DiffusionEnvValidator::validateGfpganModelPath()
 bool DiffusionEnvValidator::validateGfpganModelFileSize()
 {
     QFile modelFile(diffusionEnv->getGfpGanModelPath());
-    return GFP_GAN_MODEL_1_3_FILE_SIZE == modelFile.size();
+    return GFP_GAN_MODEL_FILE_SIZE == modelFile.size();
+}
+
+bool DiffusionEnvValidator::validateCodeFormerModelPath()
+{
+    return Utils::checkPathExists(diffusionEnv->getCodeFormerModelPath());
+}
+
+bool DiffusionEnvValidator::validateCodeFormerFileSize()
+{
+    QFile modelFile(diffusionEnv->getCodeFormerModelPath());
+    return CODE_FORMER_FILE_SIZE == modelFile.size();
 }
 
 bool DiffusionEnvValidator::validateStableDiffusionModel()
@@ -61,6 +72,11 @@ bool DiffusionEnvValidator::validateStableDiffusionModel()
 bool DiffusionEnvValidator::validateGfpGanModel()
 {
     return validateGfpganModelPath() && validateGfpganModelFileSize();
+}
+
+bool DiffusionEnvValidator::validateCodeFormerModel()
+{
+    return validateCodeFormerModelPath() && validateCodeFormerFileSize();
 }
 
 void DiffusionEnvValidator::gotDeviceInfo(const QString &devInfo)

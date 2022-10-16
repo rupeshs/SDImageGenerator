@@ -32,7 +32,7 @@ public:
     void ValidatePythonPackages();
     bool validateStableDiffusionModel();
     bool validateGfpGanModel();
-
+    bool validateCodeFormerModel();
 
     const QString &getDeviceInfo() const;
 
@@ -52,6 +52,8 @@ private:
     bool validateModelFileSize();
     bool validateGfpganModelPath();
     bool validateGfpganModelFileSize();
+    bool validateCodeFormerModelPath();
+    bool validateCodeFormerFileSize();
 };
 
 #endif // DIFFUSIONENVVALIDATOR_H

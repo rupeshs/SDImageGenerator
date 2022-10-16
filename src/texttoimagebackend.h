@@ -86,7 +86,7 @@ public slots:
     void downloadGfpganModel();
     void setImageInput(QUrl url);
     void generateVariations(QUrl imagePath);
-
+    void downloadCodeFormerModel();
 signals:
     void showMessageBox();
     void gotErrorMessage();
@@ -133,6 +133,7 @@ private slots:
     void installCompleted(int exitCode,bool isDownloader);
     QString getSeedFromFileName(QUrl filePath) ;
     bool isValidInitImage();
+    void setupDownlodUi();
 
 
 };

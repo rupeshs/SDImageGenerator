@@ -70,9 +70,17 @@ void TextToImageBackend::generateImage(bool isVariation)
     }
 
     if (m_options->faceRestoration()) {
-        if(!envValidator->validateGfpGanModel()) {
-            showErrorDlg(tr("Please download GFPGAN model from downloads tab."));
-            return;
+        qDebug()<<m_options->faceRestorationMethod();
+        if (m_options->faceRestorationMethod() == "GFPGAN") {
+            if(!envValidator->validateGfpGanModel()) {
+                showErrorDlg(tr("To use face restoration, please download GFPGAN model from downloads tab."));
+                return;
+            }
+        } else {
+            if(!envValidator->validateCodeFormerModel()) {
+                showErrorDlg(tr("To use face restoration, please download Code Former model from downloads tab."));
+                return;
+            }
         }
     }
 
@@ -242,9 +250,12 @@ void TextToImageBackend::environmentCurrentStatus(bool isPackagesReady, bool isS
 {
     handlePackagesStatus(isPackagesReady);
     handleModelStatus(isStableDiffusionModelReady);
+
     m_envStatus->setIsPythonEnvReady(isPackagesReady);
     m_envStatus->setIsStableDiffusionModelReady(isStableDiffusionModelReady);
     m_envStatus->setIsGfpGanModelReady(envValidator->validateGfpGanModel());
+    m_envStatus->setIsCodeFormerModelReady(envValidator->validateCodeFormerModel());
+
     qDebug()<<"Device : " << envValidator->getDeviceInfo();
     updateStatusMessage(envValidator->getDeviceInfo());
     emit initControls(m_options,m_envStatus);
@@ -275,13 +286,7 @@ void TextToImageBackend::handleModelStatus(bool isStableDiffusionModelReady)
 
 void TextToImageBackend::downloadGfpganModel()
 {
-    if ( !modelDownloader ){
-        modelDownloader = new InstallerProcess(this,diffusionEnv);
-        connect(modelDownloader, SIGNAL(gotConsoleLog(QString)), this, SLOT(updateDownloaderStatusMessage(QString)));
-        connect(modelDownloader, SIGNAL(installCompleted(int,bool)), this, SLOT(installCompleted(int,bool)));
-    }
-
-    emit setupInstallerUi(true);
+    setupDownlodUi();
     modelDownloader->downloadGfpganModel();
 }
 
@@ -298,6 +303,12 @@ void TextToImageBackend::generateVariations(QUrl imagePath)
     generateImage(true);
     emit showDreamPage();
 
+}
+
+void TextToImageBackend::downloadCodeFormerModel()
+{
+    setupDownlodUi();
+    modelDownloader->downloadCodeFormerModel();
 }
 
 DiffusionEnvironmentStatus *TextToImageBackend::envStatus() const
@@ -401,4 +412,15 @@ QString TextToImageBackend::getSeedFromFileName(QUrl imagePath)
 bool TextToImageBackend::isValidInitImage()
 {
     return Utils::checkPathExists(m_options->initImagePath());
+}
+
+void TextToImageBackend::setupDownlodUi()
+{
+    if ( !modelDownloader ){
+        modelDownloader = new InstallerProcess(this,diffusionEnv);
+        connect(modelDownloader, SIGNAL(gotConsoleLog(QString)), this, SLOT(updateDownloaderStatusMessage(QString)));
+        connect(modelDownloader, SIGNAL(installCompleted(int,bool)), this, SLOT(installCompleted(int,bool)));
+    }
+
+    emit setupInstallerUi(true);
 }

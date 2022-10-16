@@ -63,9 +63,14 @@ ApplicationWindow {
             upscalerCheckBox.checked = options.upscaler;
             upscaleStrengthSlider.slider.value = options.upscaleStrength;
             if (options.upscaleFactor === "4x")
-                radiobuttonScaleFour.checked = true
+                radiobuttonScaleFour.checked = true;
             else
-                radiobuttonScaleTwo.checked = true
+                radiobuttonScaleTwo.checked = true;
+
+            if (options.faceRestorationMethod === "GFPGAN")
+                gfpganRadioButton.checked = true;
+            else
+                codeFormerRadioButton.checked = true;
 
             modelCheck.checked = envStatus.isStableDiffusionModelReady;
             modelCheck.checkable = false;
@@ -74,16 +79,22 @@ ApplicationWindow {
             saveOriginalCheckBox.checked = options.saveOriginalImage;
             gfpganModelCheck.checked = envStatus.isGfpGanModelReady;
             gfpganModelCheck.checkable = false;
+            codeFormerModelCheck.checked = envStatus.isCodeFormerModelReady;
+            codeFormerModelCheck.checkable = false;
 
             imgtoimgCheckBox.checked = options.imageToImage;
             imgStrength.slider.value = options.imageToImageStrength;
             fitImageCheckBox.checked = options.fitImage;
             initImagePathTextEdit.text = options.initImagePath;
             variationAmountSlider.slider.value = options.variationAmount;
+            highResFixCheckbox.checked = options.fixHighRes;
+
             initApp = false;
             dreamPage.enabled = true;
-
+            updateFaceRestortionTexts();
         }
+
+
 
         function onSetOutputDirectory(directory){
             saveFolder.text = directory;
@@ -175,6 +186,19 @@ ApplicationWindow {
         stableDiffusionBackend.options.fitImage = fitImageCheckBox.checked;
         stableDiffusionBackend.options.initImagePath = initImagePathTextEdit.text;
         stableDiffusionBackend.options.variationAmount = variationAmountSlider.slider.value.toFixed(1) ;
+        stableDiffusionBackend.options.fixHighRes = highResFixCheckbox.checked;
+        stableDiffusionBackend.options.faceRestorationMethod = faceRestorationMethodGroup.checkedButton.text;
+
+    }
+    function updateFaceRestortionTexts(){
+        if( faceRestorationMethodGroup.checkedButton.text ==="CodeFormer" ) {
+            gfpganStrengthSlider.header.text = qsTr("CodeFormer Fidelity");
+            gfpganStrengthSlider.description.text = qsTr(" 0 produces high quality results but low accuracy and 1 produces lower quality results but higher accuacy to your original face");
+        }
+        else{
+           gfpganStrengthSlider.header.text = qsTr("Face restoration strength");
+           gfpganStrengthSlider.description.text =qsTr("Controls the strength of the face restoration,we recommend using values between 0.5 to 0.8");
+        }
     }
     TabBar {
         id: tabBar
@@ -475,7 +499,6 @@ ApplicationWindow {
                                 'k_heun',
                                 'k_lms',
                                 'plms']
-                            enabled: !imgtoimgCheckBox.checked
 
                         }
                     }
@@ -658,6 +681,18 @@ ApplicationWindow {
 
                     }
 
+                   Controls.AppInfoLabel{
+                       textInfo: qsTr("Fix the high resolution duplication artefacts")
+                   }
+
+                   CheckBox{
+                       id: highResFixCheckbox
+                       text: qsTr("High resolution fix")
+                       checked:false
+                   }
+
+
+
                     Button{
                         text : "Reset All"
                         onClicked: stableDiffusionBackend.resetSettings()
@@ -665,9 +700,17 @@ ApplicationWindow {
                 }
             }
         }
-        Page{
-            id : pageEnhance
-            Layout.alignment: Qt.AlignCenter
+        //Page{
+
+
+            ScrollView
+            {
+                id : pageEnhance
+                clip: true
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+
             ColumnLayout{
                 Item{
                     height: 10
@@ -739,17 +782,44 @@ ApplicationWindow {
                     label: CheckBox {
                         id: gfpganCheckBox
                         checked: false
-                        text: qsTr("Face Restoration (GFPGAN)")
+                        text: qsTr("Face Restoration")
                     }
+
                     ColumnLayout{
                     anchors.fill: parent
                     enabled: gfpganCheckBox.checked
+
+                    ButtonGroup {
+                        id: faceRestorationMethodGroup
+
+                        buttons: faceRestorationMethod.children
+                        onClicked: updateFaceRestortionTexts()
+                    }
+                    RowLayout{
+                        id : faceRestorationMethod
+                        Label{
+                            text : "Face restoration method :";
+                        }
+                        RadioButton {
+                            id : gfpganRadioButton
+
+                            checked: true
+                            text: qsTr("GFPGAN")
+
+                        }
+                        RadioButton {
+                            id : codeFormerRadioButton
+
+                            text: qsTr("CodeFormer")
+
+                        }
+                    }
 
                     Controls.AppSlider{
                         id: gfpganStrengthSlider
 
                         header.text: qsTr("Face restoration strength")
-                        description.text : "Controls the strength of the face restoration,we recommend using values between 0.5 to 0.8"
+                        description.text : qsTr("Controls the strength of the face restoration,we recommend using values between 0.5 to 0.8")
                         slider.from: 0
                         slider.to: 1
                         slider.value: 0.75
@@ -759,6 +829,8 @@ ApplicationWindow {
                      }
                    }
                 }
+
+        //    }
             }
         }
 
@@ -815,7 +887,29 @@ ApplicationWindow {
                         }
 
                     }
+
                 }
+                RowLayout{
+                    CheckBox {
+                        id : codeFormerModelCheck
+
+                        checkable: false
+                        Layout.leftMargin: 10
+                        text: qsTr("Code Former model (Optional) ")
+                    }
+                    Button{
+                        id: downloadCodeFormerModelButton
+
+                        enabled : !codeFormerModelCheck.checked
+                        text : "Download model"
+                        icon.source:  "images/file-arrow-down.png"
+                        onClicked:  {
+                            stableDiffusionBackend.downloadCodeFormerModel();
+                        }
+
+                    }
+                }
+
 
             }
         }

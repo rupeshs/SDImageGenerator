@@ -246,3 +246,23 @@ void DiffusionOptions::setVariationAmount(qreal newVariationAmount)
 {
     m_variationAmount = newVariationAmount;
 }
+
+bool DiffusionOptions::fixHighRes() const
+{
+    return m_fixHighRes;
+}
+
+void DiffusionOptions::setFixHighRes(bool newFixHighRes)
+{
+    m_fixHighRes = newFixHighRes;
+}
+
+const QString &DiffusionOptions::faceRestorationMethod() const
+{
+    return m_faceRestorationMethod;
+}
+
+void DiffusionOptions::setFaceRestorationMethod(const QString &newFaceRestorationMethod)
+{
+    m_faceRestorationMethod = newFaceRestorationMethod;
+}

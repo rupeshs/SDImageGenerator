@@ -12,15 +12,18 @@ static const char* STABLE_DIFFUSION_MODEL_1_4 = "models/ldm/stable-diffusion-v1/
 static const qint64 STABLE_DIFFUSION_MODEL_1_4_FILE_SIZE = 4265380512;
 static const char* STABLE_DIFFUSION_MODEL_1_4_URL = "https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media";
 static const char* STABLE_DIFFUSION_RESULTS_FOLDER_NAME = "results";
-static const char* STABLE_DIFFUSION_DREAM = "scripts/dream.py";
+static const char* STABLE_DIFFUSION_DREAM = "scripts/invoke.py";
 static const char* STABLE_DIFFUSION_ENVIRONMENT_YAML ="environment.yaml";
 static const char* LOG_FILE_NAME = "SdImageGenerator_logs.txt";
 static const char* GFP_GAN_PATH = "src/gfpgan";
-static const char* GFP_GAN_MODEL_1_3 = "experiments/pretrained_models/GFPGANv1.3.pth";
-static const char* GFP_GAN_MODEL_1_3_URL = "https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth";
-static const qint64 GFP_GAN_MODEL_1_3_FILE_SIZE = 348632874;
+static const char* GFP_GAN_MODEL = "experiments/pretrained_models/GFPGANv1.4.pth";
+static const char* GFP_GAN_MODEL_URL = "https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.4.pth";
+static const qint64 GFP_GAN_MODEL_FILE_SIZE = 348632874;
 static const char* LIBS_TEST_SCRIPT = "scripts/libstest.py";
-
+static const char* CODE_FORMER_MODEL_URL = "https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth";
+static const char* CODE_FORMER_MODEL_PATH = "ldm/invoke/restoration/codeformer/weights/codeformer.pth";
+static const qint64 CODE_FORMER_FILE_SIZE = 376637898;
+        ;
 static const double DEFAULT_SCALE = 7.5;
 static const double DEFAULT_IMAGE_WIDTH = 512;
 static const double DEFAULT_IMAGE_HEIGHT = 512;
@@ -42,6 +45,8 @@ static const double  DEFAULT_FACE_RESTORATION_STRENGTH = 0.75;
 static const double  DEFAULT_IMG_TO_IMG_STRENGTH = 0.75;
 static const char* DEFAULT_INIT_IMAGE = "";
 static const double DEFAULT_VARIATION_AMOUNT = 0.2;
+static const bool  DEFAULT_HIGHRES_FIX = false;
+static const char* DEFAULT_FACE_RESTORATION_METHOD = "GFPGAN";
 
 #endif // DEFINES_H
 

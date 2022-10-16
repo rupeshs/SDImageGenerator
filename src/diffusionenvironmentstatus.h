@@ -27,6 +27,7 @@ class DiffusionEnvironmentStatus : public QObject
     Q_PROPERTY(bool isPythonEnvReady READ isPythonEnvReady WRITE setIsPythonEnvReady CONSTANT)
     Q_PROPERTY(bool isStableDiffusionModelReady READ isStableDiffusionModelReady WRITE setIsStableDiffusionModelReady CONSTANT)
     Q_PROPERTY(bool isGfpGanModelReady READ isGfpGanModelReady WRITE setIsGfpGanModelReady CONSTANT)
+    Q_PROPERTY(bool isCodeFormerModelReady READ isCodeFormerModelReady WRITE setIsCodeFormerModelReady CONSTANT)
     QML_ELEMENT
 
 public:
@@ -39,10 +40,14 @@ public:
     bool isGfpGanModelReady() const;
     void setIsGfpGanModelReady(bool newIsGfpGanModelReady);
 
+    bool isCodeFormerModelReady() const;
+    void setIsCodeFormerModelReady(bool newIsCodeFormerModelReady);
+
 private:
      bool m_isPythonEnvReady;
      bool m_isStableDiffusionModelReady;
      bool m_isGfpGanModelReady;
+     bool m_isCodeFormerModelReady;
 };
 
 #endif // DIFFUSIONENVIRONMENTSTATUS_H

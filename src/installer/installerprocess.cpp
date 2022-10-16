@@ -77,6 +77,19 @@ void InstallerProcess::downloadGfpganModel()
     isDownloader = true;
 }
 
+void InstallerProcess::downloadCodeFormerModel()
+{
+    installerProc->clearArguments();
+    installerProc->addArgument(diffusionEnv->getCurlPath());
+    installerProc->addArgument("-L");
+    installerProc->addArgument(diffusionEnv->getCodeFormerModelUrl());
+    installerProc->addArgument("-o");
+    installerProc->addArgument(diffusionEnv->getCodeFormerModelPath());
+    qDebug()<<installerProc->arguments();
+    installerProc->start();
+    isDownloader = true;
+}
+
 void InstallerProcess::readProcessOutput(QByteArray line)
 {
     QString consoleLine(line);

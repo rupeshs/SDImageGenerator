@@ -26,11 +26,13 @@ void Settings::load()
     diffusionSettings->setFullPrecision(settings->value("Main/fullPrecision",DEFAULT_FULL_PRECISION).toBool());
     diffusionSettings->setSaveOriginalImage(settings->value("Main/saveOriginalImage",DEFAULT_SAVE_ORIGINAL_IMAGE).toBool());
     diffusionSettings->setVariationAmount(settings->value("Main/variationAmount",DEFAULT_VARIATION_AMOUNT).toDouble());
+    diffusionSettings->setFixHighRes(settings->value("Main/highResFix",DEFAULT_HIGHRES_FIX).toBool());
 
     diffusionSettings->setUpscaler(settings->value("Upscaler/upscaler",DEFAULT_USE_UPSCALER).toBool());
     diffusionSettings->setUpscaleFactor(settings->value("Upscaler/upscaleFactor",DEFAULT_UPSCALE_FACTOR).toString());
     diffusionSettings->setUpscaleStrength(settings->value("Upscaler/upscaleStrength",DEFAULT_UPSCALE_STRENGTH).toDouble());
 
+    diffusionSettings->setFaceRestorationMethod(settings->value("FaceRestoration/faceRestorationMethod",DEFAULT_FACE_RESTORATION_METHOD).toString());
     diffusionSettings->setFaceRestoration(settings->value("FaceRestoration/faceRestoration",DEFAULT_USE_FACE_RESTORATION).toBool());
     diffusionSettings->setFaceRestorationStrength(settings->value("FaceRestoration/faceRestorationStrength",DEFAULT_FACE_RESTORATION_STRENGTH).toDouble());
 
@@ -58,6 +60,7 @@ void Settings::save()
     settings->setValue("fullPrecision", diffusionSettings->fullPrecision());
     settings->setValue("saveOriginalImage", diffusionSettings->saveOriginalImage());
     settings->setValue("variationAmount", diffusionSettings->variationAmount());
+    settings->setValue("highResFix", diffusionSettings->fixHighRes());
     settings->endGroup();
 
     settings->beginGroup("Upscaler");
@@ -67,6 +70,7 @@ void Settings::save()
     settings->endGroup();
 
     settings->beginGroup("FaceRestoration");
+     settings->setValue("faceRestorationMethod",diffusionSettings->faceRestorationMethod());
     settings->setValue("faceRestoration", diffusionSettings->faceRestoration());
     settings->setValue("faceRestorationStrength", diffusionSettings->faceRestorationStrength());
     settings->endGroup();
@@ -103,5 +107,7 @@ void Settings::reset()
     diffusionSettings->setImageToImageStrength(DEFAULT_IMG_TO_IMG_STRENGTH);
     diffusionSettings->setInitImagePath(DEFAULT_INIT_IMAGE);
     diffusionSettings->setVariationAmount(DEFAULT_VARIATION_AMOUNT);
+    diffusionSettings->setFixHighRes(DEFAULT_HIGHRES_FIX);
+    diffusionSettings->setFaceRestorationMethod(DEFAULT_FACE_RESTORATION_METHOD);
 
 }

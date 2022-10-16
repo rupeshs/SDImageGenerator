@@ -14,10 +14,13 @@ class InstallerProcess : public QObject
     Q_OBJECT
 public:
     explicit InstallerProcess(QObject *parent = nullptr,DiffusionEnvironment *diffEnv=nullptr);
-    void downloadStableDiffusionModel();
+
     void installCondaEnv();
     void installPipPackages();
+
+    void downloadStableDiffusionModel();
     void downloadGfpganModel();
+    void downloadCodeFormerModel();
 
     float getDownloadProgress() const;
 

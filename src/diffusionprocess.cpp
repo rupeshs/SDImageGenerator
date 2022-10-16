@@ -177,9 +177,9 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool is
     //addArgument("--prompt");
     clearPromptArguments();
     addPromptArguments(diffusionOptions->prompt().trimmed());
+    addPromptArguments("--sampler");
+    addPromptArguments(diffusionOptions->sampler().trimmed());
     if (!diffusionOptions->imageToImage()) {
-        addPromptArguments("--sampler");
-        addPromptArguments(diffusionOptions->sampler().trimmed());
         addDimensionArgs(diffusionOptions->imageWidth(),diffusionOptions->imageHeight());
     } else {
         if (diffusionOptions->fitImage())
@@ -207,6 +207,9 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool is
         addPromptArguments(QString::number(diffusionOptions->variationAmount()));
     }
 
+    //addPromptArguments("--save_intermediates");
+    //addPromptArguments(QString::number(2));
+
     if (diffusionOptions->upscaler() || diffusionOptions->faceRestoration())
         addSaveOriginalImageArg(diffusionOptions->saveOriginalImage());
 
@@ -219,9 +222,22 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool is
 
     }
     if (diffusionOptions->faceRestoration()) {
-        addPromptArguments("--gfpgan_strength");
-        addPromptArguments(QString::number(diffusionOptions->faceRestorationStrength()));
+        if (diffusionOptions->faceRestorationMethod() == "GFPGAN") {
+            addPromptArguments("--gfpgan_strength");
+            addPromptArguments(QString::number(diffusionOptions->faceRestorationStrength()));
+        } else {
+            addPromptArguments("-G");
+            addPromptArguments("1.0");
+            addPromptArguments("-ft");
+            addPromptArguments("codeformer ");
+            addPromptArguments("-cf");
+            addPromptArguments(QString::number(diffusionOptions->faceRestorationStrength()));
+        }
+
     }
+
+    if (diffusionOptions->fixHighRes())
+        addPromptArguments("--hires_fix");
 
     if (diffusionOptions->imageToImage()) {
         addPromptArguments("--init_img");
