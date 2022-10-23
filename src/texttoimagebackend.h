@@ -46,6 +46,8 @@ class TextToImageBackend : public QObject,public QQmlParserStatus
     Q_PROPERTY(DiffusionOptions* options READ options CONSTANT)
     Q_PROPERTY(DiffusionEnvironmentStatus* envStatus READ envStatus CONSTANT)
     Q_PROPERTY(bool isProcessing MEMBER isProcessing NOTIFY isProcessingChanged)
+    Q_PROPERTY(bool isCancelled MEMBER isCancelled NOTIFY isCancelledChanged)
+    Q_PROPERTY(bool isModelLoaded MEMBER isModelLoaded NOTIFY isModelLoadedChanged)
 
 public:
     explicit TextToImageBackend(QObject *parent = nullptr);
@@ -60,6 +62,12 @@ public:
 
     DiffusionEnvironmentStatus *envStatus() const;
     void setEnvStatus(DiffusionEnvironmentStatus *newEnvStatus);
+
+    bool getIsCancelled() const;
+    void setIsCancelled(bool newIsCancelled);
+
+    bool getIsModelLoaded() const;
+    void setIsModelLoaded(bool newIsModelLoaded);
 
 public slots:
     void generateImage(bool isVariation);
@@ -87,6 +95,9 @@ public slots:
     void setImageInput(QUrl url);
     void generateVariations(QUrl imagePath);
     void downloadCodeFormerModel();
+    void setMaskImageInput(QUrl url);
+    void diffusionCancelled();
+
 signals:
     void showMessageBox();
     void gotErrorMessage();
@@ -106,6 +117,9 @@ signals:
     void closeLoadingScreen();
     void setInputImagePath(QString);
     void showDreamPage();
+    void setInputMaskImagePath(QString);
+    void isCancelledChanged();
+    void isModelLoadedChanged();
 
 private:
     DiffusionProcess *stableDiffusion;
@@ -125,6 +139,8 @@ private:
     QString curOutputFolder;
     QString deafultAssetsPath;
     QString installerStatusMsg;
+    bool isCancelled;
+    bool isModelLoaded;
 
 private slots:
     void updateStatusMessage(const QString&);

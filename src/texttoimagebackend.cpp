@@ -34,6 +34,7 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
     connect(stableDiffusion, SIGNAL(diffusionFinished()), this, SLOT(stableDiffusionFinished()));
     connect(stableDiffusion, SIGNAL(gotConsoleLog(QString)), this, SLOT(updateStatusMessage(QString)));
     connect(stableDiffusion, SIGNAL(cudaMemoryError()), this, SLOT(cudaMemoryError()));
+    connect(stableDiffusion, SIGNAL(stopped()), this, SLOT(diffusionCancelled()));
 
     deafultAssetsPath = Utils::pathAppend(qApp->applicationDirPath(),"default");
     samplesPath = Utils::localPathToUrl(deafultAssetsPath);
@@ -46,10 +47,12 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
 
     modelDownloader = nullptr;
     pythonEnvInstaller = nullptr;
+    isCancelled = false;
 }
 
 void TextToImageBackend::generateImage(bool isVariation)
 {
+    isCancelled = false;
     if(isVariation) {
         if (!stableDiffusion->isDreamRunning()){
           showErrorDlg(tr("To generate image variations,please generate images first."));
@@ -112,7 +115,13 @@ void TextToImageBackend::generateImage(bool isVariation)
 
 void TextToImageBackend::stopProcessing()
 {
+    updateStatusMessage(tr("Cancelling please wait..."));
     stableDiffusion->stopProcess();
+    isProcessing = false;
+    isModelLoaded = false;
+    isCancelled = true;
+    emit isCancelledChanged();
+    emit isProcessingChanged();
 }
 
 void TextToImageBackend::showErrorDlg(const QString &error)
@@ -165,6 +174,8 @@ void TextToImageBackend::setOutputFolder(QUrl url)
 void TextToImageBackend::generatingImages()
 {
     updateStatusMessage("Generating images...");
+    isModelLoaded = true;
+    emit isModelLoadedChanged();
 }
 
 void TextToImageBackend::imagesGenerated()
@@ -293,6 +304,36 @@ void TextToImageBackend::downloadGfpganModel()
 void TextToImageBackend::setImageInput(QUrl url)
 {
     emit setInputImagePath(url.toLocalFile());
+}
+
+void TextToImageBackend::setMaskImageInput(QUrl url)
+{
+    emit setInputMaskImagePath(url.toLocalFile());
+}
+
+void TextToImageBackend::diffusionCancelled()
+{
+    updateStatusMessage(tr("Stopped image generation."));
+}
+
+bool TextToImageBackend::getIsModelLoaded() const
+{
+    return isModelLoaded;
+}
+
+void TextToImageBackend::setIsModelLoaded(bool newIsModelLoaded)
+{
+    isModelLoaded = newIsModelLoaded;
+}
+
+bool TextToImageBackend::getIsCancelled() const
+{
+    return isCancelled;
+}
+
+void TextToImageBackend::setIsCancelled(bool newIsCancelled)
+{
+    isCancelled = newIsCancelled;
 }
 
 void TextToImageBackend::generateVariations(QUrl imagePath)

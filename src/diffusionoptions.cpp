@@ -266,3 +266,13 @@ void DiffusionOptions::setFaceRestorationMethod(const QString &newFaceRestoratio
 {
     m_faceRestorationMethod = newFaceRestorationMethod;
 }
+
+const QString &DiffusionOptions::maskImagePath() const
+{
+    return m_maskImagePath;
+}
+
+void DiffusionOptions::setMaskImagePath(const QString &newMaskImagePath)
+{
+    m_maskImagePath = newMaskImagePath;
+}

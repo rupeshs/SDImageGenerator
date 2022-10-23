@@ -49,7 +49,7 @@ void DiffusionProcess::readProcessOutput(QByteArray line)
     if (!line.isEmpty())
         emit gotConsoleLog(line);
 
-    if (consoleLine.contains("conda.bat"))
+    if (consoleLine.contains("conda.bat") || consoleLine.contains("Redirects are"))
        emit gotConsoleLog(QString("Loading model,please wait..."));
 
     if(rxOutputFolder.indexIn(consoleLine)>-1){
@@ -165,11 +165,14 @@ void DiffusionProcess::stopProcess()
 
     if (dreamProcess) {
         dreamProcess->terminate();
-        if (!dreamProcess->waitForFinished(2000)) {
+        if (!dreamProcess->waitForFinished(5000)) {
             dreamProcess->kill();
-            dreamProcess->waitForFinished();
+            dreamProcess->waitForFinished(5000);
         }
     }
+    emit stopped();
+    qDebug()<<dreamProcess->isRunning();
+
 }
 
 void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool isVariations)
@@ -207,8 +210,8 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool is
         addPromptArguments(QString::number(diffusionOptions->variationAmount()));
     }
 
-    //addPromptArguments("--save_intermediates");
-    //addPromptArguments(QString::number(2));
+    addPromptArguments("--save_intermediates");
+    addPromptArguments(QString::number(1));
 
     if (diffusionOptions->upscaler() || diffusionOptions->faceRestoration())
         addSaveOriginalImageArg(diffusionOptions->saveOriginalImage());
@@ -233,7 +236,6 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool is
             addPromptArguments("-cf");
             addPromptArguments(QString::number(diffusionOptions->faceRestorationStrength()));
         }
-
     }
 
     if (diffusionOptions->fixHighRes())
@@ -249,6 +251,12 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool is
             addPromptArguments("--fit");
         addPromptArguments("--strength");
         addPromptArguments(QString::number(diffusionOptions->imageToImageStrength()));
+
+        if (Utils::checkPathExists(diffusionOptions->maskImagePath())){
+            qDebug()<<"Using mask image";
+            addPromptArguments("--init_mask");
+            addPromptArguments(diffusionOptions->maskImagePath());
+        }
     }
 
     addDreamScriptArgs(diffusionOptions);

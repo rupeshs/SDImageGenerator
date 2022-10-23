@@ -49,6 +49,7 @@ class DiffusionOptions : public QObject
     Q_PROPERTY(qreal variationAmount READ variationAmount WRITE setVariationAmount CONSTANT)
     Q_PROPERTY(bool fixHighRes READ fixHighRes WRITE setFixHighRes CONSTANT)
     Q_PROPERTY(QString faceRestorationMethod READ faceRestorationMethod WRITE setFaceRestorationMethod CONSTANT)
+    Q_PROPERTY(QString maskImagePath READ maskImagePath WRITE setMaskImagePath CONSTANT)
     QML_ELEMENT
 
 public:
@@ -129,6 +130,9 @@ public:
     const QString &faceRestorationMethod() const;
     void setFaceRestorationMethod(const QString &newFaceRestorationMethod);
 
+    const QString &maskImagePath() const;
+    void setMaskImagePath(const QString &newMaskImagePath);
+
 private:
     QString m_prompt;
     qreal m_scale;
@@ -155,6 +159,7 @@ private:
     qreal m_variationAmount;
     bool m_fixHighRes;
     QString m_faceRestorationMethod;
+    QString m_maskImagePath;
 
 };
 

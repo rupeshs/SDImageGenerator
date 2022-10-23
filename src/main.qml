@@ -94,20 +94,22 @@ ApplicationWindow {
             updateFaceRestortionTexts();
         }
 
-
-
         function onSetOutputDirectory(directory){
             saveFolder.text = directory;
         }
         function onSetInputImagePath(file_path){
             initImagePathTextEdit.text = file_path;
         }
+        function onSetInputMaskImagePath(file_path){
+            maskImagePathTextEdit.text = file_path;
+        }
         function onIsProcessingChanged() {
-            if (!stableDiffusionBackend.isProcessing)
+            if (!stableDiffusionBackend.isProcessing & !stableDiffusionBackend.isCancelled)
             {
-                tabBar.currentIndex = 1;
+                tabBar.currentIndex = 1; 
             }
         }
+
         function onShowDreamPage(){
             tabBar.currentIndex = 0;
         }
@@ -188,7 +190,7 @@ ApplicationWindow {
         stableDiffusionBackend.options.variationAmount = variationAmountSlider.slider.value.toFixed(1) ;
         stableDiffusionBackend.options.fixHighRes = highResFixCheckbox.checked;
         stableDiffusionBackend.options.faceRestorationMethod = faceRestorationMethodGroup.checkedButton.text;
-
+        stableDiffusionBackend.options.maskImagePath = maskImagePathTextEdit.text;
     }
     function updateFaceRestortionTexts(){
         if( faceRestorationMethodGroup.checkedButton.text ==="CodeFormer" ) {
@@ -277,7 +279,7 @@ ApplicationWindow {
                 }
                 ColumnLayout{
                     Item{
-                        height: 50
+                        height: 20
                     }
                     Label{
                         text:qsTr("Prompt")
@@ -285,7 +287,7 @@ ApplicationWindow {
 
                     Item{
                         width: 550
-                        height:140
+                        height: 140
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignHCenter
 
@@ -318,6 +320,18 @@ ApplicationWindow {
                                 startTime = new Date().getTime();
                                 stableDiffusionBackend.generateImage(false);
                             }
+                        }
+
+
+                        Button{
+                            Layout.alignment: Qt.AlignRight
+                            text: "Cancel"
+                            icon.source: "images/x-lg.png"
+                            icon.color: enabled? "#e63c3c" :"gray"
+                            onClicked: {
+                                stableDiffusionBackend.stopProcessing();
+                            }
+                            enabled: (stableDiffusionBackend.isProcessing && stableDiffusionBackend.isModelLoaded)
                         }
 
                         Button{
@@ -374,11 +388,13 @@ ApplicationWindow {
 
                               nameFilters: [ "Image files (*.jpg *.png *.jpeg)", "All files (*)" ]
                               onAccepted: {
+
                                   stableDiffusionBackend.setImageInput(imgFileDialog.file);
                                   imgFileDialog.close();
                               }
 
                           }
+
                           RowLayout{
                               Layout.fillWidth: true
                               Label{
@@ -389,9 +405,43 @@ ApplicationWindow {
                                   id: initImagePathTextEdit
                                   Layout.fillWidth: true
                               }
-                              ToolButton{
+                              Button{
                                   icon.source: "images/folder2-open.png"
                                   onClicked: imgFileDialog.open()
+                              }
+                          }
+                          FileDialog {
+                              id: imgMaskFileDialog
+                              title: "Please choose mask image"
+
+                              nameFilters: [ "Image files (*.jpg *.png *.jpeg)", "All files (*)" ]
+                              onAccepted: {
+                                  console.log(imgMaskFileDialog.file);
+                                  stableDiffusionBackend.setMaskImageInput(imgMaskFileDialog.file);
+                                  imgMaskFileDialog.close();
+                              }
+
+                          }
+                          RowLayout{
+                              Layout.fillWidth: true
+                              Label{
+                                  text : qsTr("Mask image(optional) :")
+                              }
+
+                              Controls.RichTextEdit{
+                                  id: maskImagePathTextEdit
+                                  Layout.fillWidth: true
+                              }
+                              Button{
+                                  icon.source: "images/folder2-open.png"
+                                  onClicked: imgMaskFileDialog.open()
+                              }
+                              Button{
+                                  icon.source: "images/reset.png"
+                                  onClicked: {
+
+                                      maskImagePathTextEdit.text = ""
+                                  }
                               }
                           }
 

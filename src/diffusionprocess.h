@@ -64,6 +64,7 @@ signals:
     void diffusionFinished();
     void gotConsoleLog(const QString &message);
     void cudaMemoryError();
+    void stopped();
 
 private:
     MyProcess *dreamProcess;

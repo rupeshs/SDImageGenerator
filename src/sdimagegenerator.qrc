@@ -14,5 +14,7 @@
         <file>images/info-square.png</file>
         <file>images/Letter_v.png</file>
         <file>images/SdImageGenerator-logo.png</file>
+        <file>images/reset.png</file>
+        <file>images/x-lg.png</file>
     </qresource>
 </RCC>

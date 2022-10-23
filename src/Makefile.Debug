@@ -242,6 +242,8 @@ debug/qrc_sdimagegenerator.cpp: sdimagegenerator.qrc \
 		../../../../Qt5/5.15.2/mingw81_64/bin/rcc.exe \
 		images/download.png \
 		images/folder2-open.png \
+		images/reset.png \
+		images/x-lg.png \
 		images/images.png \
 		images/SdImageGenerator-logo.png \
 		images/next.png \
