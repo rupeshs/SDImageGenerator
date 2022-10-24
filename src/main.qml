@@ -191,6 +191,7 @@ ApplicationWindow {
         stableDiffusionBackend.options.fixHighRes = highResFixCheckbox.checked;
         stableDiffusionBackend.options.faceRestorationMethod = faceRestorationMethodGroup.checkedButton.text;
         stableDiffusionBackend.options.maskImagePath = maskImagePathTextEdit.text;
+        stableDiffusionBackend.options.useMaskImage = useMaskCheckBox.checked;
     }
     function updateFaceRestortionTexts(){
         if( faceRestorationMethodGroup.checkedButton.text ==="CodeFormer" ) {
@@ -369,10 +370,11 @@ ApplicationWindow {
                     }
                     GroupBox{
                         id: imgimgGroup
-                        Layout.preferredWidth: 550
 
+                        Layout.preferredWidth: 550
                         label: CheckBox {
                             id: imgtoimgCheckBox
+
                             checked: false
                             text: qsTr("Image to Image")
 
@@ -384,8 +386,8 @@ ApplicationWindow {
 
                           FileDialog {
                               id: imgFileDialog
-                              title: "Please choose a image"
 
+                              title: "Please choose a image"
                               nameFilters: [ "Image files (*.jpg *.png *.jpeg)", "All files (*)" ]
                               onAccepted: {
 
@@ -403,6 +405,7 @@ ApplicationWindow {
 
                               Controls.RichTextEdit{
                                   id: initImagePathTextEdit
+
                                   Layout.fillWidth: true
                               }
                               Button{
@@ -412,8 +415,8 @@ ApplicationWindow {
                           }
                           FileDialog {
                               id: imgMaskFileDialog
-                              title: "Please choose mask image"
 
+                              title: "Please choose mask image"
                               nameFilters: [ "Image files (*.jpg *.png *.jpeg)", "All files (*)" ]
                               onAccepted: {
                                   console.log(imgMaskFileDialog.file);
@@ -424,25 +427,23 @@ ApplicationWindow {
                           }
                           RowLayout{
                               Layout.fillWidth: true
-                              Label{
-                                  text : qsTr("Mask image(optional) :")
+                              CheckBox{
+                                  id: useMaskCheckBox
+
+                                  text: qsTr("Use mask image :")
+                                  checked: false
                               }
 
                               Controls.RichTextEdit{
                                   id: maskImagePathTextEdit
+
                                   Layout.fillWidth: true
                               }
                               Button{
                                   icon.source: "images/folder2-open.png"
                                   onClicked: imgMaskFileDialog.open()
                               }
-                              Button{
-                                  icon.source: "images/reset.png"
-                                  onClicked: {
 
-                                      maskImagePathTextEdit.text = ""
-                                  }
-                              }
                           }
 
                        }

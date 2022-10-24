@@ -252,7 +252,7 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool is
         addPromptArguments("--strength");
         addPromptArguments(QString::number(diffusionOptions->imageToImageStrength()));
 
-        if (Utils::checkPathExists(diffusionOptions->maskImagePath())){
+        if (diffusionOptions->useMaskImage()){
             qDebug()<<"Using mask image";
             addPromptArguments("--init_mask");
             addPromptArguments(diffusionOptions->maskImagePath());

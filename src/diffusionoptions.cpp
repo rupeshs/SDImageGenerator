@@ -276,3 +276,13 @@ void DiffusionOptions::setMaskImagePath(const QString &newMaskImagePath)
 {
     m_maskImagePath = newMaskImagePath;
 }
+
+bool DiffusionOptions::useMaskImage() const
+{
+    return m_useMaskImage;
+}
+
+void DiffusionOptions::setUseMaskImage(bool newUseMaskImage)
+{
+    m_useMaskImage = newUseMaskImage;
+}

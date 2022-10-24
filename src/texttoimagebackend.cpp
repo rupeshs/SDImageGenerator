@@ -66,9 +66,17 @@ void TextToImageBackend::generateImage(bool isVariation)
     }
 
     if (m_options->imageToImage()) {
+
         if(!isValidInitImage()) {
-           showErrorDlg(tr("Please choose a valid initial image"));
-           return;
+            showErrorDlg(tr("File not found,please choose a valid initial image"));
+            return;
+        }
+
+        if (m_options->useMaskImage()) {
+            if(!Utils::checkPathExists(m_options->maskImagePath())) {
+                showErrorDlg(tr("File not found,please choose a valid mask image"));
+                return;
+            }
         }
     }
 
