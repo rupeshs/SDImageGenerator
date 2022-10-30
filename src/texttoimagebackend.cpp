@@ -48,11 +48,25 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
     modelDownloader = nullptr;
     pythonEnvInstaller = nullptr;
     isCancelled = false;
+
 }
 
 void TextToImageBackend::generateImage(bool isVariation)
 {
     isCancelled = false;
+    if (stableDiffusion->getUseTiConcept() != m_options->useTextualInversion()) {
+         qDebug()<<"TI Status : "<<m_options->useTextualInversion();
+        stableDiffusion->stopProcess();
+    }
+
+
+    if (m_options->useTextualInversion()){
+        if (!stableDiffusion->getCurTiConcept().isEmpty() && stableDiffusion->getCurTiConcept() != m_options->tiConceptStyle()) {
+            qDebug()<<"Changing TI concept to "<< m_options->tiConceptStyle();
+            stableDiffusion->stopProcess();
+        }
+    }
+
     if(isVariation) {
         if (!stableDiffusion->isDreamRunning()){
           showErrorDlg(tr("To generate image variations,please generate images first."));
@@ -150,6 +164,12 @@ void TextToImageBackend::loadSettings()
     qInfo()<<"Loading app settings";
     appSettings->load();
     Utils::ensurePath(m_options->saveDir());
+    m_options->setTiConceptDirectory(diffusionEnv->getTiConceptRootDirectoryPath());
+
+    foreach (auto concept, diffusionEnv->getTiConceptStyles()) {
+        tiConcepts << concept;
+    }
+    emit tiConceptsChanged();
     emit setupInstallerUi(false);
 
 }
@@ -322,6 +342,16 @@ void TextToImageBackend::setMaskImageInput(QUrl url)
 void TextToImageBackend::diffusionCancelled()
 {
     updateStatusMessage(tr("Stopped image generation."));
+}
+
+const QStringList &TextToImageBackend::getTiConcepts() const
+{
+    return tiConcepts;
+}
+
+void TextToImageBackend::setTiConcepts(const QStringList &newTiConcepts)
+{
+    tiConcepts = newTiConcepts;
 }
 
 bool TextToImageBackend::getIsModelLoaded() const

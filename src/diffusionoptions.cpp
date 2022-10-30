@@ -286,3 +286,33 @@ void DiffusionOptions::setUseMaskImage(bool newUseMaskImage)
 {
     m_useMaskImage = newUseMaskImage;
 }
+
+const QString &DiffusionOptions::tiConceptStyle() const
+{
+    return m_tiConceptStyle;
+}
+
+void DiffusionOptions::setTiConceptStyle(const QString &newTiConceptStyle)
+{
+    m_tiConceptStyle = newTiConceptStyle;
+}
+
+bool DiffusionOptions::useTextualInversion() const
+{
+    return m_useTextualInversion;
+}
+
+void DiffusionOptions::setUseTextualInversion(bool newUseTextualInversion)
+{
+    m_useTextualInversion = newUseTextualInversion;
+}
+
+const QString &DiffusionOptions::tiConceptDirectory() const
+{
+    return m_tiConceptDirectory;
+}
+
+void DiffusionOptions::setTiConceptDirectory(const QString &newTiConceptDirectory)
+{
+    m_tiConceptDirectory = newTiConceptDirectory;
+}

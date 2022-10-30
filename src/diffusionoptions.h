@@ -51,6 +51,9 @@ class DiffusionOptions : public QObject
     Q_PROPERTY(QString faceRestorationMethod READ faceRestorationMethod WRITE setFaceRestorationMethod CONSTANT)
     Q_PROPERTY(QString maskImagePath READ maskImagePath WRITE setMaskImagePath CONSTANT)
     Q_PROPERTY(bool useMaskImage READ useMaskImage WRITE setUseMaskImage CONSTANT)
+    Q_PROPERTY(QString tiConceptStyle READ tiConceptStyle WRITE setTiConceptStyle CONSTANT)
+    Q_PROPERTY(bool useTextualInversion READ useTextualInversion WRITE setUseTextualInversion CONSTANT)
+    Q_PROPERTY(QString tiConceptDirectory READ tiConceptDirectory WRITE setTiConceptDirectory CONSTANT)
     QML_ELEMENT
 
 public:
@@ -137,6 +140,15 @@ public:
     bool useMaskImage() const;
     void setUseMaskImage(bool newUseMaskImage);
 
+    const QString &tiConceptStyle() const;
+    void setTiConceptStyle(const QString &newTiConceptStyle);
+
+    bool useTextualInversion() const;
+    void setUseTextualInversion(bool newUseTextualInversion);
+
+    const QString &tiConceptDirectory() const;
+    void setTiConceptDirectory(const QString &newTiConceptDirectory);
+
 private:
     QString m_prompt;
     qreal m_scale;
@@ -165,6 +177,9 @@ private:
     QString m_faceRestorationMethod;
     QString m_maskImagePath;
     bool m_useMaskImage;
+    QString m_tiConceptStyle;
+    bool m_useTextualInversion;
+    QString m_tiConceptDirectory;
 
 };
 

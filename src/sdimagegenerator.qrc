@@ -16,5 +16,7 @@
         <file>images/SdImageGenerator-logo.png</file>
         <file>images/reset.png</file>
         <file>images/x-lg.png</file>
+        <file>images/brush-fill.png</file>
+        <file>images/palette.png</file>
     </qresource>
 </RCC>

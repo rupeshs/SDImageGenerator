@@ -23,7 +23,9 @@ static const char* LIBS_TEST_SCRIPT = "scripts/libstest.py";
 static const char* CODE_FORMER_MODEL_URL = "https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth";
 static const char* CODE_FORMER_MODEL_PATH = "ldm/invoke/restoration/codeformer/weights/codeformer.pth";
 static const qint64 CODE_FORMER_FILE_SIZE = 376637898;
-        ;
+static const char* TEXTUAL_INVERSION_DIR = "textual-inversion";
+static const char* TEXTUAL_INVERSION_CONCEPT_FILE = "learned_embeds.bin";
+
 static const double DEFAULT_SCALE = 7.5;
 static const double DEFAULT_IMAGE_WIDTH = 512;
 static const double DEFAULT_IMAGE_HEIGHT = 512;

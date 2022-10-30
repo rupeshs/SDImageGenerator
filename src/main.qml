@@ -5,7 +5,9 @@ import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.3
 import "controls" as Controls
 import StableDiffusion 1.0
+import Qt.labs.folderlistmodel 2.15
 import Qt.labs.platform 1.1
+
 
 
 ApplicationWindow {
@@ -92,6 +94,7 @@ ApplicationWindow {
             initApp = false;
             dreamPage.enabled = true;
             updateFaceRestortionTexts();
+            console.log(stableDiffusionBackend.tiConcepts)
         }
 
         function onSetOutputDirectory(directory){
@@ -192,6 +195,8 @@ ApplicationWindow {
         stableDiffusionBackend.options.faceRestorationMethod = faceRestorationMethodGroup.checkedButton.text;
         stableDiffusionBackend.options.maskImagePath = maskImagePathTextEdit.text;
         stableDiffusionBackend.options.useMaskImage = useMaskCheckBox.checked;
+        stableDiffusionBackend.options.useTextualInversion = useTextualInversionCheckBox.checked;
+        stableDiffusionBackend.options.tiConceptStyle = tiConceptStyleText.currentText;
     }
     function updateFaceRestortionTexts(){
         if( faceRestorationMethodGroup.checkedButton.text ==="CodeFormer" ) {
@@ -245,7 +250,7 @@ ApplicationWindow {
             }
         }
         TabButton {
-            icon.source: "images/download.png"
+            icon.source: "images/palette.png"
             icon.width: 28
             icon.height: 28
             enabled: !stableDiffusionBackend.isProcessing
@@ -254,11 +259,20 @@ ApplicationWindow {
             }
         }
         TabButton {
+            icon.source: "images/download.png"
+            icon.width: 28
+            icon.height: 28
+            enabled: !stableDiffusionBackend.isProcessing
+            background: Rectangle {
+                color: tabBar.currentIndex == 5 ? "#1d85cf": "#393A3B"
+            }
+        }
+        TabButton {
             icon.source: "images/info-square.png"
             icon.width: 28
             icon.height: 28
             background: Rectangle {
-                color: tabBar.currentIndex == 5 ? "#1d85cf": "#393A3B"
+                color: tabBar.currentIndex == 6 ? "#1d85cf": "#393A3B"
             }
         }
         onCurrentIndexChanged: {
@@ -365,8 +379,9 @@ ApplicationWindow {
                             Layout.bottomMargin: 5
                         }
                     }
+
                     Item{
-                    height: 20
+                    height: 5
                     }
                     GroupBox{
                         id: imgimgGroup
@@ -447,6 +462,23 @@ ApplicationWindow {
                           }
 
                        }
+                    }
+                    Item{
+                    height: 5
+                    }
+                    RowLayout{
+                    Layout.fillWidth: true
+                    CheckBox{
+                        id : useTextualInversionCheckBox
+                        text : qsTr("Use TI Concept:")
+
+                    }
+                    Button {
+                        text: qsTr("Configure")
+                        onClicked: {
+                            tabBar.currentIndex = 4;
+                        }
+                    }
                     }
                 }
             }
@@ -880,21 +912,150 @@ ApplicationWindow {
                      }
                    }
                 }
-
-        //    }
+              }
             }
-        }
+            Page {
+                RowLayout{
+                    width: 580
 
-        Page {
+                    Item{
+                        width : 20
+                    }
+                    ColumnLayout{
+                        Item{
+                            height: 20
+                        }
 
-            ColumnLayout{
+                        Label{
+                            text : "Textual Inversion Concept "
+                        }
 
-                Label{
-                    text : "Available models"
-                    Layout.fillWidth: true
-                    Layout.leftMargin: 20
-                    Layout.topMargin: 30
+                        RowLayout{
+                            width :480
+                            height : 50
+
+                            Item{
+                                width: 480
+                                height: 40
+                                ComboBox {
+                                    id : tiConceptStyleText
+
+                                    model: stableDiffusionBackend.tiConcepts
+                                    Layout.fillWidth: true
+                                    height: 40
+                                    width: 480
+
+                                    onCurrentTextChanged: {
+                                        folderModel.folder = "file://" +
+                                                stableDiffusionBackend.options.tiConceptDirectory +
+                                                "/" +
+                                                tiConceptStyleText.currentText +
+                                                "/concept_images";
+                                        textConceptInfo.textInfo = "You can use concept <"+tiConceptStyleText.currentText+"> in prompt";
+                                        useTextualInversionCheckBox.text = qsTr("Use TI Concept ") +
+                                                                          "<" + tiConceptStyleText.currentText + ">";
+                                        tiConceptCopy.text = "<"+tiConceptStyleText.currentText+">";
+
+                                    }
+                                }
+                            }
+
+                            Button{
+                                text: "Copy"
+                                height: 40
+                                onClicked: {
+                                    tiConceptCopy.selectAll()
+                                    tiConceptCopy.copy();
+
+                                }
+                            }
+
+                        }
+
+                        Controls.AppInfoLabel{
+                            id: textConceptInfo
+                            textInfo: qsTr("You can use concept ")
+                        }
+                        RowLayout{
+                            Controls.RichTextEdit{
+                                id : tiConceptCopy
+
+                                Layout.fillWidth: true
+                                visible: false
+
+                            }
+
+                        }
+
+                        FolderListModel {
+                            id: folderModel
+                            nameFilters: ["*.jpeg","*.jpg","*.png"]
+
+                            onStatusChanged:{
+                                if (folderModel.status == FolderListModel.Ready){
+                                    for(var i = 0; i < folderModel.count ;i++) {
+                                        let filePathUrl = folderModel.get(i,"fileUrl").toString();
+                                        if (filePathUrl.includes("textual")) {
+                                            if (i === 0)
+                                                tiConceptSampleFirst.source = folderModel.get(i,"fileUrl");
+                                            else if (i === 1)
+                                                tiConceptSampleSecond.source = folderModel.get(i,"fileUrl");
+                                            else if (i === 2)
+                                                tiConceptSampleThird.source = folderModel.get(i,"fileUrl");
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+
+                        Item{
+                            width : 40
+                        }
+                        RowLayout{
+                            Image {
+                                id: tiConceptSampleFirst
+
+                                sourceSize.width: 180
+                                sourceSize.height: 180
+                                opacity: 1
+
+                            }
+                            Image {
+                                id: tiConceptSampleSecond
+
+                                sourceSize.width: 180
+                                sourceSize.height: 180
+                                opacity: 1
+
+                            }
+
+                            Image {
+                                id: tiConceptSampleThird
+
+                                sourceSize.width: 180
+                                sourceSize.height: 180
+                                opacity: 1
+
+                            }
+
+                        }
+
+                    }
+
                 }
+            }
+
+            Page {
+
+                ColumnLayout{
+
+                    Label{
+                        text : "Available models"
+                        Layout.fillWidth: true
+                        Layout.leftMargin: 20
+                        Layout.topMargin: 30
+                    }
 
                 Item{
                     Layout.fillWidth: true

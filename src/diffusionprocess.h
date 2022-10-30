@@ -52,6 +52,10 @@ public:
 
     bool isDreamRunning();
 
+    const QString &getCurTiConcept() const;
+
+    bool getUseTiConcept() const;
+
 public slots:
     void readProcessOutput(QByteArray);
     void processFinished(int, QProcess::ExitStatus);
@@ -73,6 +77,10 @@ private:
     QString promptCommand;
     StableDiffusionStatus status;
     QUrl samplesPath;
+    QString tiConceptsRootDir;
+    QString curTiConcept;
+    DiffusionEnvironment *stableDiffusionEnv;
+    bool useTiConcept;
 
     void startDreaming();
     void setStatus(StableDiffusionStatus newStatus);

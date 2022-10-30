@@ -29,17 +29,10 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
     qDebug()<<"StableDiffusionPath"<<diffusionEnv->getStableDiffusionPath();
     dreamProcess->setWorkingDirectory(diffusionEnv->getStableDiffusionPath());
 
-    addArgument(diffusionEnv->getCondaActivatePath());
-    addArgument("&&");
-    addArgument("conda");
-    addArgument("activate");
-    addArgument("sdimgenv");
-    addArgument("&&");
-    addArgument("python");
-    addArgument(diffusionEnv->getStableDiffusionScript());
-    addArgument("--prompt_as_dir");
-
     setStatus(StableDiffusionStatus::NotStarted);
+    tiConceptsRootDir = diffusionEnv->getTiConceptRootDirectoryPath();
+    stableDiffusionEnv = diffusionEnv;
+    useTiConcept = false;
 }
 
 void DiffusionProcess::readProcessOutput(QByteArray line)
@@ -93,6 +86,16 @@ void DiffusionProcess::writeCommand(const QString &command)
         dreamProcess->write(commandToDream.toLatin1());
 }
 
+bool DiffusionProcess::getUseTiConcept() const
+{
+    return useTiConcept;
+}
+
+const QString &DiffusionProcess::getCurTiConcept() const
+{
+    return curTiConcept;
+}
+
 const QUrl &DiffusionProcess::getSamplesPath() const
 {
     return samplesPath;
@@ -117,11 +120,34 @@ void DiffusionProcess::addDreamScriptArgs(DiffusionOptions *diffusionOptions)
 {
     if (!dreamProcess->isRunning()){
         // Main options
+        dreamProcess->clearArguments();
+
+        addArgument(stableDiffusionEnv->getCondaActivatePath());
+        addArgument("&&");
+        addArgument("conda");
+        addArgument("activate");
+        addArgument("sdimgenv");
+        addArgument("&&");
+        addArgument("python");
+        addArgument(stableDiffusionEnv->getStableDiffusionScript());
+        addArgument("--prompt_as_dir");
+
         addArgument("--outdir");
         addArgument(diffusionOptions->saveDir());
 
         if (diffusionOptions->fullPrecision())
             addArgument("--full_precision");
+
+        useTiConcept = diffusionOptions->useTextualInversion();
+        if (diffusionOptions->useTextualInversion()) {
+            useTiConcept = true;
+            addArgument("--embedding_path");
+            curTiConcept = diffusionOptions->tiConceptStyle();
+            QString stylePath = Utils::pathAppend(tiConceptsRootDir,diffusionOptions->tiConceptStyle());
+            QString tiConceptFilePath = Utils::pathAppend(stylePath,QString(TEXTUAL_INVERSION_CONCEPT_FILE));
+            qDebug()<<tiConceptFilePath;
+            addArgument(tiConceptFilePath);
+        }
     }
 }
 
@@ -161,17 +187,20 @@ void DiffusionProcess::startProcess()
 
 void DiffusionProcess::stopProcess()
 {
-    writeCommand("q");
+    if( dreamProcess->isRunning()) {
+        writeCommand("q");
 
-    if (dreamProcess) {
-        dreamProcess->terminate();
-        if (!dreamProcess->waitForFinished(5000)) {
-            dreamProcess->kill();
-            dreamProcess->waitForFinished(5000);
+        if (dreamProcess) {
+            dreamProcess->terminate();
+            if (!dreamProcess->waitForFinished(5000)) {
+                dreamProcess->kill();
+                dreamProcess->waitForFinished(5000);
+            }
         }
+        emit stopped();
+    } else {
+        qDebug()<<"Dream process not running";
     }
-    emit stopped();
-    qDebug()<<dreamProcess->isRunning();
 
 }
 
@@ -210,8 +239,9 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool is
         addPromptArguments(QString::number(diffusionOptions->variationAmount()));
     }
 
-    addPromptArguments("--save_intermediates");
-    addPromptArguments(QString::number(1));
+    // To enable intermeditates #Disabled
+    //addPromptArguments("--save_intermediates");
+    //addPromptArguments(QString::number(1));
 
     if (diffusionOptions->upscaler() || diffusionOptions->faceRestoration())
         addSaveOriginalImageArg(diffusionOptions->saveOriginalImage());

@@ -18,6 +18,7 @@
 #define UTILS_H
 
 #include <QDesktopServices>
+#include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 #include <QString>

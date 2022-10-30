@@ -48,7 +48,7 @@ class TextToImageBackend : public QObject,public QQmlParserStatus
     Q_PROPERTY(bool isProcessing MEMBER isProcessing NOTIFY isProcessingChanged)
     Q_PROPERTY(bool isCancelled MEMBER isCancelled NOTIFY isCancelledChanged)
     Q_PROPERTY(bool isModelLoaded MEMBER isModelLoaded NOTIFY isModelLoadedChanged)
-
+    Q_PROPERTY(QStringList tiConcepts MEMBER tiConcepts NOTIFY tiConceptsChanged)
 public:
     explicit TextToImageBackend(QObject *parent = nullptr);
 
@@ -68,6 +68,9 @@ public:
 
     bool getIsModelLoaded() const;
     void setIsModelLoaded(bool newIsModelLoaded);
+
+    const QStringList &getTiConcepts() const;
+    void setTiConcepts(const QStringList &newTiConcepts);
 
 public slots:
     void generateImage(bool isVariation);
@@ -120,6 +123,7 @@ signals:
     void setInputMaskImagePath(QString);
     void isCancelledChanged();
     void isModelLoadedChanged();
+    void tiConceptsChanged();
 
 private:
     DiffusionProcess *stableDiffusion;
@@ -141,6 +145,7 @@ private:
     QString installerStatusMsg;
     bool isCancelled;
     bool isModelLoaded;
+    QStringList tiConcepts;
 
 private slots:
     void updateStatusMessage(const QString&);

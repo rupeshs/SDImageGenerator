@@ -88,6 +88,16 @@ const QString &DiffusionEnvironment::getCodeFormerModelUrl() const
     return codeFormerModelUrl;
 }
 
+const QString &DiffusionEnvironment::getTiConceptRootDirectoryPath() const
+{
+    return tiConceptRootDirectoryPath;
+}
+
+const QStringList &DiffusionEnvironment::getTiConceptStyles() const
+{
+    return tiConceptStyles;
+}
+
 void DiffusionEnvironment::setCondaActivatePath(const QString &newCondaActivatePath)
 {
     condaActivatePath = newCondaActivatePath;
@@ -96,6 +106,27 @@ void DiffusionEnvironment::setCondaActivatePath(const QString &newCondaActivateP
 void DiffusionEnvironment::setStableDiffusionPath(const QString &newStableDiffusionPath)
 {
     stableDiffusionPath = newStableDiffusionPath;
+}
+
+QStringList DiffusionEnvironment::getTiConcepFoldertNames(const QString &folderPath)
+{
+    QStringList tiFolderNames;
+    QDir dir(folderPath);
+    dir.setFilter(QDir::Dirs| QDir::NoSymLinks);
+    QFileInfoList fileInfoList = dir.entryInfoList();
+
+    foreach (const QFileInfo &fileInfo, fileInfoList) {
+        if (fileInfo.isDir()){
+            QString folderName = fileInfo.completeBaseName();
+            QString learnedEmbedsPath = Utils::pathAppend(fileInfo.absoluteFilePath(),TEXTUAL_INVERSION_CONCEPT_FILE);
+            if  (!folderName.isEmpty() && folderName !="." && folderName !="..") {
+                if(QFile::exists(learnedEmbedsPath))
+                    tiFolderNames << folderName;
+            }
+        }
+    }
+
+    return tiFolderNames;
 }
 
 void DiffusionEnvironment::setEnvironment()
@@ -118,5 +149,7 @@ void DiffusionEnvironment::setEnvironment()
     libsTestScriptPath = Utils::pathAppend(stableDiffusionPath,QString(LIBS_TEST_SCRIPT));
     codeFormerModelPath = Utils::pathAppend(stableDiffusionPath,QString(CODE_FORMER_MODEL_PATH));
     codeFormerModelUrl = CODE_FORMER_MODEL_URL;
+    tiConceptRootDirectoryPath = Utils::pathAppend(qApp->applicationDirPath(),QString(TEXTUAL_INVERSION_DIR));
+    tiConceptStyles = getTiConcepFoldertNames(tiConceptRootDirectoryPath);
 
 }

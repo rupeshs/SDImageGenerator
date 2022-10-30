@@ -45,6 +45,8 @@ public:
     const QString &getLibsTestScriptPath() const;
     const QString &getCodeFormerModelPath() const;
     const QString &getCodeFormerModelUrl() const;
+    const QString &getTiConceptRootDirectoryPath() const;
+    const QStringList &getTiConceptStyles() const;
 
 signals:
 
@@ -63,11 +65,14 @@ private:
     QString libsTestScriptPath;
     QString codeFormerModelPath;
     QString codeFormerModelUrl;
+    QString tiConceptRootDirectoryPath;
+    QStringList tiConceptStyles;
 
     void setCondaActivatePath(const QString &newCondaActivatePath);
     void setPythonEnvPath(const QString &newPythonEnvPath);
     void setStableDiffusionPath(const QString &newStableDiffusionPath);
     void setEnvironment();
+    QStringList getTiConcepFoldertNames(const QString& path);
 
 };
 
