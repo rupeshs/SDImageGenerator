@@ -49,6 +49,7 @@ static const char* DEFAULT_INIT_IMAGE = "";
 static const double DEFAULT_VARIATION_AMOUNT = 0.2;
 static const bool  DEFAULT_HIGHRES_FIX = false;
 static const char* DEFAULT_FACE_RESTORATION_METHOD = "GFPGAN";
+static const bool  DEFAULT_USE_CUSTOM_MODEL = false;
 
 #endif // DEFINES_H
 

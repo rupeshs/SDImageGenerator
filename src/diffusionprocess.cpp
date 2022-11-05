@@ -135,8 +135,10 @@ void DiffusionProcess::addDreamScriptArgs(DiffusionOptions *diffusionOptions)
         addArgument("--outdir");
         addArgument(diffusionOptions->saveDir());
 
-        if (diffusionOptions->fullPrecision())
-            addArgument("--full_precision");
+        if (diffusionOptions->fullPrecision()) {
+            addArgument("--precision");
+            addArgument("float32");
+        }
 
         useTiConcept = diffusionOptions->useTextualInversion();
         if (diffusionOptions->useTextualInversion()) {

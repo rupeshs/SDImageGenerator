@@ -27,6 +27,7 @@ void Settings::load()
     diffusionSettings->setSaveOriginalImage(settings->value("Main/saveOriginalImage",DEFAULT_SAVE_ORIGINAL_IMAGE).toBool());
     diffusionSettings->setVariationAmount(settings->value("Main/variationAmount",DEFAULT_VARIATION_AMOUNT).toDouble());
     diffusionSettings->setFixHighRes(settings->value("Main/highResFix",DEFAULT_HIGHRES_FIX).toBool());
+    diffusionSettings->setUseCustomModel(settings->value("Main/useCustomModel",DEFAULT_USE_CUSTOM_MODEL).toBool());
 
     diffusionSettings->setUpscaler(settings->value("Upscaler/upscaler",DEFAULT_USE_UPSCALER).toBool());
     diffusionSettings->setUpscaleFactor(settings->value("Upscaler/upscaleFactor",DEFAULT_UPSCALE_FACTOR).toString());
@@ -61,6 +62,7 @@ void Settings::save()
     settings->setValue("saveOriginalImage", diffusionSettings->saveOriginalImage());
     settings->setValue("variationAmount", diffusionSettings->variationAmount());
     settings->setValue("highResFix", diffusionSettings->fixHighRes());
+    settings->setValue("useCustomModel", diffusionSettings->useCustomModel());
     settings->endGroup();
 
     settings->beginGroup("Upscaler");
@@ -109,5 +111,5 @@ void Settings::reset()
     diffusionSettings->setVariationAmount(DEFAULT_VARIATION_AMOUNT);
     diffusionSettings->setFixHighRes(DEFAULT_HIGHRES_FIX);
     diffusionSettings->setFaceRestorationMethod(DEFAULT_FACE_RESTORATION_METHOD);
-
+    diffusionSettings->setUseCustomModel(DEFAULT_USE_CUSTOM_MODEL);
 }

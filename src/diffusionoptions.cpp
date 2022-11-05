@@ -316,3 +316,13 @@ void DiffusionOptions::setTiConceptDirectory(const QString &newTiConceptDirector
 {
     m_tiConceptDirectory = newTiConceptDirectory;
 }
+
+bool DiffusionOptions::useCustomModel() const
+{
+    return m_useCustomModel;
+}
+
+void DiffusionOptions::setUseCustomModel(bool newUseCustomModel)
+{
+    m_useCustomModel = newUseCustomModel;
+}

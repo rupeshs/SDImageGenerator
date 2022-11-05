@@ -90,11 +90,11 @@ ApplicationWindow {
             initImagePathTextEdit.text = options.initImagePath;
             variationAmountSlider.slider.value = options.variationAmount;
             highResFixCheckbox.checked = options.fixHighRes;
-
+            useCustomModelCheckbox.checked = options.useCustomModel;
             initApp = false;
             dreamPage.enabled = true;
             updateFaceRestortionTexts();
-            console.log(stableDiffusionBackend.tiConcepts)
+
         }
 
         function onSetOutputDirectory(directory){
@@ -117,7 +117,7 @@ ApplicationWindow {
             tabBar.currentIndex = 0;
         }
         function onEnvironmentNotReady() {
-            tabBar.currentIndex = 4;
+            tabBar.currentIndex = 5;
             tabBar.itemAt(0).enabled = false;
             tabBar.itemAt(1).enabled = false;
             tabBar.itemAt(2).enabled = false;
@@ -197,6 +197,7 @@ ApplicationWindow {
         stableDiffusionBackend.options.useMaskImage = useMaskCheckBox.checked;
         stableDiffusionBackend.options.useTextualInversion = useTextualInversionCheckBox.checked;
         stableDiffusionBackend.options.tiConceptStyle = tiConceptStyleText.currentText;
+        stableDiffusionBackend.options.useCustomModel = useCustomModelCheckbox.checked;
     }
     function updateFaceRestortionTexts(){
         if( faceRestorationMethodGroup.checkedButton.text ==="CodeFormer" ) {
@@ -771,6 +772,13 @@ ApplicationWindow {
                    CheckBox{
                        id: highResFixCheckbox
                        text: qsTr("High resolution fix")
+                       checked:false
+                   }
+
+                   CheckBox{
+                       id: useCustomModelCheckbox
+
+                       text: qsTr("Use custom models (Advanced)")
                        checked:false
                    }
 

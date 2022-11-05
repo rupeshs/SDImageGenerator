@@ -288,7 +288,10 @@ void TextToImageBackend::cudaMemoryError()
 void TextToImageBackend::environmentCurrentStatus(bool isPackagesReady, bool isStableDiffusionModelReady)
 {
     handlePackagesStatus(isPackagesReady);
-    handleModelStatus(isStableDiffusionModelReady);
+    if (!m_options->useCustomModel())
+        handleModelStatus(isStableDiffusionModelReady);
+    else
+        qDebug()<<"Custom models enabled(Advanced mode)";
 
     m_envStatus->setIsPythonEnvReady(isPackagesReady);
     m_envStatus->setIsStableDiffusionModelReady(isStableDiffusionModelReady);
@@ -314,6 +317,7 @@ void TextToImageBackend::handlePackagesStatus(bool isPackagesReady)
 
 void TextToImageBackend::handleModelStatus(bool isStableDiffusionModelReady)
 {
+
     if (isStableDiffusionModelReady){
         qDebug()<<"Stable diffusion original model(v1.4) check : OK ";
 

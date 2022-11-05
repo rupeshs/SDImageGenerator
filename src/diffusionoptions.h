@@ -54,6 +54,7 @@ class DiffusionOptions : public QObject
     Q_PROPERTY(QString tiConceptStyle READ tiConceptStyle WRITE setTiConceptStyle CONSTANT)
     Q_PROPERTY(bool useTextualInversion READ useTextualInversion WRITE setUseTextualInversion CONSTANT)
     Q_PROPERTY(QString tiConceptDirectory READ tiConceptDirectory WRITE setTiConceptDirectory CONSTANT)
+    Q_PROPERTY(bool useCustomModel READ useCustomModel WRITE setUseCustomModel CONSTANT)
     QML_ELEMENT
 
 public:
@@ -149,6 +150,9 @@ public:
     const QString &tiConceptDirectory() const;
     void setTiConceptDirectory(const QString &newTiConceptDirectory);
 
+    bool useCustomModel() const;
+    void setUseCustomModel(bool newUseCustomModel);
+
 private:
     QString m_prompt;
     qreal m_scale;
@@ -180,6 +184,7 @@ private:
     QString m_tiConceptStyle;
     bool m_useTextualInversion;
     QString m_tiConceptDirectory;
+    bool m_useCustomModel;
 
 };
 
