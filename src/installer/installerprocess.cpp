@@ -57,6 +57,8 @@ void InstallerProcess::installPipPackages()
     addPackageArgs("./src/gfpgan");
     addPackageArgs("./src/k-diffusion");
     addPackageArgs("./src/taming-transformers");
+    addPackageArgs("./src/clipseg");
+    addPackageArgs("./src/realesrgan");
     addPackageArgs(".");
     installerProc->setWorkingDirectory(diffusionEnv->getStableDiffusionPath());
     installerProc->start();
@@ -69,6 +71,7 @@ void InstallerProcess::downloadGfpganModel()
     installerProc->clearArguments();
     installerProc->addArgument(diffusionEnv->getCurlPath());
     installerProc->addArgument("-L");
+    installerProc->addArgument("-k");
     installerProc->addArgument(diffusionEnv->getGfpGanModelUrl());
     installerProc->addArgument("-o");
     installerProc->addArgument(diffusionEnv->getGfpGanModelPath());
@@ -82,6 +85,7 @@ void InstallerProcess::downloadCodeFormerModel()
     installerProc->clearArguments();
     installerProc->addArgument(diffusionEnv->getCurlPath());
     installerProc->addArgument("-L");
+    installerProc->addArgument("-k");
     installerProc->addArgument(diffusionEnv->getCodeFormerModelUrl());
     installerProc->addArgument("-o");
     installerProc->addArgument(diffusionEnv->getCodeFormerModelPath());

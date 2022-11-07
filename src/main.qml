@@ -943,7 +943,7 @@ ApplicationWindow {
                             height : 50
 
                             Item{
-                                width: 480
+                                width: 430
                                 height: 40
                                 ComboBox {
                                     id : tiConceptStyleText
@@ -951,7 +951,7 @@ ApplicationWindow {
                                     model: stableDiffusionBackend.tiConcepts
                                     Layout.fillWidth: true
                                     height: 40
-                                    width: 480
+                                    width: 430
 
                                     onCurrentTextChanged: {
                                         folderModel.folder = "file://" +
@@ -969,7 +969,7 @@ ApplicationWindow {
                             }
 
                             Button{
-                                text: "Copy"
+                                text: qsTr("Copy Name")
                                 height: 40
                                 onClicked: {
                                     tiConceptCopy.selectAll()
@@ -1047,6 +1047,14 @@ ApplicationWindow {
 
                             }
 
+                        }
+                        Text{
+                           color : "grey"
+                           font.pointSize: 12
+                           text: "Download more textual inversion concepts from <a href='https://huggingface.co/sd-concepts-library'>here</a>"
+                           linkColor: "lightblue"
+                           Layout.alignment: Qt.AlignHCenter
+                           onLinkActivated: Qt.openUrlExternally(link)
                         }
 
                     }

@@ -131,6 +131,7 @@ void DiffusionProcess::addDreamScriptArgs(DiffusionOptions *diffusionOptions)
         addArgument("python");
         addArgument(stableDiffusionEnv->getStableDiffusionScript());
         addArgument("--prompt_as_dir");
+        addArgument("--safety_checker");
 
         addArgument("--outdir");
         addArgument(diffusionOptions->saveDir());
@@ -139,6 +140,7 @@ void DiffusionProcess::addDreamScriptArgs(DiffusionOptions *diffusionOptions)
             addArgument("--precision");
             addArgument("float32");
         }
+
 
         useTiConcept = diffusionOptions->useTextualInversion();
         if (diffusionOptions->useTextualInversion()) {
@@ -279,6 +281,8 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool is
         initImagePath.append("\"");
         initImagePath.prepend("\"");
         addPromptArguments(initImagePath);
+        addPromptArguments("-tm");
+        addPromptArguments("hair");
         if (diffusionOptions->fitImage())
             addPromptArguments("--fit");
         addPromptArguments("--strength");

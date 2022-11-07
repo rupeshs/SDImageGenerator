@@ -8,7 +8,7 @@ static const char* CURL_DIRECTORY_WIN = "curl/bin/curl.exe";
 static const char* CONDA_ACTIVATE_SCRIPT_WIN = "condabin/activate.bat";
 static const char* PYTHON_ENV_DIRECTORY = "env";
 static const char* STABLE_DIFFUSION_DIRECTORY = "sdenv/stablediffusion";
-static const char* STABLE_DIFFUSION_MODEL_1_4 = "models/ldm/stable-diffusion-v1/model.ckpt";
+static const char* STABLE_DIFFUSION_MODEL_1_4 = "models/ldm/stable-diffusion-v1/sd-v1-4.ckpt";
 static const qint64 STABLE_DIFFUSION_MODEL_1_4_FILE_SIZE = 4265380512;
 static const char* STABLE_DIFFUSION_MODEL_1_4_URL = "https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media";
 static const char* STABLE_DIFFUSION_RESULTS_FOLDER_NAME = "results";
