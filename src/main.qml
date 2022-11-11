@@ -1288,7 +1288,7 @@ ApplicationWindow {
 
             Label{
                 id: installerStatusLabel
-                text: "Initializing..."
+                text: qsTr("Initializing...")
                 Layout.alignment: Qt.AlignBottom
                 color: "white"
             }

@@ -38,7 +38,6 @@ public:
 
 public slots:
     void packageValidationCompleted(int,bool);
-    void gotDeviceInfo(const QString &devInfo);
 
 signals:
     void environmentCurrentStatus(bool isPythonReady, bool isModelReady);

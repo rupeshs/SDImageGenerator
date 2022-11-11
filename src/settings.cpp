@@ -19,6 +19,7 @@ void Settings::load()
     diffusionSettings->setDdimSteps(settings->value("Main/ddimSteps",DEFAULT_DDIM_STEPS).toDouble());
     diffusionSettings->setSampler(settings->value("Main/sampler",DEFAULT_SAMPLER).toString());
     diffusionSettings->setSaveDir(settings->value("Main/saveDir",diffusionEnv->getDefaultOutDir()).toString());
+    diffusionSettings->setAppPath(settings->value("Main/appPath","").toString());
     QString seed = settings->value("Main/seed",DEFAULT_SEED).toString();
     diffusionSettings->setSeed(seed);
     diffusionSettings->setGrid(settings->value("Main/grid",DEFAULT_GRID).toBool());
@@ -63,6 +64,7 @@ void Settings::save()
     settings->setValue("variationAmount", diffusionSettings->variationAmount());
     settings->setValue("highResFix", diffusionSettings->fixHighRes());
     settings->setValue("useCustomModel", diffusionSettings->useCustomModel());
+    settings->setValue("appPath", diffusionSettings->appPath());
     settings->endGroup();
 
     settings->beginGroup("Upscaler");

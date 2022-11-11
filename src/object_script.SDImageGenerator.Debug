@@ -3,6 +3,7 @@ debug/diffusionenvironmentstatus.o
 debug/diffusionenvvalidator.o
 debug/diffusionoptions.o
 debug/diffusionprocess.o
+debug/devicedetector.o
 debug/installerprocess.o
 debug/pythonenvvalidator.o
 debug/main.o
@@ -27,6 +28,7 @@ debug/moc_diffusionenvironmentstatus.o
 debug/moc_diffusionenvvalidator.o
 debug/moc_diffusionoptions.o
 debug/moc_diffusionprocess.o
+debug/moc_devicedetector.o
 debug/moc_installerprocess.o
 debug/moc_pythonenvvalidator.o
 debug/moc_myprocess.o

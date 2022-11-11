@@ -39,9 +39,9 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
     deafultAssetsPath = Utils::pathAppend(qApp->applicationDirPath(),"default");
     samplesPath = Utils::localPathToUrl(deafultAssetsPath);
 
-    envValidator = new DiffusionEnvValidator(this,diffusionEnv);
-    connect(envValidator, SIGNAL(environmentCurrentStatus(bool,bool)), this, SLOT(environmentCurrentStatus(bool,bool)));
-    envValidator->ValidatePythonPackages();
+    deviceDetector = new DeviceDetector(this,diffusionEnv);
+    connect(deviceDetector, SIGNAL(gotDeviceInfo(QString)), this, SLOT(updateDeviceInfo(QString)));
+    deviceDetector->detect();
 
     m_envStatus = new DiffusionEnvironmentStatus();
 
@@ -163,6 +163,8 @@ void TextToImageBackend::loadSettings()
 {
     qInfo()<<"Loading app settings";
     appSettings->load();
+
+
     Utils::ensurePath(m_options->saveDir());
     m_options->setTiConceptDirectory(diffusionEnv->getTiConceptRootDirectoryPath());
 
@@ -170,8 +172,23 @@ void TextToImageBackend::loadSettings()
         tiConcepts << concept;
     }
     emit tiConceptsChanged();
-    emit setupInstallerUi(false);
 
+    envValidator = new DiffusionEnvValidator(this,diffusionEnv);
+    connect(envValidator, SIGNAL(environmentCurrentStatus(bool,bool)), this, SLOT(environmentCurrentStatus(bool,bool)));
+
+    if (QString::compare(m_options->appPath(),qApp->applicationDirPath(),Qt::CaseInsensitive) != 0 ){
+        envValidator->ValidatePythonPackages();
+        emit setupInstallerUi(false);
+    }
+    else{
+        bool isStableDiffusionModelReady = true;
+        if (!m_options->useCustomModel())
+            handleModelStatus(isStableDiffusionModelReady);
+        else
+            qDebug()<<"Custom models enabled(Advanced mode)";
+
+        initAppControls(true,isStableDiffusionModelReady);
+    }
 }
 
 void TextToImageBackend::resetSettings()
@@ -293,14 +310,7 @@ void TextToImageBackend::environmentCurrentStatus(bool isPackagesReady, bool isS
     else
         qDebug()<<"Custom models enabled(Advanced mode)";
 
-    m_envStatus->setIsPythonEnvReady(isPackagesReady);
-    m_envStatus->setIsStableDiffusionModelReady(isStableDiffusionModelReady);
-    m_envStatus->setIsGfpGanModelReady(envValidator->validateGfpGanModel());
-    m_envStatus->setIsCodeFormerModelReady(envValidator->validateCodeFormerModel());
-
-    qDebug()<<"Device : " << envValidator->getDeviceInfo();
-    updateStatusMessage(envValidator->getDeviceInfo());
-    emit initControls(m_options,m_envStatus);
+    initAppControls(isPackagesReady,isStableDiffusionModelReady);
 }
 
 void TextToImageBackend::handlePackagesStatus(bool isPackagesReady)
@@ -311,6 +321,7 @@ void TextToImageBackend::handlePackagesStatus(bool isPackagesReady)
         emit installerStatusChanged("Setting up,please wait...",0.0);
     } else {
         qDebug()<<"Environment check : OK";
+        m_options->setAppPath(qApp->applicationDirPath());
         emit closeLoadingScreen();
     }
 }
@@ -346,6 +357,21 @@ void TextToImageBackend::setMaskImageInput(QUrl url)
 void TextToImageBackend::diffusionCancelled()
 {
     updateStatusMessage(tr("Stopped image generation."));
+}
+
+void TextToImageBackend::updateDeviceInfo(QString deviceInfo)
+{
+    qDebug()<<"Device : " << deviceInfo;
+    updateStatusMessage(deviceInfo);
+}
+
+void TextToImageBackend::initAppControls(bool packageReady, bool stableDiffusionModelReady)
+{
+    m_envStatus->setIsPythonEnvReady(packageReady);
+    m_envStatus->setIsStableDiffusionModelReady(stableDiffusionModelReady);
+    m_envStatus->setIsGfpGanModelReady(envValidator->validateGfpGanModel());
+    m_envStatus->setIsCodeFormerModelReady(envValidator->validateCodeFormerModel());
+    emit initControls(m_options,m_envStatus);
 }
 
 const QStringList &TextToImageBackend::getTiConcepts() const
@@ -471,8 +497,10 @@ void TextToImageBackend::installCompleted(int exitCode,bool isDownloader)
             emit downloaderStatusChanged(msg,0.0);
         }
     } else {
-        if (exitCode == 0)
+        if (exitCode == 0) {
             qDebug()<<"Environment is ready.";
+            m_options->setAppPath(qApp->applicationDirPath());
+        }
         else
             qDebug()<<"Environment is setup failed.";
         emit closeLoadingScreen();

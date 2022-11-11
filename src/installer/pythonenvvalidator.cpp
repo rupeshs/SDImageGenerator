@@ -40,11 +40,6 @@ void PythonEnvValidator::readProcessOutput(QByteArray line)
     if (consoleLine.contains("ImportError"))
         hasImportError = true;
 
-    if(rxDeviceInfo.indexIn(consoleLine)>-1){
-       QString device = rxDeviceInfo.cap(1);
-       emit gotDeviceInfo(device);
-    }
-
 }
 
 void PythonEnvValidator::processFinished(int exitCode, QProcess::ExitStatus exitStatus)

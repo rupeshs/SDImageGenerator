@@ -326,3 +326,13 @@ void DiffusionOptions::setUseCustomModel(bool newUseCustomModel)
 {
     m_useCustomModel = newUseCustomModel;
 }
+
+const QString &DiffusionOptions::appPath() const
+{
+    return m_appPath;
+}
+
+void DiffusionOptions::setAppPath(const QString &newAppPath)
+{
+    m_appPath = newAppPath;
+}

@@ -131,7 +131,7 @@ void DiffusionProcess::addDreamScriptArgs(DiffusionOptions *diffusionOptions)
         addArgument("python");
         addArgument(stableDiffusionEnv->getStableDiffusionScript());
         addArgument("--prompt_as_dir");
-        addArgument("--safety_checker");
+        //addArgument("--safety_checker");
 
         addArgument("--outdir");
         addArgument(diffusionOptions->saveDir());
@@ -140,7 +140,6 @@ void DiffusionProcess::addDreamScriptArgs(DiffusionOptions *diffusionOptions)
             addArgument("--precision");
             addArgument("float32");
         }
-
 
         useTiConcept = diffusionOptions->useTextualInversion();
         if (diffusionOptions->useTextualInversion()) {

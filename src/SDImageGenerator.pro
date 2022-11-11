@@ -12,6 +12,7 @@ SOURCES += \
         diffusionenvvalidator.cpp \
         diffusionoptions.cpp \
         diffusionprocess.cpp \
+        installer/devicedetector.cpp \
         installer/installerprocess.cpp \
         installer/pythonenvvalidator.cpp \
         main.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     diffusionenvvalidator.h \
     diffusionoptions.h \
     diffusionprocess.h \
+    installer/devicedetector.h \
     installer/installerprocess.h \
     installer/pythonenvvalidator.h \
     myprocess.h \

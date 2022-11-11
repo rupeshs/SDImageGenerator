@@ -23,6 +23,7 @@
 #include "diffusionoptions.h"
 #include "diffusionprocess.h"
 #include "settings.h"
+#include "installer/devicedetector.h"
 #include "installer/installerprocess.h"
 #include <QDebug>
 #include <QFileInfo>
@@ -100,6 +101,8 @@ public slots:
     void downloadCodeFormerModel();
     void setMaskImageInput(QUrl url);
     void diffusionCancelled();
+    void updateDeviceInfo(QString);
+    void initAppControls(bool packageReady,bool stableDiffusionModelReady);
 
 signals:
     void showMessageBox();
@@ -146,6 +149,7 @@ private:
     bool isCancelled;
     bool isModelLoaded;
     QStringList tiConcepts;
+    DeviceDetector *deviceDetector;
 
 private slots:
     void updateStatusMessage(const QString&);

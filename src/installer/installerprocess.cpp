@@ -21,6 +21,7 @@ void InstallerProcess::downloadStableDiffusionModel()
     installerProc->addArgument(diffusionEnv->getStableDiffusionModelPath());
     installerProc->start();
     isDownloader = true;
+
 }
 
 void InstallerProcess::installCondaEnv()
