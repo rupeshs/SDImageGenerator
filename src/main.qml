@@ -505,6 +505,8 @@ ApplicationWindow {
                     text: stableDiffusionBackend.diffusionStatusMessage
                     font.pointSize: 10
                     Layout.bottomMargin: 15
+                    elide: Text.ElideRight
+                    Layout.preferredWidth: window.width - 20
                 }
             }
         }
@@ -712,30 +714,27 @@ ApplicationWindow {
                     Controls.AppInfoLabel{
                         textInfo: qsTr("Activate seamless tiling for interesting effects")
                     }
-                    CheckBox{
-                      id : fullPrcisionCheckBox
 
-                      text: "Full precision"
-                      onCheckedChanged: {
-                          if (!initApp){
-                              msgDialog.title = "SDImageGenerator";
-                              msgDialog.text = "Please restart the app to apply the setting.";
-                              msgDialog.visible = true;
-                          }
+                    Controls.AppSlider{
+                         id: variationAmountSlider
 
-                      } 
-                      onCheckStateChanged:  {
-                          console.log("state changed");
-                      }
+                         header.text: qsTr("Variation amount")
+                         description.text: qsTr("The amount of variation between image variation outputs")
+                         slider.from: 0
+                         slider.to: 1.0
+                         slider.value: 0.2
+                         displayFloat: true
+                         Layout.fillWidth:true
 
-                    }
-                    Controls.AppInfoLabel{
-                        textInfo: qsTr("Run in slower full-precision mode.Needed for some older video cards.")
+                     }
+
+                    Controls.SettingsHeader{
+                        text :qsTr("Image to image")
                     }
 
                     CheckBox{
                         id: fitImageCheckBox
-                        text: qsTr("Fit (Image to Image)")
+                        text: qsTr("Fit image")
                         checked:false
                     }
                     Controls.AppInfoLabel{
@@ -756,27 +755,40 @@ ApplicationWindow {
 
                     }
 
-                   Controls.AppSlider{
-                        id: variationAmountSlider
 
-                        header.text: qsTr("Variation amount")
-                        description.text: qsTr("The amount of variation between image variation outputs")
-                        slider.from: 0
-                        slider.to: 1.0
-                        slider.value: 0.2
-                        displayFloat: true
-                        Layout.fillWidth:true
 
-                    }
-
-                   Controls.AppInfoLabel{
-                       textInfo: qsTr("Fix the high resolution duplication artefacts")
+                   Controls.SettingsHeader{
+                       text :qsTr("Advanced")
                    }
+                   CheckBox{
+                     id : fullPrcisionCheckBox
+
+                     text: "Full precision"
+                     onCheckedChanged: {
+                         if (!initApp){
+                             msgDialog.title = "SDImageGenerator";
+                             msgDialog.text = "Please restart the app to apply the setting.";
+                             msgDialog.visible = true;
+                         }
+
+                     }
+                     onCheckStateChanged:  {
+                         console.log("state changed");
+                     }
+
+                   }
+                   Controls.AppInfoLabel{
+                       textInfo: qsTr("Run in slower full-precision mode.Needed for some older video cards.")
+                   }
+
 
                    CheckBox{
                        id: highResFixCheckbox
                        text: qsTr("High resolution fix")
                        checked:false
+                   }
+                   Controls.AppInfoLabel{
+                       textInfo: qsTr("Fix the high resolution duplication artefacts")
                    }
 
                    CheckBox{
@@ -785,8 +797,6 @@ ApplicationWindow {
                        text: qsTr("Use custom models (Advanced)")
                        checked:false
                    }
-
-
 
                     Button{
                         text : "Reset All"

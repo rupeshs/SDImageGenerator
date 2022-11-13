@@ -10,5 +10,6 @@
         <file>controls/FolderImageViewer.qml</file>
         <file>controls/CircularProgressBar.qml</file>
         <file>controls/AppInfoLabel.qml</file>
+        <file>controls/SettingsHeader.qml</file>
     </qresource>
 </RCC>

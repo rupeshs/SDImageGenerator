@@ -16,6 +16,7 @@ debug/controls_AppSlider_qml.o
 debug/controls_CircularProgressBar_qml.o
 debug/controls_AppLabel_qml.o
 debug/controls_AppInfoLabel_qml.o
+debug/controls_SettingsHeader_qml.o
 debug/controls_RichTextEdit_qml.o
 debug/controls_ImageViewer_qml.o
 debug/controls_AppTextArea_qml.o

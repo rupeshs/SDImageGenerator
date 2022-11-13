@@ -442,8 +442,15 @@ void TextToImageBackend::setIsProcessing(bool newIsProcessing)
 
 void TextToImageBackend::updateStatusMessage(const QString &message)
 {
-    diffusionStatusMsg = message;
     qDebug()<<message;
+
+    if (message.contains(">"))
+        return;
+
+    if (message.contains("["))
+        return;
+
+    diffusionStatusMsg = message;
     emit statusChanged();
 }
 
