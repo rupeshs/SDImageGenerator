@@ -209,6 +209,11 @@ ApplicationWindow {
            gfpganStrengthSlider.description.text =qsTr("Controls the strength of the face restoration,we recommend using values between 0.5 to 0.8");
         }
     }
+    function resetUiControls(){
+        updateOptions();
+        startTime = new Date().getTime();
+    }
+
     TabBar {
         id: tabBar
         width: parent.width
@@ -332,8 +337,7 @@ ApplicationWindow {
                             enabled: !stableDiffusionBackend.isProcessing
 
                             onClicked: {
-                                updateOptions();
-                                startTime = new Date().getTime();
+                                resetUiControls();
                                 stableDiffusionBackend.generateImage(false);
                             }
                         }
@@ -533,7 +537,7 @@ ApplicationWindow {
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Generate variations of this image")
                 onClicked: {
-                    updateOptions();
+                    resetUiControls();
                     stableDiffusionBackend.generateVariations(imageViewer.currentImagePath);
                 }
             }
@@ -1089,6 +1093,7 @@ ApplicationWindow {
                         id : downloadSdModelButton
                         text : "Download model"
                         icon.source:  "images/file-arrow-down.png"
+                        visible : false
                         enabled : !modelCheck.checked
                         onClicked:  {
                             stableDiffusionBackend.downloadModel();

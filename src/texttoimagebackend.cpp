@@ -119,7 +119,6 @@ void TextToImageBackend::generateImage(bool isVariation)
     else
         updateStatusMessage(tr("Starting image generation..."));
 
-    stableDiffusion->generateImages(m_options,isVariation);
     qInfo()<<"Prompt : "<< m_options->prompt().trimmed();
     qInfo()<<"Scale : "<< m_options->scale();
     qInfo()<<"Image width :"<< m_options->imageWidth();
@@ -130,6 +129,7 @@ void TextToImageBackend::generateImage(bool isVariation)
     qInfo()<<"Seed :"<< m_options->seed();
     qInfo()<<"Save dir :"<< m_options->saveDir();
     isProcessing = true;
+    stableDiffusion->generateImages(m_options,isVariation);
     samplesPath = Utils::localPathToUrl(deafultAssetsPath);
     emit samplesPathChanged();
     emit isProcessingChanged();
