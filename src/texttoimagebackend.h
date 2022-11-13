@@ -103,6 +103,7 @@ public slots:
     void diffusionCancelled();
     void updateDeviceInfo(QString);
     void initAppControls(bool packageReady,bool stableDiffusionModelReady);
+    void showTermsWindow();
 
 signals:
     void showMessageBox();
@@ -127,6 +128,7 @@ signals:
     void isCancelledChanged();
     void isModelLoadedChanged();
     void tiConceptsChanged();
+    void showTermsDialog(QString terms);
 
 private:
     DiffusionProcess *stableDiffusion;

@@ -63,5 +63,15 @@ QString Utils::getLogMessage(const QString& type,const QString& functionName,int
 
 void Utils::openLocalFolderPath(const QString &path)
 {
-  QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+}
+
+QString Utils::getTextFileContents(const QString &path)
+{
+    QString fileContent;
+    QFile file(path);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+        fileContent = file.readAll();
+
+    return fileContent;
 }

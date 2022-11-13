@@ -26,6 +26,7 @@ static const qint64 CODE_FORMER_FILE_SIZE = 376637898;
 static const char* TEXTUAL_INVERSION_DIR = "textual-inversion";
 static const char* TEXTUAL_INVERSION_CONCEPT_FILE = "learned_embeds.bin";
 static const char* DETECT_DEVICE_SCRIPT = "scripts/detect_device.py";
+static const char* TERMS_FILE = "Terms of use.txt";
 
 static const double DEFAULT_SCALE = 7.5;
 static const double DEFAULT_IMAGE_WIDTH = 512;
@@ -50,7 +51,7 @@ static const char* DEFAULT_INIT_IMAGE = "";
 static const double DEFAULT_VARIATION_AMOUNT = 0.2;
 static const bool  DEFAULT_HIGHRES_FIX = false;
 static const char* DEFAULT_FACE_RESTORATION_METHOD = "GFPGAN";
-static const bool  DEFAULT_USE_CUSTOM_MODEL = false;
+static const bool  DEFAULT_ACCEPT_TERMS = false;
 
 #endif // DEFINES_H
 

@@ -103,6 +103,11 @@ const QString &DiffusionEnvironment::getDetectDeviceScriptPath() const
     return detectDeviceScriptPath;
 }
 
+const QString &DiffusionEnvironment::getTermsFilePath() const
+{
+    return termsFilePath;
+}
+
 void DiffusionEnvironment::setCondaActivatePath(const QString &newCondaActivatePath)
 {
     condaActivatePath = newCondaActivatePath;
@@ -157,5 +162,6 @@ void DiffusionEnvironment::setEnvironment()
     tiConceptRootDirectoryPath = Utils::pathAppend(qApp->applicationDirPath(),QString(TEXTUAL_INVERSION_DIR));
     tiConceptStyles = getTiConcepFoldertNames(tiConceptRootDirectoryPath);
     detectDeviceScriptPath = Utils::pathAppend(stableDiffusionPath,QString(DETECT_DEVICE_SCRIPT));
+    termsFilePath =  Utils::pathAppend(qApp->applicationDirPath(),QString(TERMS_FILE));
 
 }

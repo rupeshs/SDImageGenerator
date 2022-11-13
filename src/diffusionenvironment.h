@@ -50,6 +50,8 @@ public:
 
     const QString &getDetectDeviceScriptPath() const;
 
+    const QString &getTermsFilePath() const;
+
 signals:
 
 private:
@@ -70,6 +72,7 @@ private:
     QString tiConceptRootDirectoryPath;
     QStringList tiConceptStyles;
     QString detectDeviceScriptPath;
+    QString termsFilePath;
 
     void setCondaActivatePath(const QString &newCondaActivatePath);
     void setPythonEnvPath(const QString &newPythonEnvPath);

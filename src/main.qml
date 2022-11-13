@@ -90,7 +90,6 @@ ApplicationWindow {
             initImagePathTextEdit.text = options.initImagePath;
             variationAmountSlider.slider.value = options.variationAmount;
             highResFixCheckbox.checked = options.fixHighRes;
-            useCustomModelCheckbox.checked = options.useCustomModel;
             initApp = false;
             dreamPage.enabled = true;
             updateFaceRestortionTexts();
@@ -153,6 +152,10 @@ ApplicationWindow {
             installerDownloadPbar.value = progress.toFixed(2);
             busyIndicatorInstaller.visible = false;
         }
+        function onShowTermsDialog(terms ){
+            termsDialog.visible = true;
+            termsTextInput.text = terms;
+        }
     }
     function getElapsedTime()
     {
@@ -197,7 +200,6 @@ ApplicationWindow {
         stableDiffusionBackend.options.useMaskImage = useMaskCheckBox.checked;
         stableDiffusionBackend.options.useTextualInversion = useTextualInversionCheckBox.checked;
         stableDiffusionBackend.options.tiConceptStyle = tiConceptStyleText.currentText;
-        stableDiffusionBackend.options.useCustomModel = useCustomModelCheckbox.checked;
     }
     function updateFaceRestortionTexts(){
         if( faceRestorationMethodGroup.checkedButton.text ==="CodeFormer" ) {
@@ -213,6 +215,7 @@ ApplicationWindow {
         updateOptions();
         startTime = new Date().getTime();
     }
+
 
     TabBar {
         id: tabBar
@@ -791,13 +794,6 @@ ApplicationWindow {
                        textInfo: qsTr("Fix the high resolution duplication artefacts")
                    }
 
-                   CheckBox{
-                       id: useCustomModelCheckbox
-
-                       text: qsTr("Use custom models (Advanced)")
-                       checked:false
-                   }
-
                     Button{
                         text : "Reset All"
                         onClicked: stableDiffusionBackend.resetSettings()
@@ -1315,6 +1311,79 @@ ApplicationWindow {
                 stableDiffusionBackend.stopDownloader();
             else
                 stableDiffusionBackend.stopInstaller();
+        }
+    }
+    ApplicationWindow  {
+        id: termsDialog
+        title: "SDImageGenerator - Terms of Use"
+
+        width : 500
+        height: 650
+
+        flags: Qt.FramelessWindowHint
+
+
+        ColumnLayout{
+        anchors.fill: parent
+        Text{
+          text: qsTr("SDImageGenerator - Terms of Use")
+          font.pointSize: 12
+          Layout.margins: 10
+          color : "white"
+        }
+
+        Item{
+            width: 500
+            height: 500
+            Layout.margins: 10
+
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter
+            ScrollView {
+
+                anchors.fill: parent
+                clip:true
+                ScrollBar.vertical.policy: ScrollBar.AsNeeded
+
+                Controls.AppTextArea{
+                    id : termsTextInput
+                    font.pointSize: 12
+                }
+            }
+        }
+        CheckBox{
+            id : termsCheck
+            text : qsTr("I accept the terms of SDImageGenerator use")
+        }
+
+        RowLayout{
+
+            Layout.bottomMargin: 20
+            Layout.rightMargin:  10
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            Button{
+                text :"Ok"
+                enabled : termsCheck.checked
+                onClicked: {
+                   stableDiffusionBackend.options.acceptedTerms = true;
+                   termsDialog.visible = false;
+
+                }
+
+            }
+
+            Button{
+                text :"Cancel"
+
+                onClicked: {
+                    close();
+                }
+            }
+        }
         }
     }
 }

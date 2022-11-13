@@ -54,6 +54,12 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
 void TextToImageBackend::generateImage(bool isVariation)
 {
     isCancelled = false;
+
+    if (!m_options->acceptedTerms()) {
+        showTermsWindow();
+        return;
+    }
+
     if (stableDiffusion->getUseTiConcept() != m_options->useTextualInversion()) {
          qDebug()<<"TI Status : "<<m_options->useTextualInversion();
         stableDiffusion->stopProcess();
@@ -164,6 +170,7 @@ void TextToImageBackend::loadSettings()
     qInfo()<<"Loading app settings";
     appSettings->load();
 
+    showTermsWindow();
 
     Utils::ensurePath(m_options->saveDir());
     m_options->setTiConceptDirectory(diffusionEnv->getTiConceptRootDirectoryPath());
@@ -182,11 +189,8 @@ void TextToImageBackend::loadSettings()
     }
     else{
         bool isStableDiffusionModelReady = true;
-        if (!m_options->useCustomModel())
-            handleModelStatus(isStableDiffusionModelReady);
-        else
-            qDebug()<<"Custom models enabled(Advanced mode)";
-
+        handleModelStatus(isStableDiffusionModelReady);
+        qDebug()<<"Custom models enabled(Advanced mode)";
         initAppControls(true,isStableDiffusionModelReady);
     }
 }
@@ -305,11 +309,8 @@ void TextToImageBackend::cudaMemoryError()
 void TextToImageBackend::environmentCurrentStatus(bool isPackagesReady, bool isStableDiffusionModelReady)
 {
     handlePackagesStatus(isPackagesReady);
-    if (!m_options->useCustomModel())
-        handleModelStatus(isStableDiffusionModelReady);
-    else
-        qDebug()<<"Custom models enabled(Advanced mode)";
-
+     //SD 1.4 model always available
+    handleModelStatus(true);
     initAppControls(isPackagesReady,isStableDiffusionModelReady);
 }
 
@@ -374,6 +375,13 @@ void TextToImageBackend::initAppControls(bool packageReady, bool stableDiffusion
     emit initControls(m_options,m_envStatus);
 }
 
+void TextToImageBackend::showTermsWindow()
+{
+    if (!m_options->acceptedTerms()) {
+        QString terms = Utils::getTextFileContents(diffusionEnv->getTermsFilePath());
+        emit showTermsDialog(terms);
+    }
+}
 const QStringList &TextToImageBackend::getTiConcepts() const
 {
     return tiConcepts;

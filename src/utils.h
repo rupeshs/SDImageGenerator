@@ -20,6 +20,7 @@
 #include <QDesktopServices>
 #include <QDebug>
 #include <QDir>
+#include <QFile>
 #include <QFileInfo>
 #include <QString>
 #include <QUrl>
@@ -34,6 +35,8 @@ public:
     static QUrl localPathToUrl(const QString& path);
     static QString getLogMessage(const QString& type,const QString& functionName,int line,const QString& msg);
     static void openLocalFolderPath(const QString& path);
+    static QString getTextFileContents(const QString& path);
+
 
 private:
     Utils();

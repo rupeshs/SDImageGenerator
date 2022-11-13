@@ -317,16 +317,6 @@ void DiffusionOptions::setTiConceptDirectory(const QString &newTiConceptDirector
     m_tiConceptDirectory = newTiConceptDirectory;
 }
 
-bool DiffusionOptions::useCustomModel() const
-{
-    return m_useCustomModel;
-}
-
-void DiffusionOptions::setUseCustomModel(bool newUseCustomModel)
-{
-    m_useCustomModel = newUseCustomModel;
-}
-
 const QString &DiffusionOptions::appPath() const
 {
     return m_appPath;
@@ -335,4 +325,14 @@ const QString &DiffusionOptions::appPath() const
 void DiffusionOptions::setAppPath(const QString &newAppPath)
 {
     m_appPath = newAppPath;
+}
+
+bool DiffusionOptions::acceptedTerms() const
+{
+    return m_acceptedTerms;
+}
+
+void DiffusionOptions::setAcceptedTerms(bool newAcceptedTerms)
+{
+    m_acceptedTerms = newAcceptedTerms;
 }
