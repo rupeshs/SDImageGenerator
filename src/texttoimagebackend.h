@@ -104,6 +104,7 @@ public slots:
     void updateDeviceInfo(QString);
     void initAppControls(bool packageReady,bool stableDiffusionModelReady);
     void showTermsWindow();
+    void setTextualInversionFolder(QUrl url);
 
 signals:
     void showMessageBox();
@@ -129,6 +130,7 @@ signals:
     void isModelLoadedChanged();
     void tiConceptsChanged();
     void showTermsDialog(QString terms);
+    void setTiDirectory(QString);
 
 private:
     DiffusionProcess *stableDiffusion;
@@ -161,6 +163,7 @@ private slots:
     QString getSeedFromFileName(QUrl filePath) ;
     bool isValidInitImage();
     void setupDownlodUi();
+    void loadTiConceptsNamesFromFolder(const QString& path);
 
 
 };

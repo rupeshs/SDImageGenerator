@@ -88,16 +88,6 @@ const QString &DiffusionEnvironment::getCodeFormerModelUrl() const
     return codeFormerModelUrl;
 }
 
-const QString &DiffusionEnvironment::getTiConceptRootDirectoryPath() const
-{
-    return tiConceptRootDirectoryPath;
-}
-
-const QStringList &DiffusionEnvironment::getTiConceptStyles() const
-{
-    return tiConceptStyles;
-}
-
 const QString &DiffusionEnvironment::getDetectDeviceScriptPath() const
 {
     return detectDeviceScriptPath;
@@ -106,6 +96,11 @@ const QString &DiffusionEnvironment::getDetectDeviceScriptPath() const
 const QString &DiffusionEnvironment::getTermsFilePath() const
 {
     return termsFilePath;
+}
+
+const QString &DiffusionEnvironment::getDefaultTiDirectory() const
+{
+    return defaultTiDirectory;
 }
 
 void DiffusionEnvironment::setCondaActivatePath(const QString &newCondaActivatePath)
@@ -159,9 +154,8 @@ void DiffusionEnvironment::setEnvironment()
     libsTestScriptPath = Utils::pathAppend(stableDiffusionPath,QString(LIBS_TEST_SCRIPT));
     codeFormerModelPath = Utils::pathAppend(stableDiffusionPath,QString(CODE_FORMER_MODEL_PATH));
     codeFormerModelUrl = CODE_FORMER_MODEL_URL;
-    tiConceptRootDirectoryPath = Utils::pathAppend(qApp->applicationDirPath(),QString(TEXTUAL_INVERSION_DIR));
-    tiConceptStyles = getTiConcepFoldertNames(tiConceptRootDirectoryPath);
     detectDeviceScriptPath = Utils::pathAppend(stableDiffusionPath,QString(DETECT_DEVICE_SCRIPT));
     termsFilePath =  Utils::pathAppend(qApp->applicationDirPath(),QString(TERMS_FILE));
+    defaultTiDirectory = Utils::pathAppend(qApp->applicationDirPath(),QString(TEXTUAL_INVERSION_DIR));
 
 }

@@ -170,15 +170,16 @@ void TextToImageBackend::loadSettings()
     qInfo()<<"Loading app settings";
     appSettings->load();
 
-    showTermsWindow();
+    if (!m_options->acceptedTerms()){
+        showTermsWindow();
+        return;
+    }
+
+    qInfo()<<"Textual inversion directory : "<<m_options->tiConceptDirectory();
 
     Utils::ensurePath(m_options->saveDir());
-    m_options->setTiConceptDirectory(diffusionEnv->getTiConceptRootDirectoryPath());
 
-    foreach (auto concept, diffusionEnv->getTiConceptStyles()) {
-        tiConcepts << concept;
-    }
-    emit tiConceptsChanged();
+    loadTiConceptsNamesFromFolder(m_options->tiConceptDirectory());
 
     envValidator = new DiffusionEnvValidator(this,diffusionEnv);
     connect(envValidator, SIGNAL(environmentCurrentStatus(bool,bool)), this, SLOT(environmentCurrentStatus(bool,bool)));
@@ -312,6 +313,7 @@ void TextToImageBackend::environmentCurrentStatus(bool isPackagesReady, bool isS
      //SD 1.4 model always available
     handleModelStatus(true);
     initAppControls(isPackagesReady,isStableDiffusionModelReady);
+
 }
 
 void TextToImageBackend::handlePackagesStatus(bool isPackagesReady)
@@ -455,7 +457,7 @@ void TextToImageBackend::updateStatusMessage(const QString &message)
     if (message.contains(">"))
         return;
 
-    if (message.contains("["))
+    if (message.contains(":/"))
         return;
 
     diffusionStatusMsg = message;
@@ -549,4 +551,19 @@ void TextToImageBackend::setupDownlodUi()
     }
 
     emit setupInstallerUi(true);
+}
+
+void TextToImageBackend::loadTiConceptsNamesFromFolder(const QString& path)
+{
+    tiConcepts.clear();
+    foreach (auto concept, diffusionEnv->getTiConcepFoldertNames(path)) {
+        tiConcepts << concept;
+    }
+    emit tiConceptsChanged();
+}
+
+void TextToImageBackend::setTextualInversionFolder(QUrl url)
+{
+    emit setTiDirectory(url.toLocalFile());
+    loadTiConceptsNamesFromFolder(url.toLocalFile());
 }

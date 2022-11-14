@@ -77,7 +77,6 @@ private:
     QString promptCommand;
     StableDiffusionStatus status;
     QUrl samplesPath;
-    QString tiConceptsRootDir;
     QString curTiConcept;
     DiffusionEnvironment *stableDiffusionEnv;
     bool useTiConcept;

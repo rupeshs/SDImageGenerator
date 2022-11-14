@@ -30,7 +30,6 @@ DiffusionProcess::DiffusionProcess(QObject *parent,DiffusionEnvironment *diffusi
     dreamProcess->setWorkingDirectory(diffusionEnv->getStableDiffusionPath());
 
     setStatus(StableDiffusionStatus::NotStarted);
-    tiConceptsRootDir = diffusionEnv->getTiConceptRootDirectoryPath();
     stableDiffusionEnv = diffusionEnv;
     useTiConcept = false;
 }
@@ -146,7 +145,7 @@ void DiffusionProcess::addDreamScriptArgs(DiffusionOptions *diffusionOptions)
             useTiConcept = true;
             addArgument("--embedding_path");
             curTiConcept = diffusionOptions->tiConceptStyle();
-            QString stylePath = Utils::pathAppend(tiConceptsRootDir,diffusionOptions->tiConceptStyle());
+            QString stylePath = Utils::pathAppend(diffusionOptions->tiConceptDirectory(),diffusionOptions->tiConceptStyle());
             QString tiConceptFilePath = Utils::pathAppend(stylePath,QString(TEXTUAL_INVERSION_CONCEPT_FILE));
             qDebug()<<tiConceptFilePath;
             addArgument(tiConceptFilePath);
@@ -280,8 +279,7 @@ void DiffusionProcess::generateImages(DiffusionOptions *diffusionOptions,bool is
         initImagePath.append("\"");
         initImagePath.prepend("\"");
         addPromptArguments(initImagePath);
-        addPromptArguments("-tm");
-        addPromptArguments("hair");
+
         if (diffusionOptions->fitImage())
             addPromptArguments("--fit");
         addPromptArguments("--strength");

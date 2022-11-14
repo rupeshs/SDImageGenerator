@@ -93,11 +93,15 @@ ApplicationWindow {
             initApp = false;
             dreamPage.enabled = true;
             updateFaceRestortionTexts();
+            tiFolder.text = options.tiConceptDirectory;
 
         }
 
         function onSetOutputDirectory(directory){
             saveFolder.text = directory;
+        }
+        function onSetTiDirectory(directory){
+            tiFolder.text = directory;
         }
         function onSetInputImagePath(file_path){
             initImagePathTextEdit.text = file_path;
@@ -200,6 +204,7 @@ ApplicationWindow {
         stableDiffusionBackend.options.useMaskImage = useMaskCheckBox.checked;
         stableDiffusionBackend.options.useTextualInversion = useTextualInversionCheckBox.checked;
         stableDiffusionBackend.options.tiConceptStyle = tiConceptStyleText.currentText;
+        stableDiffusionBackend.options.tiConceptDirectory = tiFolder.text;
     }
     function updateFaceRestortionTexts(){
         if( faceRestorationMethodGroup.checkedButton.text ==="CodeFormer" ) {
@@ -325,6 +330,7 @@ ApplicationWindow {
                                 id: promptInput
                                 placeholderText: "A fantasy landscape"
                                 font.pointSize: 12
+                                enabled: !stableDiffusionBackend.isProcessing
                             }
                         }
                     }
@@ -395,6 +401,7 @@ ApplicationWindow {
                         id: imgimgGroup
 
                         Layout.preferredWidth: 550
+                        enabled: !stableDiffusionBackend.isProcessing
                         label: CheckBox {
                             id: imgtoimgCheckBox
 
@@ -478,11 +485,14 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     CheckBox{
                         id : useTextualInversionCheckBox
+
                         text : qsTr("Use TI Concept:")
+                        enabled: !stableDiffusionBackend.isProcessing
 
                     }
                     Button {
                         text: qsTr("Configure")
+                        enabled: !stableDiffusionBackend.isProcessing
                         onClicked: {
                             tabBar.currentIndex = 4;
                         }
@@ -793,6 +803,31 @@ ApplicationWindow {
                    Controls.AppInfoLabel{
                        textInfo: qsTr("Fix the high resolution duplication artefacts")
                    }
+                   Controls.AppLabel{
+                       labelText:qsTr("Textual Inversion models path")
+                       labelInfo: qsTr("Place all TI models inside this folder")
+
+                   }
+                   RowLayout{
+                       Layout.fillWidth: true
+                       Controls.RichTextEdit{
+                           id: tiFolder
+                           Layout.fillWidth: true
+
+                       }
+                       FolderDialog {
+                           id: tiFolderDialog
+                           folder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+                           onAccepted: {
+                               stableDiffusionBackend.setTextualInversionFolder(folder);
+                           }
+                       }
+                       ToolButton{
+                           icon.source: "images/folder2-open.png"
+                           onClicked: tiFolderDialog.open()
+
+                       }
+                   }
 
                     Button{
                         text : "Reset All"
@@ -945,7 +980,7 @@ ApplicationWindow {
                         }
 
                         Label{
-                            text : "Textual Inversion Concept "
+                            text : qsTr("Textual Inversion Concept")
                         }
 
                         RowLayout{
@@ -1371,7 +1406,8 @@ ApplicationWindow {
                 onClicked: {
                    stableDiffusionBackend.options.acceptedTerms = true;
                    termsDialog.visible = false;
-
+                   stableDiffusionBackend.saveSettings();
+                   stableDiffusionBackend.loadSettings();
                 }
 
             }
