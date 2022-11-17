@@ -27,6 +27,7 @@ static const char* TEXTUAL_INVERSION_DIR = "textual-inversion";
 static const char* TEXTUAL_INVERSION_CONCEPT_FILE = "learned_embeds.bin";
 static const char* DETECT_DEVICE_SCRIPT = "scripts/detect_device.py";
 static const char* TERMS_FILE = "Terms of use.txt";
+static const char* LIST_MODELS_SCRIPT = "scripts/listmodels.py";
 
 static const double DEFAULT_SCALE = 7.5;
 static const double DEFAULT_IMAGE_WIDTH = 512;

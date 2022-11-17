@@ -5,6 +5,7 @@ debug/diffusionoptions.o
 debug/diffusionprocess.o
 debug/devicedetector.o
 debug/installerprocess.o
+debug/modelsfinder.o
 debug/pythonenvvalidator.o
 debug/main.o
 debug/myprocess.o
@@ -31,6 +32,7 @@ debug/moc_diffusionoptions.o
 debug/moc_diffusionprocess.o
 debug/moc_devicedetector.o
 debug/moc_installerprocess.o
+debug/moc_modelsfinder.o
 debug/moc_pythonenvvalidator.o
 debug/moc_myprocess.o
 debug/moc_settings.o

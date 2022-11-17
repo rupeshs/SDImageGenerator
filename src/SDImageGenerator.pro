@@ -14,6 +14,7 @@ SOURCES += \
         diffusionprocess.cpp \
         installer/devicedetector.cpp \
         installer/installerprocess.cpp \
+        installer/modelsfinder.cpp \
         installer/pythonenvvalidator.cpp \
         main.cpp \
         myprocess.cpp \
@@ -45,6 +46,7 @@ HEADERS += \
     diffusionprocess.h \
     installer/devicedetector.h \
     installer/installerprocess.h \
+    installer/modelsfinder.h \
     installer/pythonenvvalidator.h \
     myprocess.h \
     settings.h \

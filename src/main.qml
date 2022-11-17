@@ -828,6 +828,34 @@ ApplicationWindow {
 
                        }
                    }
+                   Controls.AppLabel{
+                       labelText:qsTr("Models Switch")
+                       labelInfo: qsTr("Select a model and switch")
+
+                   }
+                   RowLayout{
+                       Item{
+                       height: 40
+                       width: 375
+
+                       ComboBox{
+                         id: modelComboBox
+
+                         Layout.fillWidth: true
+                         width: 375
+                         height: 40
+                         model : stableDiffusionBackend.stableDiffusionModels
+
+                       }
+                       }
+                       Button{
+                           text: "Switch model"
+
+                           onClicked: {
+                              stableDiffusionBackend.switchModel(modelComboBox.currentText);
+                           }
+                       }
+                   }
 
                     Button{
                         text : "Reset All"
@@ -1359,67 +1387,96 @@ ApplicationWindow {
 
 
         ColumnLayout{
-        anchors.fill: parent
-        Text{
-          text: qsTr("SDImageGenerator - Terms of Use")
-          font.pointSize: 12
-          Layout.margins: 10
-          color : "white"
-        }
-
-        Item{
-            width: 500
-            height: 500
-            Layout.margins: 10
-
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignHCenter
-            ScrollView {
-
-                anchors.fill: parent
-                clip:true
-                ScrollBar.vertical.policy: ScrollBar.AsNeeded
-
-                Controls.AppTextArea{
-                    id : termsTextInput
-                    font.pointSize: 12
-                }
+            anchors.fill: parent
+            Text{
+                text: qsTr("SDImageGenerator - Terms of Use")
+                font.pointSize: 12
+                Layout.margins: 10
+                color : "white"
             }
-        }
-        CheckBox{
-            id : termsCheck
-            text : qsTr("I accept the terms of SDImageGenerator use")
-        }
 
-        RowLayout{
+            Item{
+                width: 500
+                height: 500
+                Layout.margins: 10
 
-            Layout.bottomMargin: 20
-            Layout.rightMargin:  10
-
-            Item {
                 Layout.fillWidth: true
-            }
+                Layout.alignment: Qt.AlignHCenter
+                ScrollView {
 
-            Button{
-                text :"Ok"
-                enabled : termsCheck.checked
-                onClicked: {
-                   stableDiffusionBackend.options.acceptedTerms = true;
-                   termsDialog.visible = false;
-                   stableDiffusionBackend.saveSettings();
-                   stableDiffusionBackend.loadSettings();
-                }
+                    anchors.fill: parent
+                    clip:true
+                    ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
-            }
-
-            Button{
-                text :"Cancel"
-
-                onClicked: {
-                    close();
+                    Controls.AppTextArea{
+                        id : termsTextInput
+                        font.pointSize: 12
+                    }
                 }
             }
-        }
+            CheckBox{
+                id : termsCheck
+                text : qsTr("I accept the terms of SDImageGenerator use")
+            }
+
+            RowLayout{
+
+                Layout.bottomMargin: 20
+                Layout.rightMargin:  10
+
+                Item {
+                    Layout.fillWidth: true
+                }
+
+                Button{
+                    text :"Ok"
+                    enabled : termsCheck.checked
+                    onClicked: {
+                        stableDiffusionBackend.options.acceptedTerms = true;
+                        termsDialog.visible = false;
+                        stableDiffusionBackend.saveSettings();
+                        stableDiffusionBackend.loadSettings();
+                    }
+
+                }
+
+                Button{
+                    text :"Cancel"
+
+                    onClicked: {
+                        close();
+                    }
+                }
+            }
         }
     }
+
+    ApplicationWindow  {
+        id: modelLoadingWindow
+
+        property bool isDownloader
+        width: 550
+        height: 200
+        color: "#2e2e2e"
+        title: "Please wait"
+        maximumHeight:  200
+        minimumHeight:  200
+        maximumWidth:  550
+        minimumWidth:  550
+        flags: Qt.Dialog
+        visible: stableDiffusionBackend.isStableDiffusionModelLoading
+
+        ColumnLayout{
+            anchors.centerIn: parent
+            spacing:  10
+
+            Label{
+                text: qsTr("Loading model please wait...")
+                Layout.alignment: Qt.AlignHCenter
+                color: "white"
+                font.pointSize: 14
+            }
+        }
+    }
+
 }

@@ -54,6 +54,8 @@ public:
     QStringList getTiConcepFoldertNames(const QString& path);
 
 
+    const QString &getModelsFinderScriptPath() const;
+
 signals:
 
 private:
@@ -74,6 +76,7 @@ private:
     QString detectDeviceScriptPath;
     QString termsFilePath;
     QString defaultTiDirectory;
+    QString modelsFinderScriptPath;
 
     void setCondaActivatePath(const QString &newCondaActivatePath);
     void setPythonEnvPath(const QString &newPythonEnvPath);

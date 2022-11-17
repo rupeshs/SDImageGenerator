@@ -134,6 +134,11 @@ QStringList DiffusionEnvironment::getTiConcepFoldertNames(const QString &folderP
     return tiFolderNames;
 }
 
+const QString &DiffusionEnvironment::getModelsFinderScriptPath() const
+{
+    return modelsFinderScriptPath;
+}
+
 void DiffusionEnvironment::setEnvironment()
 {
 #ifdef Q_OS_WIN
@@ -157,5 +162,6 @@ void DiffusionEnvironment::setEnvironment()
     detectDeviceScriptPath = Utils::pathAppend(stableDiffusionPath,QString(DETECT_DEVICE_SCRIPT));
     termsFilePath =  Utils::pathAppend(qApp->applicationDirPath(),QString(TERMS_FILE));
     defaultTiDirectory = Utils::pathAppend(qApp->applicationDirPath(),QString(TEXTUAL_INVERSION_DIR));
+    modelsFinderScriptPath = Utils::pathAppend(stableDiffusionPath,QString(LIST_MODELS_SCRIPT));
 
 }

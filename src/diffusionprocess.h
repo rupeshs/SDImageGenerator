@@ -69,6 +69,7 @@ signals:
     void gotConsoleLog(const QString &message);
     void cudaMemoryError();
     void stopped();
+    void modelLoaded(bool);
 
 private:
     MyProcess *dreamProcess;

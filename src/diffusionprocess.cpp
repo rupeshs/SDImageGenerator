@@ -63,6 +63,11 @@ void DiffusionProcess::readProcessOutput(QByteArray line)
     if (consoleLine.contains("RuntimeError: CUDA out of memory"))
         emit cudaMemoryError();
 
+    if (consoleLine.contains("Model loaded in"))
+        emit modelLoaded(true);
+
+    if(consoleLine.contains("could not be loaded: [Errno 2] No such file"))
+        emit modelLoaded(false);
 }
 
 void DiffusionProcess::processFinished(int exit_code, QProcess::ExitStatus exit_status)

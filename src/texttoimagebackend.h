@@ -25,6 +25,7 @@
 #include "settings.h"
 #include "installer/devicedetector.h"
 #include "installer/installerprocess.h"
+#include "installer/modelsfinder.h"
 #include <QDebug>
 #include <QFileInfo>
 #include <QMessageBox>
@@ -50,6 +51,8 @@ class TextToImageBackend : public QObject,public QQmlParserStatus
     Q_PROPERTY(bool isCancelled MEMBER isCancelled NOTIFY isCancelledChanged)
     Q_PROPERTY(bool isModelLoaded MEMBER isModelLoaded NOTIFY isModelLoadedChanged)
     Q_PROPERTY(QStringList tiConcepts MEMBER tiConcepts NOTIFY tiConceptsChanged)
+    Q_PROPERTY(QStringList stableDiffusionModels MEMBER stableDiffusionModels NOTIFY stableDiffusionModelsChanged)
+    Q_PROPERTY(bool isStableDiffusionModelLoading MEMBER isStableDiffusionModelLoading NOTIFY isStableDiffusionModelLoadingChanged)
 public:
     explicit TextToImageBackend(QObject *parent = nullptr);
 
@@ -72,6 +75,12 @@ public:
 
     const QStringList &getTiConcepts() const;
     void setTiConcepts(const QStringList &newTiConcepts);
+
+    const QStringList &getStableDiffusionModels() const;
+    void setStableDiffusionModels(const QStringList &newStableDiffusionModels);
+
+    bool getIsStableDiffusionModelLoaded() const;
+    void setIsStableDiffusionModelLoaded(bool newIsStableDiffusionModelLoaded);
 
 public slots:
     void generateImage(bool isVariation);
@@ -105,6 +114,9 @@ public slots:
     void initAppControls(bool packageReady,bool stableDiffusionModelReady);
     void showTermsWindow();
     void setTextualInversionFolder(QUrl url);
+    void gotModelsList(QStringList);
+    void switchModel(QString modelName);
+    void stableDiffusionModelLoaded(bool isLoaded);
 
 signals:
     void showMessageBox();
@@ -131,6 +143,8 @@ signals:
     void tiConceptsChanged();
     void showTermsDialog(QString terms);
     void setTiDirectory(QString);
+    void stableDiffusionModelsChanged();
+    void isStableDiffusionModelLoadingChanged();
 
 private:
     DiffusionProcess *stableDiffusion;
@@ -154,6 +168,9 @@ private:
     bool isModelLoaded;
     QStringList tiConcepts;
     DeviceDetector *deviceDetector;
+    ModelsFinder *modelsFinder;
+    QStringList stableDiffusionModels;
+    bool isStableDiffusionModelLoading;
 
 private slots:
     void updateStatusMessage(const QString&);

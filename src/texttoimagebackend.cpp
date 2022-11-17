@@ -35,6 +35,7 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
     connect(stableDiffusion, SIGNAL(gotConsoleLog(QString)), this, SLOT(updateStatusMessage(QString)));
     connect(stableDiffusion, SIGNAL(cudaMemoryError()), this, SLOT(cudaMemoryError()));
     connect(stableDiffusion, SIGNAL(stopped()), this, SLOT(diffusionCancelled()));
+    connect(stableDiffusion, SIGNAL(modelLoaded(bool)), this, SLOT(stableDiffusionModelLoaded(bool)));
 
     deafultAssetsPath = Utils::pathAppend(qApp->applicationDirPath(),"default");
     samplesPath = Utils::localPathToUrl(deafultAssetsPath);
@@ -48,6 +49,12 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
     modelDownloader = nullptr;
     pythonEnvInstaller = nullptr;
     isCancelled = false;
+
+    modelsFinder = new ModelsFinder(this,diffusionEnv);
+    connect(modelsFinder, SIGNAL(gotModelsList(QStringList)), this, SLOT(gotModelsList(QStringList)));
+    modelsFinder->find();
+
+    isStableDiffusionModelLoading = false;
 
 }
 
@@ -566,4 +573,53 @@ void TextToImageBackend::setTextualInversionFolder(QUrl url)
 {
     emit setTiDirectory(url.toLocalFile());
     loadTiConceptsNamesFromFolder(url.toLocalFile());
+}
+
+void TextToImageBackend::gotModelsList(QStringList modelsList)
+{
+    qDebug()<<modelsList;
+    stableDiffusionModels = modelsList;
+    emit stableDiffusionModelsChanged();
+}
+
+void TextToImageBackend::switchModel(QString modelName)
+{
+   isStableDiffusionModelLoading = true;
+   emit isStableDiffusionModelLoadingChanged();
+   QString command = "!switch " + modelName;
+   stableDiffusion->writeCommand(command);
+
+}
+
+void TextToImageBackend::stableDiffusionModelLoaded(bool isLoaded)
+{
+   isStableDiffusionModelLoading = false;
+   emit isStableDiffusionModelLoadingChanged();
+   if (!isLoaded) {
+       QMessageBox msgBox;
+       msgBox.setIcon(QMessageBox::Critical);
+       msgBox.setText(tr("Model loading failed,model file not found"));
+       msgBox.exec();
+   }
+}
+
+bool TextToImageBackend::getIsStableDiffusionModelLoaded() const
+{
+    return isStableDiffusionModelLoading;
+}
+
+void TextToImageBackend::setIsStableDiffusionModelLoaded(bool newIsStableDiffusionModelLoaded)
+{
+    isStableDiffusionModelLoading = newIsStableDiffusionModelLoaded;
+}
+
+const QStringList &TextToImageBackend::getStableDiffusionModels() const
+{
+    return stableDiffusionModels;
+}
+
+void TextToImageBackend::setStableDiffusionModels(const QStringList &newStableDiffusionModels)
+{
+    stableDiffusionModels = newStableDiffusionModels;
+
 }
