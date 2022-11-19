@@ -53,6 +53,7 @@ class TextToImageBackend : public QObject,public QQmlParserStatus
     Q_PROPERTY(QStringList tiConcepts MEMBER tiConcepts NOTIFY tiConceptsChanged)
     Q_PROPERTY(QStringList stableDiffusionModels MEMBER stableDiffusionModels NOTIFY stableDiffusionModelsChanged)
     Q_PROPERTY(bool isStableDiffusionModelLoading MEMBER isStableDiffusionModelLoading NOTIFY isStableDiffusionModelLoadingChanged)
+
 public:
     explicit TextToImageBackend(QObject *parent = nullptr);
 

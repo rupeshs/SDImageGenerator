@@ -55,6 +55,7 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
     modelsFinder->find();
 
     isStableDiffusionModelLoading = false;
+    isModelLoaded = false;
 
 }
 
@@ -211,7 +212,9 @@ void TextToImageBackend::resetSettings()
 
 void TextToImageBackend::stableDiffusionFinished()
 {
-    qDebug()<<"Good bye";
+    qDebug()<<"Stopped stable diffusion";
+    isModelLoaded = false;
+    emit isModelLoadedChanged();
 }
 
 void TextToImageBackend::openOutputFolder()
@@ -496,7 +499,6 @@ void TextToImageBackend::updateInstallerStatusMessage(const QString &message)
     installerStatusMsg = message;
     qDebug()<<message;
     emit installerStatusChanged(message,0.0);
-
 }
 
 void TextToImageBackend::updateDownloaderStatusMessage(const QString &message)
@@ -593,14 +595,24 @@ void TextToImageBackend::switchModel(QString modelName)
 
 void TextToImageBackend::stableDiffusionModelLoaded(bool isLoaded)
 {
+   bool isSwitch = isStableDiffusionModelLoading;
    isStableDiffusionModelLoading = false;
    emit isStableDiffusionModelLoadingChanged();
+
+   if (isSwitch & isLoaded) {
+       QMessageBox msgBox;
+       msgBox.setIcon(QMessageBox::Information);
+       msgBox.setText(tr("Model switched successfully"));
+       msgBox.exec();
+       return ;
+   }
    if (!isLoaded) {
        QMessageBox msgBox;
        msgBox.setIcon(QMessageBox::Critical);
        msgBox.setText(tr("Model loading failed,model file not found"));
        msgBox.exec();
    }
+
 }
 
 bool TextToImageBackend::getIsStableDiffusionModelLoaded() const

@@ -830,7 +830,7 @@ ApplicationWindow {
                    }
                    Controls.AppLabel{
                        labelText:qsTr("Models Switch")
-                       labelInfo: qsTr("Select a model and switch")
+                       labelInfo: stableDiffusionBackend.isModelLoaded? qsTr("Select a model and switch"):qsTr("To enable model switching click dream button in the main page")
 
                    }
                    RowLayout{
@@ -839,17 +839,19 @@ ApplicationWindow {
                        width: 375
 
                        ComboBox{
-                         id: modelComboBox
+                           id: modelComboBox
 
-                         Layout.fillWidth: true
-                         width: 375
-                         height: 40
-                         model : stableDiffusionBackend.stableDiffusionModels
+                           Layout.fillWidth: true
+                           width: 375
+                           height: 40
+                           model : stableDiffusionBackend.stableDiffusionModels
+                           enabled : stableDiffusionBackend.isModelLoaded
 
                        }
                        }
                        Button{
-                           text: "Switch model"
+                           text: qsTr("Switch model")
+                           enabled : stableDiffusionBackend.isModelLoaded
 
                            onClicked: {
                               stableDiffusionBackend.switchModel(modelComboBox.currentText);
@@ -1157,6 +1159,7 @@ ApplicationWindow {
                         checkable: false
                         Layout.leftMargin: 10
                         text: qsTr("Stable diffusion model v1.4 original")
+                        visible: false
                     }
                     Button{
                         id : downloadSdModelButton
@@ -1451,18 +1454,19 @@ ApplicationWindow {
         }
     }
 
-    ApplicationWindow  {
+    Window  {
         id: modelLoadingWindow
 
         property bool isDownloader
         width: 550
         height: 200
         color: "#2e2e2e"
-        title: "Please wait"
+        title: "SDImageGenerator - Please wait..."
         maximumHeight:  200
         minimumHeight:  200
         maximumWidth:  550
         minimumWidth:  550
+        modality: "WindowModal"
         flags: Qt.Dialog
         visible: stableDiffusionBackend.isStableDiffusionModelLoading
 
@@ -1471,7 +1475,7 @@ ApplicationWindow {
             spacing:  10
 
             Label{
-                text: qsTr("Loading model please wait...")
+                text: qsTr("Switching model please wait...")
                 Layout.alignment: Qt.AlignHCenter
                 color: "white"
                 font.pointSize: 14

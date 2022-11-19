@@ -9,7 +9,7 @@ TextArea{
     property int curPos
 
     selectByMouse: true
-    color:"white"
+    color: textInput.enabled ? "#ffffff": "gray"
     placeholderTextColor : "#8c8d8f"
     wrapMode: TextEdit.Wrap
 
