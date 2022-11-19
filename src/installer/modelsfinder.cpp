@@ -32,8 +32,6 @@ void ModelsFinder::readProcessOutput(QByteArray line)
     if (line.contains("sdmodel") && modelNameSplit.length()==2) {
         stableDiffusionModels<<modelNameSplit[1];
     }
-    qDebug()<<stableDiffusionModels;
-
 }
 
 void ModelsFinder::processFinished(int exitCode, QProcess::ExitStatus exitStatus)

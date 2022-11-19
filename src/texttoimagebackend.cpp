@@ -579,7 +579,7 @@ void TextToImageBackend::setTextualInversionFolder(QUrl url)
 
 void TextToImageBackend::gotModelsList(QStringList modelsList)
 {
-    qDebug()<<modelsList;
+    qDebug()<<"Models -" << modelsList;
     stableDiffusionModels = modelsList;
     emit stableDiffusionModelsChanged();
 }
