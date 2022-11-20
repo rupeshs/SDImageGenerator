@@ -26,6 +26,7 @@
 #include "installer/devicedetector.h"
 #include "installer/installerprocess.h"
 #include "installer/modelsfinder.h"
+#include <QClipboard>
 #include <QDebug>
 #include <QFileInfo>
 #include <QMessageBox>
@@ -118,6 +119,7 @@ public slots:
     void gotModelsList(QStringList);
     void switchModel(QString modelName);
     void stableDiffusionModelLoaded(bool isLoaded);
+    void copySeedForImage(QUrl imagePath);
 
 signals:
     void showMessageBox();
@@ -172,6 +174,7 @@ private:
     ModelsFinder *modelsFinder;
     QStringList stableDiffusionModels;
     bool isStableDiffusionModelLoading;
+    QClipboard *clipboard;
 
 private slots:
     void updateStatusMessage(const QString&);

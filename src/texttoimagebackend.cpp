@@ -56,6 +56,7 @@ TextToImageBackend::TextToImageBackend(QObject *parent)
 
     isStableDiffusionModelLoading = false;
     isModelLoaded = false;
+    clipboard = QGuiApplication::clipboard();
 
 }
 
@@ -613,6 +614,12 @@ void TextToImageBackend::stableDiffusionModelLoaded(bool isLoaded)
        msgBox.exec();
    }
 
+}
+
+void TextToImageBackend::copySeedForImage(QUrl imagePath)
+{
+    QString seedNumber = getSeedFromFileName(imagePath);
+    clipboard->setText(seedNumber);
 }
 
 bool TextToImageBackend::getIsStableDiffusionModelLoaded() const

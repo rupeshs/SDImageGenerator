@@ -556,6 +556,19 @@ ApplicationWindow {
                     stableDiffusionBackend.generateVariations(imageViewer.currentImagePath);
                 }
             }
+            Button {
+                width: 48
+                height: 48
+                text : "C"
+                font.bold: true
+                Layout.leftMargin: 10
+                enabled: ! stableDiffusionBackend.isProcessing
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Copy seed for this image")
+                onClicked: {
+                    stableDiffusionBackend.copySeedForImage(imageViewer.currentImagePath);
+                }
+            }
             }
         }
 
