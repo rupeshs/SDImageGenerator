@@ -667,7 +667,7 @@ ApplicationWindow {
                         header.text: qsTr("Number of Images")
                         description.text: qsTr("Number of images to generate.")
                         slider.from: 1
-                        slider.to: 20
+                        slider.to: 100
                         slider.value: 1
                         Layout.fillWidth:true
                     }
@@ -1042,6 +1042,7 @@ ApplicationWindow {
                                     width: 430
 
                                     onCurrentTextChanged: {
+
                                         folderModel.folder = "file://" +
                                                 stableDiffusionBackend.options.tiConceptDirectory +
                                                 "/" +
@@ -1051,6 +1052,9 @@ ApplicationWindow {
                                         useTextualInversionCheckBox.text = qsTr("Use TI Concept ") +
                                                                           "<" + tiConceptStyleText.currentText + ">";
                                         tiConceptCopy.text = "<"+tiConceptStyleText.currentText+">";
+                                        tiConceptSampleFirst.source = "";
+                                        tiConceptSampleSecond.source = "";
+                                        tiConceptSampleThird.source = "";
 
                                     }
                                 }
@@ -1089,6 +1093,7 @@ ApplicationWindow {
 
                             onStatusChanged:{
                                 if (folderModel.status == FolderListModel.Ready){
+
                                     for(var i = 0; i < folderModel.count ;i++) {
                                         let filePathUrl = folderModel.get(i,"fileUrl").toString();
                                         if (filePathUrl.includes("textual")) {
