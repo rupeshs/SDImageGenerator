@@ -540,8 +540,7 @@ QString TextToImageBackend::getSeedFromFileName(QUrl imagePath)
     QFileInfo  imageFile(imagePath.toLocalFile());
     QString fileName = imageFile.fileName();
     QStringList fileNameSplits = fileName.split(".");
-    qDebug()<<fileNameSplits;
-    if (fileNameSplits.length()>1)
+    if (fileNameSplits.length()>2)
         seedNum = fileNameSplits[1];
 
     return seedNum;

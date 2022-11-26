@@ -273,6 +273,7 @@ debug/qrc_sdimagegenerator.cpp: sdimagegenerator.qrc \
 		images/info-square.png \
 		images/next.png \
 		images/enhance.png \
+		images/clipboard.png \
 		images/file-arrow-down.png \
 		images/Letter_v.png \
 		images/gear.png
@@ -1540,8 +1541,10 @@ debug/moc_texttoimagebackend.cpp: texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QSettings \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsettings.h \
 		installer/devicedetector.h \
-		installer/modelsfinder.h \
 		installer/installerprocess.h \
+		installer/modelsfinder.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QClipboard \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qclipboard.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/QMessageBox \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qmessagebox.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -2646,8 +2649,10 @@ debug/main.o: main.cpp texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QSettings \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsettings.h \
 		installer/devicedetector.h \
-		installer/modelsfinder.h \
 		installer/installerprocess.h \
+		installer/modelsfinder.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QClipboard \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qclipboard.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/QMessageBox \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qmessagebox.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -3010,8 +3015,10 @@ debug/texttoimagebackend.o: texttoimagebackend.cpp texttoimagebackend.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/QSettings \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtCore/qsettings.h \
 		installer/devicedetector.h \
-		installer/modelsfinder.h \
 		installer/installerprocess.h \
+		installer/modelsfinder.h \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/QClipboard \
+		../../../../Qt5/5.15.2/mingw81_64/include/QtGui/qclipboard.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/QMessageBox \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qmessagebox.h \
 		../../../../Qt5/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \

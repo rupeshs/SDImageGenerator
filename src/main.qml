@@ -559,12 +559,12 @@ ApplicationWindow {
             Button {
                 width: 48
                 height: 48
-                text : "C"
+                icon.source: "images/clipboard.png"
                 font.bold: true
                 Layout.leftMargin: 10
                 enabled: ! stableDiffusionBackend.isProcessing
                 ToolTip.visible: hovered
-                ToolTip.text: qsTr("Copy seed for this image")
+                ToolTip.text: qsTr("Copy the seed of this image to the clipboard")
                 onClicked: {
                     stableDiffusionBackend.copySeedForImage(imageViewer.currentImagePath);
                 }
@@ -818,7 +818,7 @@ ApplicationWindow {
                    }
                    Controls.AppLabel{
                        labelText:qsTr("Textual Inversion models path")
-                       labelInfo: qsTr("Place all TI models inside this folder")
+                       labelInfo: qsTr("Place all Textual Inversion models inside this folder")
 
                    }
                    RowLayout{
@@ -1249,7 +1249,7 @@ ApplicationWindow {
                 }
 
                 Text{
-                    text : qsTr("SDImageGenerator v1.0.5")
+                    text : qsTr("SDImageGenerator v2.0.0")
                     color : "white"
                     font.pointSize: 14
                     Layout.alignment: Qt.AlignHCenter
@@ -1263,7 +1263,7 @@ ApplicationWindow {
 
                 }
                 Text{
-                    text : qsTr("Stable diffusion frontend for Windows/Linux")
+                    text : qsTr("Stable diffusion desktop app for Windows/Linux")
                     color : "grey"
                     font.pointSize: 12
                     Layout.alignment: Qt.AlignHCenter
@@ -1314,7 +1314,7 @@ ApplicationWindow {
                 }
 
                 Text {
-                    text: "Using stable diffusion model v1.4: <a href='https://github.com/rupeshs/stablediffusion-mod/blob/main/Stable_Diffusion_v1_Model_Card.md'>Model card</a>"
+                    text: "Using stable diffusion model v1.5: <a href='https://huggingface.co/runwayml/stable-diffusion-v1-5'>Model card</a>"
                     color : "grey"
                     linkColor: "lightblue"
                     font.pointSize: 12
@@ -1399,13 +1399,13 @@ ApplicationWindow {
     }
     ApplicationWindow  {
         id: termsDialog
-        title: "SDImageGenerator - Terms of Use"
 
+        title: "SDImageGenerator - Terms of Use"
         width : 500
         height: 650
-
         flags: Qt.FramelessWindowHint
-
+        x: window.x + 50
+        y: window.y
 
         ColumnLayout{
             anchors.fill: parent

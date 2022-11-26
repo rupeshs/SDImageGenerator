@@ -18,5 +18,6 @@
         <file>images/x-lg.png</file>
         <file>images/brush-fill.png</file>
         <file>images/palette.png</file>
+        <file>images/clipboard.png</file>
     </qresource>
 </RCC>

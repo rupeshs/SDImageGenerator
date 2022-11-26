@@ -30,7 +30,7 @@ void Settings::load()
     diffusionSettings->setFixHighRes(settings->value("Main/highResFix",DEFAULT_HIGHRES_FIX).toBool());
     diffusionSettings->setAcceptedTerms(settings->value("Main/terms",DEFAULT_ACCEPT_TERMS).toBool());
     diffusionSettings->setTiConceptDirectory(settings->value("Main/textualInversion",diffusionEnv->getDefaultTiDirectory()).toString());
-
+    qDebug()<<diffusionSettings->tiConceptDirectory();
     diffusionSettings->setUpscaler(settings->value("Upscaler/upscaler",DEFAULT_USE_UPSCALER).toBool());
     diffusionSettings->setUpscaleFactor(settings->value("Upscaler/upscaleFactor",DEFAULT_UPSCALE_FACTOR).toString());
     diffusionSettings->setUpscaleStrength(settings->value("Upscaler/upscaleStrength",DEFAULT_UPSCALE_STRENGTH).toDouble());
@@ -47,6 +47,9 @@ void Settings::load()
 
 void Settings::save()
 {
+    if (!diffusionSettings->acceptedTerms())
+        return;
+
     settings->beginGroup("Main");
     settings->setValue("prompt", diffusionSettings->prompt());
     settings->setValue("scale", diffusionSettings->scale());
