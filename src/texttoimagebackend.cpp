@@ -513,16 +513,7 @@ void TextToImageBackend::installCompleted(int exitCode,bool isDownloader)
 {
     if (isDownloader) {
         qDebug()<<"Download completed(Exit code) -> "<<exitCode;
-        if (Utils::checkPathExists(diffusionEnv->getStableDiffusionModelPath())
-                && exitCode == 0) {
-            QString msg(tr("Downloaded model successfully,please restart app."));
-            qDebug()<<msg;
-            emit downloaderStatusChanged(msg,1.0);
-        } else {
-            QString msg(tr("Model download failed,check logs."));
-            qDebug()<<msg;
-            emit downloaderStatusChanged(msg,0.0);
-        }
+        validateDownloadedModel(exitCode);
     } else {
         if (exitCode == 0) {
             qDebug()<<"Environment is ready.";
@@ -569,6 +560,27 @@ void TextToImageBackend::loadTiConceptsNamesFromFolder(const QString& path)
         tiConcepts << concept;
     }
     emit tiConceptsChanged();
+}
+
+void TextToImageBackend::validateDownloadedModel(int exitCode)
+{
+    bool isModelValid = false;
+
+    if(modelDownloader->getIsCodeFormerDownload())
+        isModelValid = envValidator->validateCodeFormerModel();
+    else
+        isModelValid = envValidator->validateGfpGanModel();
+
+    if (isModelValid && exitCode == 0) {
+        QString msg = "Downloaded "+ modelDownloader->getModelName()+ " model successfully,please restart app.";
+        qDebug()<<msg;
+        emit downloaderStatusChanged(msg,1.0);
+    }
+    else {
+        QString msg = modelDownloader->getModelName() +" model download failed,check logs.";
+        qDebug()<<msg;
+        emit downloaderStatusChanged(msg,0.0);
+    }
 }
 
 void TextToImageBackend::setTextualInversionFolder(QUrl url)

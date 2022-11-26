@@ -185,6 +185,7 @@ private slots:
     bool isValidInitImage();
     void setupDownlodUi();
     void loadTiConceptsNamesFromFolder(const QString& path);
+    void validateDownloadedModel(int exitCode);
 
 
 };

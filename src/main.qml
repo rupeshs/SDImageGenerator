@@ -1353,6 +1353,7 @@ ApplicationWindow {
         maximumWidth:  550
         minimumWidth:  550
         flags: Qt.Dialog
+        modality: "WindowModal"
 
         ColumnLayout{
             anchors.centerIn: parent
@@ -1427,7 +1428,7 @@ ApplicationWindow {
 
                     anchors.fill: parent
                     clip:true
-                    ScrollBar.vertical.policy: ScrollBar.AsNeeded
+                    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
                     Controls.AppTextArea{
                         id : termsTextInput

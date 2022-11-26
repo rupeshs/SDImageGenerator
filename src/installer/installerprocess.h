@@ -40,6 +40,10 @@ public:
 
     float getDownloadProgress() const;
 
+    bool getIsCodeFormerDownload() const;
+
+    const QString &getModelName() const;
+
 public slots:
     void readProcessOutput(QByteArray);
     void processFinished(int, QProcess::ExitStatus);
@@ -55,8 +59,11 @@ private:
     DiffusionEnvironment *diffusionEnv;
     float downloadProgress;
     bool isDownloader;
+    bool isCodeFormerDownload;
+    QString modelName;
 
     void addPackageArgs(const QString &packagePath);
+
 };
 
 #endif // INSTALLERPROCESS_H

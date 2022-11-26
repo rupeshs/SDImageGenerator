@@ -25,6 +25,7 @@ InstallerProcess::InstallerProcess(QObject *parent,DiffusionEnvironment *diffEnv
     downloadProgress = 0.0;
     isDownloader = false;
     diffusionEnv = diffEnv;
+    isCodeFormerDownload = false;
 }
 
 void InstallerProcess::downloadStableDiffusionModel()
@@ -95,6 +96,8 @@ void InstallerProcess::downloadGfpganModel()
     qDebug()<<installerProc->arguments();
     installerProc->start();
     isDownloader = true;
+    isCodeFormerDownload = false;
+    modelName = "GFPGAN";
 }
 
 void InstallerProcess::downloadCodeFormerModel()
@@ -109,6 +112,8 @@ void InstallerProcess::downloadCodeFormerModel()
     qDebug()<<installerProc->arguments();
     installerProc->start();
     isDownloader = true;
+    isCodeFormerDownload = true;
+    modelName = "CodeFormer";
 }
 
 void InstallerProcess::readProcessOutput(QByteArray line)
@@ -151,6 +156,16 @@ void InstallerProcess::stopProcess()
             installerProc->waitForFinished();
         }
     }
+}
+
+const QString &InstallerProcess::getModelName() const
+{
+    return modelName;
+}
+
+bool InstallerProcess::getIsCodeFormerDownload() const
+{
+    return isCodeFormerDownload;
 }
 
 void InstallerProcess::addPackageArgs(const QString &packagePath)
