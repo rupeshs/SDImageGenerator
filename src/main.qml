@@ -497,6 +497,7 @@ ApplicationWindow {
                         id : tiConceptNameText
                         Layout.fillWidth: true
                         readOnly: true
+                        enabled: !stableDiffusionBackend.isProcessing
                        }
                     Button {
                         text: qsTr("Configure")
