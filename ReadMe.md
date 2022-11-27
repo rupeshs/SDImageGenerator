@@ -7,19 +7,29 @@ SDImageGenerator v2            |  SDIG output sample
 
 
 
-## What's New? 
-- Extract and run, no complex installation steps
-- The default sampler is now k_lms
-- Added seamless mode support 
-- Added grid mode support
-- Added full precision support
-- Added upscaler(Real-ESRGAN) support
-- Added face restoration(GFP-GAN) support
-- Added Image to image generation 
-- Added Image variations support
-- Weighted prompts support
-- Works with NVIDIA GPU (minimum VRAM 4GB)
-- Fixed 7 digits seed issue
+## Version 2.0.0, What's New? 
+ - Works on CPU/GPU but CPU image generation is slow(Recommended to use GPU for faster image generation)
+- The stable diffusion 1.5 model is used as default
+- Added model switching (For advanced use)
+- Supports dreambooth models (checkpoint files (.ckpt) supported)
+- Added textual inversion support(Hugging Face's concepts library models supported)
+- Added VAE(Variational autoencoder) support for fine details
+- Added CodeFormer support
+- Updated full precision mode with float32
+- Added high-resolution duplication fix setting
+- Image-to-image now supports k-diffusion samplers
+- Added Image-to-image mask image support 
+- Added cancel functionality
+- Negative prompt support, use [ ] to use negative prompt
+           E.g: `a cute [white] dog`
+- Added Attention control support in prompt :
+            Use "+" to increase attention - `a house, apple++ tree`
+            Use "-" to decrease attention - `a house, apple- tree`
+- Supports prompt-to-Prompt editing (Cross attention control)
+            E.g:  In the below prompt cat will be replaced with a dog
+                    `A cat.swap(dog) riding bicycle`
+ - Supports prompt blending 
+                    E.g: `car:0.30 boat:0.70 hybrid`
 
 For older changelogs, please visit [changelog](changelog.md).
 ## Features 
