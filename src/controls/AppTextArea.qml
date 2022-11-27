@@ -67,7 +67,14 @@ TextArea{
         MenuItem {
             text: "Paste"
             onTriggered: {
-                textInput.paste();}
+                textInput.paste();
+            }
+        }
+        MenuItem {
+            text: "Select all"
+            onTriggered: {
+                textInput.selectAll();
+            }
         }
     }
 }

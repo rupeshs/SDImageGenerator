@@ -209,7 +209,7 @@ ApplicationWindow {
     function updateFaceRestortionTexts(){
         if( faceRestorationMethodGroup.checkedButton.text ==="CodeFormer" ) {
             gfpganStrengthSlider.header.text = qsTr("CodeFormer Fidelity");
-            gfpganStrengthSlider.description.text = qsTr(" 0 produces high quality results but low accuracy and 1 produces lower quality results but higher accuacy to your original face");
+            gfpganStrengthSlider.description.text = qsTr(" 0 produces high quality results but low accuracy and 1 produces lower quality results but higher accuacy to original face");
         }
         else{
            gfpganStrengthSlider.header.text = qsTr("Face restoration strength");
@@ -440,6 +440,7 @@ ApplicationWindow {
                               }
                               Button{
                                   icon.source: "images/folder2-open.png"
+                                  Layout.fillHeight: true
                                   onClicked: imgFileDialog.open()
                               }
                           }
@@ -471,6 +472,7 @@ ApplicationWindow {
                               }
                               Button{
                                   icon.source: "images/folder2-open.png"
+                                  Layout.fillHeight: true
                                   onClicked: imgMaskFileDialog.open()
                               }
 
@@ -486,18 +488,27 @@ ApplicationWindow {
                     CheckBox{
                         id : useTextualInversionCheckBox
 
-                        text : qsTr("Use TI Concept:")
+                        text : qsTr("Use Textual Inversion Concept:")
                         enabled: !stableDiffusionBackend.isProcessing
 
                     }
+
+                    Controls.RichTextEdit{
+                        id : tiConceptNameText
+                        Layout.fillWidth: true
+                        readOnly: true
+                       }
                     Button {
                         text: qsTr("Configure")
                         enabled: !stableDiffusionBackend.isProcessing
+                        Layout.fillHeight: true
                         onClicked: {
                             tabBar.currentIndex = 4;
                         }
                     }
+
                     }
+
                 }
             }
             Timer {
@@ -835,8 +846,9 @@ ApplicationWindow {
                                stableDiffusionBackend.setTextualInversionFolder(folder);
                            }
                        }
-                       ToolButton{
+                       Button{
                            icon.source: "images/folder2-open.png"
+                           Layout.fillHeight: true
                            onClicked: tiFolderDialog.open()
 
                        }
@@ -1049,20 +1061,23 @@ ApplicationWindow {
                                                 tiConceptStyleText.currentText +
                                                 "/concept_images";
                                         textConceptInfo.textInfo = "You can use concept <"+tiConceptStyleText.currentText+"> in prompt";
-                                        useTextualInversionCheckBox.text = qsTr("Use TI Concept ") +
-                                                                          "<" + tiConceptStyleText.currentText + ">";
+
                                         tiConceptCopy.text = "<"+tiConceptStyleText.currentText+">";
+                                        tiConceptNameText.text = "<"+tiConceptStyleText.currentText+">";
                                         tiConceptSampleFirst.source = "";
                                         tiConceptSampleSecond.source = "";
                                         tiConceptSampleThird.source = "";
 
                                     }
                                 }
+
                             }
 
                             Button{
                                 text: qsTr("Copy Name")
                                 height: 40
+                                ToolTip.visible: hovered
+                                ToolTip.text: qsTr("Copy the concept name to clipboard")
                                 onClicked: {
                                     tiConceptCopy.selectAll()
                                     tiConceptCopy.copy();
@@ -1314,7 +1329,15 @@ ApplicationWindow {
                 }
 
                 Text {
-                    text: "Using stable diffusion model v1.5: <a href='https://huggingface.co/runwayml/stable-diffusion-v1-5'>Model card</a>"
+                    text: "Using stable diffusion model v1.5 by runwayml: <a href='https://huggingface.co/runwayml/stable-diffusion-v1-5'>Model card</a>"
+                    color : "grey"
+                    linkColor: "lightblue"
+                    font.pointSize: 12
+                    Layout.alignment: Qt.AlignHCenter
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
+                Text {
+                    text: "Source code available at <a href='https://github.com/rupeshs/SDImageGenerator'>GitHub repository</a>"
                     color : "grey"
                     linkColor: "lightblue"
                     font.pointSize: 12

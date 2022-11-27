@@ -1,5 +1,11 @@
 ## SDImageGenerator
-SDImageGeneator is a text-to-image generation AI app for Windows/Linux. It is still actively under development. The Linux version of the app is coming soon.
+SDImageGenerator(SDIG) is a text-to-image generation AI desktop app  for Windows/Linux. It is still actively under development. The Linux version of the app is coming soon.
+
+SDImageGenerator v2            |  SDIG output sample
+:-------------------------:|:-------------------------:
+![SDImageGenerator ](/images/SDImageGenerator_v2.PNG "SDImageGenerator 2.0") | ![SDImageGenerator output](/images/SDImageGenerator_v2_output.PNG "SDImageGenerator 2.0 output").
+
+
 
 ## What's New? 
 - Extract and run, no complex installation steps
@@ -35,3 +41,10 @@ For older changelogs, please visit [changelog](changelog.md).
 ## Coding Style
 If you want to contribute please follow the coding style
 - [Qt Coding Style](https://wiki.qt.io/Qt_Coding_Style)
+
+## Python Part
+
+[Stable Diffusion fork](https://github.com/rupeshs/InvokeAI/tree/sdig)
+
+## Download SDImageGenerator
+[Download latest release ](https://rupeshsreeraman.itch.io/sdimagegenerator)

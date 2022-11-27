@@ -199,8 +199,6 @@ void TextToImageBackend::loadSettings()
     }
     else{
         bool isStableDiffusionModelReady = true;
-        handleModelStatus(isStableDiffusionModelReady);
-        qDebug()<<"Custom models enabled(Advanced mode)";
         initAppControls(true,isStableDiffusionModelReady);
     }
 }
@@ -344,10 +342,10 @@ void TextToImageBackend::handleModelStatus(bool isStableDiffusionModelReady)
 {
 
     if (isStableDiffusionModelReady){
-        qDebug()<<"Stable diffusion original model(v1.4) check : OK ";
+        qDebug()<<"Stable diffusion original model(v1.5) check : OK ";
 
     } else {
-        qDebug()<<"Stable diffusion original model(v1.4) check: Failed ";
+        qDebug()<<"Stable diffusion original model(v1.5) check: Failed ";
         emit environmentNotReady();
     }
 }
@@ -491,7 +489,7 @@ void TextToImageBackend::classBegin()
 
 void TextToImageBackend::componentComplete()
 {
-    qDebug()<<"Component ready";
+    //qDebug()<<"Loadsettings...";
     loadSettings();
 
 }

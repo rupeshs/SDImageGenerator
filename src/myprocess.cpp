@@ -158,7 +158,6 @@ int MyProcess::canReadLine(const QByteArray & ba, int from) {
 Do some clean up, and be sure that all output has been read.
 */
 void MyProcess::procFinished() {
-    qDebug("procFinished");
 
 #if !USE_TEMP_FILE
     qDebug("procFinished: Bytes available: %ld", bytesAvailable());

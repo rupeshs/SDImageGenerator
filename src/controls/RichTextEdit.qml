@@ -48,8 +48,10 @@ TextField{
         id: contextMenu
 
         title: "Edit Context Menu"
+
         MenuItem {
             text: "Cut"
+            enabled : !textInput.readOnly
             onTriggered: {
                 textInput.cut();
             }
@@ -57,6 +59,7 @@ TextField{
 
         MenuItem {
             text: "Copy"
+
             onTriggered: {
                 textInput.copy();
             }
@@ -64,8 +67,16 @@ TextField{
 
         MenuItem {
             text: "Paste"
+            enabled : !textInput.readOnly
             onTriggered: {
-                textInput.paste();}
+                textInput.paste();
+            }
+        }
+        MenuItem {
+            text: "Select all"
+            onTriggered: {
+                textInput.selectAll();
+            }
         }
 
     }
